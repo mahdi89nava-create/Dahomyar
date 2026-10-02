@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>دهم‌یار | دستیار هوشمند پایه دهم</title>
+<style>
+:root{--bg:#080d16;--p:#101827;--line:#243149;--text:#eef5ff;--muted:#8fa0b8;--a:#36b7ff;--b:#8b5cf6;--good:#22c55e;--bad:#ef4444;--inp:#0a111d;--res:#0a1220;--hv:#172338;--c1:#111b2b;--c2:#0e1624;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eef2f8;--p:#fff;--line:#d4dce8;--text:#172033;--muted:#627086;--inp:#f6f8fc;--res:#f1f5fb;--hv:#e3ebf6;--c1:#fff;--c2:#f7f9fd}}
+:root[data-theme="light"]{--bg:#eef2f8;--p:#fff;--line:#d4dce8;--text:#172033;--muted:#627086;--inp:#f6f8fc;--res:#f1f5fb;--hv:#e3ebf6;--c1:#fff;--c2:#f7f9fd}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:radial-gradient(circle at 20% 0,var(--hv),var(--bg) 40%);color:var(--text);font-family:Vazirmatn,Tahoma,Arial,sans-serif;overflow-x:hidden;line-height:1.7}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.side{width:260px;background:var(--p);border-left:1px solid var(--line);position:fixed;right:0;top:env(safe-area-inset-top,0px);bottom:0;z-index:20;padding:16px;overflow:auto}
+.logo{font-size:25px;font-weight:900;padding:8px 8px 16px;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo small{display:block;color:var(--muted);font-size:11px}
+.nav button{display:block;width:100%;border:0;background:transparent;color:var(--text);opacity:.8;text-align:right;padding:10px 12px;border-radius:12px;margin-bottom:4px;transition:.2s}
+.nav button:hover,.nav button.active{background:var(--hv);opacity:1;transform:translateX(-3px)}
+.main{margin-right:260px;padding:20px;max-width:1500px}
+.bar{background:linear-gradient(120deg,#7c5cff55,#22d3ee33);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:16px;display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.mb{display:none}
+.page{display:none;animation:in .35s}.page.active{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+h1{font-size:28px;margin:0 0 6px}h2{margin:0 0 12px}h3{margin:0 0 8px}
+.sub{color:var(--muted);margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:linear-gradient(145deg,var(--c1),var(--c2));border:1px solid var(--line);border-radius:18px;padding:16px;transition:.25s}
+.card:hover{border-color:var(--a)}
+.hd{display:flex;justify-content:space-between;align-items:flex-start}
+.fav{background:none;border:0;font-size:20px;color:var(--text)}
+.stat b{display:block;font-size:26px}.stat span{color:var(--muted);font-size:13px}
+.btn{border:0;border-radius:12px;padding:9px 15px;background:linear-gradient(135deg,var(--a),#2878ff);color:#fff;font-weight:bold;margin:3px 0}
+.btn.s{background:var(--hv);color:var(--text)}.btn.d{background:#9d2424}
+input,select,textarea{width:100%;background:var(--inp);color:var(--text);border:1px solid var(--line);border-radius:11px;padding:10px;outline:none;margin:4px 0}
+input:focus,select:focus,textarea:focus{border-color:var(--a)}
+.result{margin-top:8px;padding:10px;border-radius:12px;background:var(--res);border:1px dashed var(--line);min-height:38px;white-space:pre-wrap;color:var(--a);cursor:copy;direction:ltr;text-align:left;font-family:monospace;font-size:14px}
+.tag{display:inline-block;background:var(--hv);border:1px solid var(--line);padding:3px 10px;border-radius:30px;font-size:12px;margin:3px;cursor:pointer}
+.pr{height:9px;background:var(--hv);border-radius:20px;overflow:hidden}.pr i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--b));transition:.8s}
+.f{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line);cursor:copy}
+.f b{direction:ltr;font-family:monospace;color:var(--a)}
+canvas{width:100%;height:320px;background:var(--res);border:1px solid var(--line);border-radius:14px;touch-action:none}
+.pt{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:5px;margin:12px 0}
+.el{padding:8px 2px;background:var(--hv);border:1px solid var(--line);border-radius:8px;text-align:center;cursor:pointer;font-size:13px}
+.el small{display:block;font-size:10px;color:var(--muted)}.el:hover{border-color:var(--a)}
+.ch{height:300px;overflow:auto;background:var(--res);border-radius:12px;padding:10px}
+.m{padding:8px 12px;border-radius:14px;margin:6px 0;max-width:90%;white-space:pre-wrap}
+.m.u{background:var(--b);color:#fff;margin-left:auto}.m.a{background:var(--hv)}
+.opt{display:block;width:100%;text-align:right;margin:6px 0;background:var(--hv);color:var(--text);border:1px solid var(--line);padding:10px;border-radius:10px}
+.opt.ok{background:#123820;border-color:var(--good)}.opt.no{background:#421b1b;border-color:var(--bad)}
+.modal{position:fixed;inset:0;background:#0009;display:none;place-items:center;z-index:50;padding:16px}.modal.show{display:grid}
+.mbx{background:var(--p);border:1px solid var(--line);border-radius:20px;padding:20px;max-width:560px;width:100%;max-height:90vh;overflow:auto}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:16px;background:var(--p);border:1px solid var(--a);padding:10px 16px;border-radius:12px;z-index:100;opacity:0;transform:translateY(20px);transition:.3s;pointer-events:none}.toast.show{opacity:1;transform:none}
+footer{margin-top:30px;border-top:1px solid var(--line);padding:20px 4px;color:var(--muted);text-align:center}
+footer a{color:var(--a);text-decoration:none}
+.fs{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}.fs div{background:var(--p);border:1px solid var(--line);border-radius:14px;padding:8px 18px;color:var(--text);font-size:18px}.fs small{display:block;font-size:11px;color:var(--muted)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--good);margin-left:5px}
+.ach{opacity:.35;filter:grayscale(1)}.ach.on{opacity:1;filter:none}
+table{width:100%;border-collapse:collapse}td,th{padding:9px;border-bottom:1px solid var(--line);text-align:center}
+tr.tdy{background:var(--hv);font-weight:700}
+.wg{display:flex;gap:10px;align-items:center;font-size:13px;background:var(--p);border:1px solid var(--line);padding:4px 12px;border-radius:12px}#clk{font-family:monospace;font-size:16px;color:var(--a)}
+#bdg{background:var(--bad);color:#fff;border-radius:10px;padding:0 6px;font-size:11px;margin-right:4px}
+details p{margin:6px 0}summary{cursor:pointer}
+.ct{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0}.ct a{background:var(--p);border:1px solid var(--line);padding:6px 14px;border-radius:12px}
+.noanim *{animation:none!important;transition:none!important}
+@media(max-width:850px){.side{transform:translateX(100%);transition:.3s}.side.open{transform:none}.main{margin:0;padding:12px}.mb{display:inline-block}}
+</style>
+
+<style id="dehomyar-v6-css">
+.v6-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.v6-card{background:var(--card,#111827);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:16px;box-shadow:0 8px 25px #0002}.v6-card h3{margin-top:0}.v6-pill{display:inline-flex;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--ac,#36b7ff) 18%,transparent);color:var(--ac,#36b7ff);font-size:12px}.v6-progress{height:9px;background:#ffffff12;border-radius:99px;overflow:hidden}.v6-progress i{display:block;height:100%;background:var(--ac,#36b7ff);border-radius:99px}.v6-list{display:flex;flex-direction:column;gap:8px}.v6-row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px;border-radius:12px;background:#ffffff08}.v6-row input,.v6-row textarea,.v6-card input,.v6-card select{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:1px solid #ffffff18;background:#0002;color:inherit}.v6-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.v6-danger{border-color:#ef4444!important}.v6-small{font-size:12px;opacity:.72}.v6-modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;z-index:10000;padding:16px}.v6-modal.show{display:flex}.v6-modalbox{max-width:560px;width:100%;max-height:88vh;overflow:auto;background:var(--card,#111827);border:1px solid #ffffff18;border-radius:22px;padding:20px}.v6-stat{font-size:25px;font-weight:800}.v6-nav{position:relative}.v6-badge{position:absolute;top:5px;left:5px;font-size:9px;padding:2px 5px;border-radius:99px;background:#ef4444;color:#fff}.v6-table{display:grid;grid-template-columns:repeat(18,minmax(32px,1fr));gap:5px;overflow:auto}.v6-el{min-height:52px;border:1px solid #ffffff16;border-radius:8px;padding:4px;text-align:center;cursor:pointer;background:#ffffff06}.v6-el b{display:block;font-size:13px}.v6-el span{font-size:9px;opacity:.7}.v6-command{position:fixed;inset:0;background:#000a;display:none;z-index:10001;align-items:flex-start;justify-content:center;padding-top:10vh}.v6-command.show{display:flex}.v6-commandbox{width:min(680px,92vw);background:var(--card,#111827);border-radius:20px;padding:14px}.v6-commandbox input{width:100%;font-size:18px;padding:13px;box-sizing:border-box}.v6-cmditem{padding:12px;border-radius:10px;cursor:pointer}.v6-cmditem:hover{background:#ffffff0d}@media(max-width:650px){.v6-table{grid-template-columns:repeat(9,minmax(40px,1fr))}.v6-row{flex-direction:column;align-items:stretch}}
+</style>
+
+<link rel="manifest" href="manifest.json"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="دهم‌یار">
+<meta name="theme-color" content="#10182f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="دهم‌یار">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style id="dehomyar7-pwa-style">
+:root{--pwa-a:#7c5cff;--pwa-b:#20d9ff;--pwa-c:#ff5db1;--pwa-bg:#081025}
+#dy7Splash{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 20%,#263a7c 0,#10182f 38%,#050914 100%);color:#fff;transition:opacity .55s,visibility .55s}
+#dy7Splash.hide{opacity:0;visibility:hidden;pointer-events:none}.dy7-splash-card{text-align:center;padding:34px;border-radius:30px;background:rgba(255,255,255,.08);backdrop-filter:blur(20px);box-shadow:0 25px 80px rgba(0,0,0,.35);animation:dy7Float 3s ease-in-out infinite}.dy7-logo{width:86px;height:86px;border-radius:25px;margin:auto auto 15px;box-shadow:0 12px 35px #0005;animation:dy7Pop .8s cubic-bezier(.2,.9,.2,1)}.dy7-splash-title{font-size:28px;font-weight:900}.dy7-splash-sub{opacity:.72;margin-top:7px;font-size:13px}@keyframes dy7Float{50%{transform:translateY(-8px)}}@keyframes dy7Pop{from{transform:scale(.6) rotate(-8deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+#dy7Fab{position:fixed;right:18px;bottom:18px;z-index:9000;width:54px;height:54px;border:0;border-radius:18px;background:linear-gradient(135deg,var(--pwa-a),var(--pwa-b));color:white;font-size:23px;box-shadow:0 12px 35px #0005;cursor:pointer;transition:.25s}#dy7Fab:hover{transform:translateY(-4px) rotate(3deg)}
+#dy7Panel{position:fixed;right:18px;bottom:82px;width:min(390px,calc(100vw - 36px));max-height:78vh;overflow:auto;z-index:8999;padding:18px;border-radius:25px;background:rgba(10,17,40,.96);color:#eef4ff;border:1px solid #ffffff18;box-shadow:0 25px 80px #0009;backdrop-filter:blur(18px);display:none}.dy7-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #ffffff10}.dy7-row:last-child{border-bottom:0}.dy7-title{font-weight:900;font-size:18px}.dy7-pill{padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800;background:#ffffff12}.dy7-on{background:#1fd58a22;color:#59f0b2}.dy7-off{background:#ffb02022;color:#ffd06b}.dy7-btn{border:1px solid #ffffff18;background:#ffffff0d;color:#fff;border-radius:12px;padding:9px 11px;cursor:pointer}.dy7-btn:hover{background:#ffffff18}.dy7-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.dy7-card{padding:12px;border-radius:16px;background:linear-gradient(135deg,#ffffff0d,#ffffff04);border:1px solid #ffffff0c}.dy7-card b{display:block;margin-bottom:4px}.dy7-small{font-size:11px;opacity:.7;line-height:1.6}.dy7-status{display:flex;align-items:center;gap:8px}.dy7-dot{width:9px;height:9px;border-radius:50%;background:#ffb020;box-shadow:0 0 12px currentColor}.dy7-dot.online{background:#39e69a}.dy7-dot.offline{background:#ffb020}.dy7-section{margin-top:15px;font-size:12px;font-weight:900;opacity:.65}.dy7-update{margin-top:12px;padding:12px;border-radius:15px;background:linear-gradient(135deg,#7c5cff20,#20d9ff14);border:1px solid #7c5cff35}.dy7-install{display:none}.dy7-install.show{display:block}.dy7-banner{position:fixed;top:12px;left:50%;transform:translateX(-50%) translateY(-150%);z-index:10000;max-width:calc(100vw - 24px);padding:10px 14px;border-radius:14px;background:#121c3d;color:#fff;border:1px solid #ffffff1c;box-shadow:0 15px 40px #0006;transition:.35s;font-size:12px}.dy7-banner.show{transform:translateX(-50%) translateY(0)}
+.dy7-online-list{display:grid;gap:7px;margin-top:8px}.dy7-feature{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:12px;background:#ffffff08}.dy7-feature span:first-child{font-size:12px}.dy7-feature span:last-child{font-size:10px;padding:3px 7px;border-radius:8px}
+@media(max-width:600px){#dy7Panel{right:10px;bottom:76px;width:calc(100vw - 20px)}#dy7Fab{right:10px;bottom:10px}.dy7-grid{grid-template-columns:1fr 1fr}.dy7-splash-card{margin:18px}}
+</style>
+
+</head>
+<body>
+<aside class="side" id="side"><div class="logo">دهم‌یار<small>دستیار هوشمند دانش‌آموز دهم</small></div><div class="nav" id="nav"></div></aside>
+<main class="main">
+<div class="bar"><div><button class="btn s mb" onclick="$('side').classList.toggle('open')">☰</button> 📅 <b>فردا (<span id="tmd"></span>):</b> <span id="tm"></span></div><div class="wg" id="wg"><span id="clk"></span><span id="dt"></span></div><div><button class="btn s" onclick="go('schedule')">📅 برنامه</button> <button class="btn s" onclick="bell()">🔔<span id="bdg">۳</span></button></div></div>
+
+<section id="home" class="page active">
+<h1>داشبورد دهم‌یار 🚀</h1><div class="sub">سلام <span id="nm">دوست من</span> 👋 امروز چه چیزی می‌خوای یاد بگیری؟</div>
+<div class="card" id="cont"></div><br><div class="grid" id="hs"></div><br>
+<div class="card"><input id="gs" placeholder="🔎 جست‌وجوی ابزار، فرمول یا درس…" oninput="gsearch()"><div id="gsr"></div></div><br>
+<div class="grid2"><div class="card"><h2>⚡ دسترسی سریع</h2><button class="btn" onclick="go('math')">🧮 ریاضی</button> <button class="btn" onclick="go('physics')">⚡ فیزیک</button> <button class="btn" onclick="go('chem')">🧪 شیمی</button> <button class="btn" onclick="go('quiz')">🎯 آزمون</button> <button class="btn" onclick="go('ai')">🤖 مهدی AI</button></div>
+<div class="card"><h2>💡 نکته امروز</h2><p id="tip"></p><button class="btn s" onclick="tip()">نکته بعدی</button></div></div>
+</section>
+
+<section id="lessons" class="page"><h1>📚 درس‌ها</h1><div class="sub">روی هر مبحث بزن تا مهدی AI برایت توضیح بدهد</div><div class="grid2" id="lsn"></div></section>
+<section id="math" class="page"><h1>➗ ابزار ریاضی</h1><div class="sub">همراه با مراحل حل</div><div class="grid2" id="g-math"></div></section>
+<section id="geometry" class="page"><h1>📐 هندسه</h1><div class="grid2" id="g-geo"></div></section>
+<section id="physics" class="page"><h1>⚡ ابزار فیزیک</h1><div class="grid2" id="g-phy"></div></section>
+<section id="chem" class="page"><h1>🧪 ابزار شیمی</h1><div class="grid2" id="g-chem"></div></section>
+
+<section id="graph" class="page"><h1>📈 نمودار و تابع</h1><div class="sub">چند تابع را با ; جدا کن. مثال: x^2 ; sin(x) ; 2x+1 — با موس/انگشت جابجا و زوم کن</div>
+<div class="card"><input id="fx" value="x^2 ; sin(x) ; 2x+1"><button class="btn" onclick="draw()">رسم</button> <button class="btn s" onclick="zoom(.7)">＋</button> <button class="btn s" onclick="zoom(1.4)">－</button> <button class="btn s" onclick="G.x=0;G.y=0;G.s=10;draw()">ریست</button><br><canvas id="gc"></canvas></div></section>
+
+<section id="lab" class="page"><h1>🔬 آزمایشگاه تعاملی</h1><div class="grid2">
+<div class="card"><h3>پرتاب قائم</h3>ارتفاع اولیه: <b id="lh0">20</b> m<input type="range" id="h0" min="0" max="100" value="20" oninput="lab1()">سرعت اولیه: <b id="lv0">15</b> m/s<input type="range" id="v0" min="0" max="50" value="15" oninput="lab1()"><canvas id="lc" style="height:200px"></canvas><div class="result" id="l1r"></div></div>
+<div class="card"><h3>انرژی و تکانه</h3>جرم: <b id="lm">10</b> kg<input type="range" id="em" min="1" max="100" value="10" oninput="lab2()">سرعت: <b id="lvv">10</b> m/s<input type="range" id="ev" min="0" max="50" value="10" oninput="lab2()">ارتفاع: <b id="lhh">5</b> m<input type="range" id="eh" min="0" max="100" value="5" oninput="lab2()"><div class="result" id="l2r"></div><div class="pr"><i id="lk" style="width:0"></i></div><small>سهم انرژی جنبشی از کل</small></div><div class="card"><h3>مثلث تعاملی</h3>a: <b id="la3">6</b><input type="range" id="ta" min="1" max="20" value="6" oninput="lab3()">b: <b id="lb3">8</b><input type="range" id="tb" min="1" max="20" value="8" oninput="lab3()">c: <b id="lc3">10</b><input type="range" id="tc" min="1" max="20" value="10" oninput="lab3()"><canvas id="l3c" style="height:200px"></canvas><div class="result" id="l3r"></div></div>
+<div class="card"><h3>نمودار حرکت (v–t آبی، x–t نارنجی)</h3>v₀: <b id="lmv">5</b><input type="range" id="mv" min="-20" max="20" value="5" oninput="lab4()">a: <b id="lma">2</b><input type="range" id="ma" min="-10" max="10" value="2" oninput="lab4()"><canvas id="l4c" style="height:200px"></canvas><div class="result" id="l4r"></div></div></div></section>
+
+<section id="periodic" class="page"><h1>⚛️ جدول تناوبی (۳۶ عنصر اول)</h1><input id="es" placeholder="جست‌وجوی نام، نماد یا عدد اتمی" oninput="ptab()"><div class="pt" id="pt"></div><div class="card" id="ei">روی یک عنصر بزن.</div></section>
+<section id="formulas" class="page"><h1>📖 فرمول‌نامه</h1><div class="sub">با کلیک روی هر فرمول کپی می‌شود</div><input id="fsr" placeholder="🔍 جست‌وجو…" oninput="fr()"><div class="grid2" id="fl"></div></section>
+
+<section id="quiz" class="page"><h1>🎯 آزمون</h1><div class="card" id="qbox"></div></section>
+
+<section id="progress" class="page"><h1>🏆 پیشرفت و دستاوردها</h1><div class="grid2"><div class="card" id="pf"></div><div class="card" id="pa"></div></div><br><div class="card"><h2>🎓 عملکرد آزمون‌ها</h2><div id="pp"></div></div></section>
+
+<section id="ai" class="page"><h1>🤖 مهدی AI</h1><div class="card"><select id="mode"><option value="teacher">👨‍🏫 حالت معلم (توضیح کامل)</option><option value="solver">🧩 حالت حل مسئله (مرحله‌به‌مرحله)</option><option value="short">⚡ پاسخ کوتاه و خلاصه</option><option value="check">✅ بررسی پاسخ من</option><option value="practice">🎯 تولید تمرین</option><option value="summary">📄 خلاصه درس</option></select>
+<div class="ch" id="chat"></div><div style="display:flex;gap:6px"><input id="ain" placeholder="سؤالت رو بنویس…" onkeydown="if(event.key==='Enter')ask()"><button class="btn" onclick="ask()">ارسال</button></div>
+<span class="tag" onclick="ask('معادله درجه دوم را با مثال توضیح بده')">معادله درجه ۲</span><span class="tag" onclick="ask('مفهوم مول را ساده توضیح بده')">مول</span><span class="tag" onclick="ask('فرق دما و گرما چیست؟')">دما و گرما</span><span class="tag" onclick="ask('تشابه مثلث‌ها را توضیح بده')">تشابه</span></div></section>
+
+<section id="schedule" class="page"><h1>📅 برنامه هفتگی</h1><div class="sub">هر درس یک زنگ — ۴ زنگ در روز</div><div class="card" style="overflow:auto"><table id="stb"></table></div><br><button class="btn" onclick="edSch()">✏️ ویرایش برنامه</button></section>
+<section id="solver" class="page"><h1>🧠 حل‌گر هوشمند</h1><div class="sub">معادله خطی یا درجه دوم را بنویس؛ مراحل حل را ببین</div><div class="card"><input id="soi" value="2x+7=19" onkeydown="if(event.key==='Enter')slv()"><button class="btn" onclick="slv()">حل کن</button> <button class="btn s" onclick="ask('این معادله را مرحله‌به‌مرحله توضیح بده: '+$('soi').value)">🤖 توضیح مهدی AI</button><div><span class="tag" onclick="$('soi').value='3x-5=x+9';slv()">3x−5=x+9</span><span class="tag" onclick="$('soi').value='x^2-5x+6=0';slv()">x²−5x+6=0</span><span class="tag" onclick="$('soi').value='2x^2+3x+5=0';slv()">Δ&lt;0</span></div><div class="result" id="sor" onclick="copy(this.textContent)">—</div></div></section>
+<section id="bank" class="page"><h1>📝 بانک سؤال</h1><div class="grid2"><select id="bs" onchange="bank()"></select><input id="bq" placeholder="جستجو در سؤال‌ها…" oninput="bank()"></div><br><div class="card" id="bl"></div><br><button class="btn" onclick="go('quiz')">🎯 برو به آزمون</button></section>
+<section id="favorites" class="page"><h1>⭐ علاقه‌مندی‌ها</h1><div class="grid2" id="g-fav"></div></section>
+
+<section id="settings" class="page"><h1>⚙️ تنظیمات</h1><div class="card" id="setbox"></div></section>
+
+
+<section id="v6account" class="page"><h1>👤 حساب و پروفایل</h1><div class="sub">حساب محلی این نسخه روی همین مرورگر ذخیره می‌شود؛ برای حساب آنلاین به بک‌اند نیاز است.</div><div class="v6-grid"><div class="v6-card"><h3>ورود / ثبت‌نام محلی</h3><input id="v6email" placeholder="ایمیل"><input id="v6pass" type="password" placeholder="رمز عبور" style="margin-top:8px"><div class="v6-actions"><button class="btn" onclick="v6Login()">ورود</button><button class="btn s" onclick="v6Signup()">ثبت‌نام</button><button class="btn s" onclick="v6Logout()">خروج</button></div><p id="v6authmsg" class="v6-small"></p></div><div class="v6-card"><h3>پروفایل</h3><input id="v6name" placeholder="نام نمایشی"><input id="v6school" placeholder="نام مدرسه" style="margin-top:8px"><input id="v6grade" value="دهم ریاضی‌فیزیک" style="margin-top:8px"><div class="v6-actions"><button class="btn" onclick="v6SaveProfile()">ذخیره پروفایل</button></div><p id="v6profilemsg"></p></div><div class="v6-card"><h3>☁️ همگام‌سازی</h3><p>پشتیبان‌گیری JSON بین دستگاه‌ها فعال است. این با Cloud Sync واقعی فرق دارد.</p><div class="v6-actions"><button class="btn" onclick="v6Export()">خروجی/پشتیبان</button><label class="btn s" style="cursor:pointer">ورود پشتیبان<input type="file" accept="application/json" hidden onchange="v6Import(this)"></label></div></div></div></section>
+<section id="v6dashboard" class="page"><div id="dyPublicNews" class="v6-card" style="margin-bottom:14px"><h2 style="margin-top:0">📢 خبرها و اطلاعیه‌ها</h2><div id="dyNewsList" class="v6-list">در حال دریافت...</div></div><h1>🚀 مرکز دانش‌آموزی</h1><div class="v6-grid"><div class="v6-card"><span class="v6-pill">سطح</span><div class="v6-stat" id="v6lvl">1</div><div class="v6-progress"><i id="v6bar" style="width:0%"></i></div><p id="v6xptext" class="v6-small"></p></div><div class="v6-card"><span class="v6-pill">امروز</span><div class="v6-stat" id="v6today">0</div><p>فعالیت ثبت‌شده</p></div><div class="v6-card"><span class="v6-pill">یادداشت</span><div class="v6-stat" id="v6notesn">0</div><p>یادداشت ذخیره‌شده</p></div><div class="v6-card"><span class="v6-pill">فلش‌کارت</span><div class="v6-stat" id="v6cardsn">0</div><p>کارت مرور</p></div></div><div class="v6-grid" style="margin-top:14px"><div class="v6-card"><h3>🎯 کارهای امروز</h3><div id="v6todaylist" class="v6-list"></div></div><div class="v6-card"><h3>🏅 دستاوردها</h3><div id="v6ach" class="v6-list"></div></div></div></section>
+<section id="v6notes" class="page"><h1>📝 دفتر یادداشت</h1><div class="v6-card"><input id="v6ntitle" placeholder="عنوان"><textarea id="v6nbody" rows="6" placeholder="یادداشت، خلاصه درس، فرمول یا نکته..."></textarea><select id="v6nsub"><option>عمومی</option><option>ریاضی</option><option>هندسه</option><option>فیزیک</option><option>شیمی</option></select><div class="v6-actions"><button class="btn" onclick="v6AddNote()">ذخیره یادداشت</button><button class="btn s" onclick="v6ClearNote()">پاک‌کردن فرم</button></div></div><div id="v6noteslist" class="v6-grid" style="margin-top:14px"></div></section>
+<section id="v6flash" class="page"><h1>🧠 فلش‌کارت</h1><div class="v6-card"><input id="v6fq" placeholder="سؤال / مفهوم"><input id="v6fa" placeholder="پاسخ" style="margin-top:8px"><input id="v6ftag" placeholder="درس" style="margin-top:8px"><button class="btn" onclick="v6AddFlash()" style="margin-top:8px">افزودن کارت</button></div><div id="v6flashlist" class="v6-grid" style="margin-top:14px"></div></section>
+<section id="v6planner" class="page"><h1>📅 برنامه‌ریز مطالعه</h1><div class="v6-card"><div class="v6-row"><input id="v6task" placeholder="مثلاً ۳۰ تست ریاضی"><select id="v6day"><option>شنبه</option><option>یکشنبه</option><option>دوشنبه</option><option>سه‌شنبه</option><option>چهارشنبه</option><option>پنجشنبه</option><option>جمعه</option></select><input id="v6mins" type="number" value="30" min="5"></div><button class="btn" onclick="v6AddTask()">افزودن برنامه</button></div><div id="v6tasks" class="v6-list" style="margin-top:14px"></div><div class="v6-card" style="margin-top:14px"><h3>⏱️ پومودورو</h3><div class="v6-stat" id="v6timer">25:00</div><div class="v6-actions"><button class="btn" onclick="v6TimerStart()">شروع</button><button class="btn s" onclick="v6TimerPause()">مکث</button><button class="btn s" onclick="v6TimerReset()">ریست</button></div></div></section>
+<section id="v6bank" class="page"><h1>📝 بانک سؤال گسترده</h1><div class="v6-card"><select id="v6bsub"><option>همه</option><option>ریاضی</option><option>هندسه</option><option>فیزیک</option><option>شیمی</option></select><button class="btn" onclick="v6NewQuestion()">سؤال تصادفی</button><div id="v6question" style="margin-top:14px"></div></div></section>
+<section id="v6achievements" class="page"><h1>🏆 دستاوردها</h1><div id="v6achfull" class="v6-grid"></div></section>
+<section id="v6tools" class="page"><h1>🧰 ابزارهای دانش‌آموزی</h1><div class="v6-grid"><div class="v6-card"><h3>🔢 تبدیل واحد</h3><input id="v6num" type="number" value="1"><select id="v6unit"><option value="km-m">km → m</option><option value="m-km">m → km</option><option value="g-kg">g → kg</option><option value="kg-g">kg → g</option><option value="cm-m">cm → m</option><option value="m-cm">m → cm</option><option value="C-K">°C → K</option><option value="K-C">K → °C</option><option value="L-mL">L → mL</option><option value="mL-L">mL → L</option></select><button class="btn" onclick="v6Convert()">تبدیل</button><div id="v6conv" class="result">—</div></div><div class="v6-card"><h3>🔐 رمزساز</h3><input id="v6plen" type="number" value="16" min="6" max="64"><button class="btn" onclick="v6GenPass()">ساخت رمز</button><div id="v6passout" class="result">—</div></div><div class="v6-card"><h3>🧮 درصد</h3><input id="v6pa" type="number" placeholder="عدد"><input id="v6pb" type="number" placeholder="درصد"><button class="btn" onclick="v6Percent()">محاسبه</button><div id="v6pout" class="result">—</div></div></div></section>
+<section id="v6periodic" class="page"><h1>⚛️ جدول تناوبی کامل</h1><div class="v6-card"><input id="v6esearch" placeholder="جستجوی عنصر یا نماد" oninput="v6Periodic()"><div id="v6ptable" class="v6-table" style="margin-top:12px"></div><div id="v6edetail" class="result" style="margin-top:12px">روی یک عنصر بزن.</div></div></section>
+<section id="dyHomework" class="page"><h1>📚 تکالیف روزانه</h1><div class="sub">تکالیف جدیدی که در دهم‌یار منتشر می‌شوند اینجا نمایش داده می‌شوند</div><div class="card" id="dyHwList"><div class="v6-small">در حال دریافت تکالیف...</div></div></section>
+<section id="dyAdmin" class="page"><h1>🔐 پنل مدیریت</h1><div class="sub">پنل شخصی مدیریت تکالیف دهم‌یار</div><div id="dyAdminRoot" class="card"><div class="v6-small">برای ورود به پنل مدیریت، ابتدا وارد شوید.</div></div></section>
+<footer>
+<div class="fs"><div><span class="dot"></span><span class="s-on">1</span><small>آنلاین همین لحظه</small></div><div><span class="s-vis">—</span><small>کل بازدیدها</small></div><div><span class="s-td">—</span><small>بازدید امروز</small></div></div>
+<p>✨ هر روز یک قدم کوچک، سال بعد یک جهش بزرگ.</p>
+<p><b>دهم‌یار</b> — همراه هوشمند دانش‌آموزان رشته ریاضی‌فیزیک پایه دهم</p>
+<div class="ct"><a href="https://t.me/sitedeveloperdahom" target="_blank" rel="noopener">✈️ تلگرام: @sitedeveloperdahom</a><a href="https://ble.ir/Developer10thgrade" target="_blank" rel="noopener">💬 بله: @Developer10thgrade</a><a href="mailto:mahdi89nava@gmail.com">✉️ mahdi89nava@gmail.com</a></div>
+<p><a href="#" onclick="report('b');return false">🐞 گزارش مشکل</a> &nbsp;|&nbsp; <a href="#" onclick="report('s');return false">💡 پیشنهاد قابلیت</a> &nbsp;|&nbsp; <a href="#" onclick="about();return false">درباره دهم‌یار</a> &nbsp;|&nbsp; <a href="#" onclick="terms();return false">قوانین استفاده</a></p>
+<p style="font-size:13px">© تمامی حقوق این وب‌سایت برای «دهم‌یار» محفوظ است. هرگونه کپی‌برداری یا بازنشر محتوا بدون اجازه کتبی ممنوع می‌باشد. — نسخه ۶.۰ — توسعه‌دهنده: مهدی</p>
+</footer>
+</main>
+<div class="modal" id="md" onclick="if(event.target===this)this.classList.remove('show')"><div class="mbx" id="mbx"></div></div>
+<div class="toast" id="ts"></div>
+
+<script>
+const $=i=>document.getElementById(i),Qa=s=>[...document.querySelectorAll(s)];
+const fa=s=>String(s).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/٫/g,'.').replace(/،/g,',');
+const F=x=>Number.isFinite(x)?String(+x.toPrecision(7)):'تعریف نشده';
+let S={};try{S=JSON.parse(localStorage.getItem('dy4')||'{}')}catch(e){}
+S=Object.assign({xp:0,calc:0,quiz:0,best:0,fav:[],name:'',sch:null,sub:{}},S);
+S.st=Object.assign({theme:'dark',ac:'#36b7ff',anim:1,clock:1,fs:16},S.st||{});S.streak=S.streak||0;
+const td=()=>new Date().toISOString().slice(0,10);
+function esc(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';')}
+const save=()=>{try{localStorage.setItem('dy4',JSON.stringify(S))}catch(e){}};
+function toast(m){const t=$('ts');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function xp(n){S.xp+=n;save();ref()}
+const lvl=()=>1+Math.floor(S.xp/100);
+function copy(t){try{navigator.clipboard.writeText(t).then(()=>toast('کپی شد ✅'))}catch(e){toast('کپی نشد')}}
+function modal(h){$('mbx').innerHTML=h;$('md').classList.add('show')}
+/* nav */
+const PG=[['home','🏠 داشبورد'],['lessons','📚 درس‌ها'],['math','➗ ریاضی'],['geometry','📐 هندسه'],['physics','⚡ فیزیک'],['chem','🧪 شیمی'],['graph','📈 نمودار'],['lab','🔬 آزمایشگاه'],['periodic','⚛️ جدول تناوبی'],['formulas','📖 فرمول‌نامه'],['quiz','🎯 آزمون'],['progress','🏆 پیشرفت'],['ai','🤖 مهدی AI'],['favorites','⭐ علاقه‌مندی‌ها'],['settings','⚙️ تنظیمات']];
+PG.splice(1,0,['schedule','📅 برنامه هفتگی']);PG.splice(3,0,['solver','🧠 حل‌گر هوشمند']);PG.splice(PG.findIndex(p=>p[0]=='quiz')+1,0,['bank','📝 بانک سؤال']);
+$('nav').innerHTML=PG.map(p=>`<button data-p="${p[0]}" onclick="go('${p[0]}')">${p[1]}</button>`).join('');
+function go(p){Qa('.page').forEach(x=>x.classList.toggle('active',x.id==p));Qa('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.p==p));$('side').classList.remove('open');scrollTo(0,0);
+if(p!='home'){S.lp=p;save()}if(p=='home')ref();if(p=='schedule')stab();if(p=='bank')bank();if(p=='progress')prog();if(p=='favorites')favs();if(p=='graph')setTimeout(draw,50);if(p=='lab'){lab1();lab2();lab3();lab4()}if(p=='quiz'&&!Z.run)qmenu();if(p=='settings')setui()}
+/* elements */
+const E=`H|هیدروژن|1.008;He|هلیم|4.003;Li|لیتیم|6.94;Be|بریلیم|9.012;B|بور|10.81;C|کربن|12.011;N|نیتروژن|14.007;O|اکسیژن|15.999;F|فلوئور|18.998;Ne|نئون|20.180;Na|سدیم|22.990;Mg|منیزیم|24.305;Al|آلومینیم|26.982;Si|سیلیسیم|28.085;P|فسفر|30.974;S|گوگرد|32.06;Cl|کلر|35.45;Ar|آرگون|39.948;K|پتاسیم|39.098;Ca|کلسیم|40.078;Sc|اسکاندیم|44.956;Ti|تیتانیم|47.867;V|وانادیم|50.942;Cr|کروم|51.996;Mn|منگنز|54.938;Fe|آهن|55.845;Co|کبالت|58.933;Ni|نیکل|58.693;Cu|مس|63.546;Zn|روی|65.38;Ga|گالیم|69.723;Ge|ژرمانیم|72.630;As|آرسنیک|74.922;Se|سلنیوم|78.971;Br|برم|79.904;Kr|کریپتون|83.798;Rb|روبیدیم|85.468;Sr|استرانسیم|87.62;Y|ایتریم|88.906;Zr|زیرکونیم|91.224;Nb|نیوبیم|92.906;Mo|مولیبدن|95.95;Tc|تکنسیم|98;Ru|روتنیم|101.07;Rh|رودیم|102.906;Pd|پالادیم|106.42;Ag|نقره|107.868;Cd|کادمیم|112.414;In|ایندیوم|114.818;Sn|قلع|118.710;Sb|آنتیموان|121.760;Te|تلوریم|127.60;I|ید|126.904;Xe|زنون|131.293;Cs|سزیم|132.905;Ba|باریم|137.327;La|لانتان|138.905;Ce|سریم|140.116;Pr|پرازئودیمیم|140.908;Nd|نئودیمیم|144.242;Pm|پرومتیم|145;Sm|ساماریم|150.36;Eu|یوروپیم|151.964;Gd|گادولینیم|157.25;Tb|تربیم|158.925;Dy|دیسپروزیم|162.500;Ho|هولمیم|164.930;Er|اربیم|167.259;Tm|تولیم|168.934;Yb|ایتربیم|173.045;Lu|لوتتیم|174.967;Hf|هافنیم|178.49;Ta|تانتال|180.948;W|تنگستن|183.84;Re|رنیوم|186.207;Os|اسمیم|190.23;Ir|ایریدیم|192.217;Pt|پلاتین|195.084;Au|طلا|196.967;Hg|جیوه|200.592;Tl|تالیم|204.38;Pb|سرب|207.2;Bi|بیسموت|208.980;Po|پولونیم|209;At|آستاتین|210;Rn|رادون|222;Fr|فرانسیم|223;Ra|رادیم|226;Ac|اکتینیم|227;Th|توریوم|232.038;Pa|پروتاکتینیم|231.036;U|اورانیم|238.029;Np|نپتونیم|237;Pu|پلوتونیم|244;Am|آمریسیم|243;Cm|کوریوم|247;Bk|برکلیم|247;Cf|کالیفرنیم|251;Es|اینشتینیم|252;Fm|فرمیم|257;Md|مندلیفیم|258;No|نوبلیم|259;Lr|لارنسیم|266;Rf|رادرفوردیم|267;Db|دوبنیم|268;Sg|سیبورگیم|269;Bh|بوهریم|270;Hs|هاسیم|277;Mt|مایتنریم|278;Ds|دارمشتاتیم|281;Rg|رونتگنیم|282;Cn|کوپرنیسیم|285;Nh|نیهونیوم|286;Fl|فلروویوم|289;Mc|مسکوویم|290;Lv|لیورموریم|293;Ts|تنسین|294;Og|اوگانسون|294`.split(';').map(s=>s.split('|'));
+const MM={};E.forEach(e=>MM[e[0]]=+e[2]);
+function cnt(s){let i=0;function p(){const c={};while(i<s.length){const ch=s[i];if(ch=='('){i++;const n=p();let d='';while(/\d/.test(s[i]||''))d+=s[i++];for(const k in n)c[k]=(c[k]||0)+n[k]*(+d||1)}else if(ch==')'){i++;return c}else if(/[A-Z]/.test(ch)){let e=ch;i++;while(/[a-z]/.test(s[i]||''))e+=s[i++];let d='';while(/\d/.test(s[i]||''))d+=s[i++];c[e]=(c[e]||0)+(+d||1)}else i++}return c}return p()}
+function molar(s){const c=cnt(s.trim());let t=0;for(const k in c){if(!MM[k])return NaN;t+=MM[k]*c[k]}return t}
+function econf(z){const o=[['1s',2],['2s',2],['2p',6],['3s',2],['3p',6],['4s',2],['3d',10],['4p',6]],r={};let k=z;o.forEach(([a,c])=>{const t=Math.min(k,c);if(t>0)r[a]=t;k-=t});if(z==24){r['4s']=1;r['3d']=5}if(z==29){r['4s']=1;r['3d']=10}return o.filter(x=>r[x[0]]).map(x=>x[0]+r[x[0]]).join(' ')}
+function bal(s){const[L,R]=s.split(/->|=|→/);if(!R)return'مثال: H2 + O2 -> H2O';const l=L.split('+').map(x=>x.trim()),r=R.split('+').map(x=>x.trim()),sp=[...l,...r],sg=sp.map((_,i)=>i<l.length?1:-1),cs=sp.map(cnt),els=[...new Set(cs.flatMap(c=>Object.keys(c)))],k=Array(sp.length).fill(1);
+function rec(i){if(i==sp.length)return els.every(e=>cs.reduce((t,c,j)=>t+(c[e]||0)*k[j]*sg[j],0)==0);for(k[i]=1;k[i]<=8;k[i]++)if(rec(i+1))return true;return false}
+if(!rec(0))return'بالانس پیدا نشد';const f=(a,b)=>a.map((x,i)=>(k[i+b]>1?k[i+b]:'')+x).join(' + ');return f(l,0)+' → '+f(r,l.length)}
+/* tools */
+const U={m:['L',1],km:['L',1e3],cm:['L',.01],mm:['L',.001],kg:['M',1e3],g:['M',1],mg:['M',.001],'m³':['V',1e6],L:['V',1e3],mL:['V',1],h:['T',3600],min:['T',60],s:['T',1],'m/s':['S',1],'km/h':['S',1/3.6],Pa:['P',1],kPa:['P',1e3],atm:['P',101325],J:['E',1],kJ:['E',1e3],cal:['E',4.184]};
+const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a),fac=n=>{let r=1;for(let i=2;i<=n;i++)r*=i;return r};
+function comp(e,deg){e=fa(e).replace(/π/g,'PI').replace(/\^/g,'**').replace(/(\d|\))\s*(x|\(|sin|cos|tan|sqrt|abs|log|ln|exp|PI)/g,'$1*$2').replace(/\bx\s*\(/g,'x*(').replace(/\bln\b/g,'LN').replace(/\blog\b/g,'log10').replace(/\bLN\b/g,'log');
+if(e.replace(/\b(sin|cos|tan|asin|acos|atan|sqrt|cbrt|abs|log10|log|exp|floor|ceil|round|max|min|pow|PI|E)\b/g,'').replace(/[0-9x+\-*/().,\s%]/g,''))throw 0;
+if(deg)e=e.replace(/\b(sin|cos|tan)\(/g,'$1d(');const R=Math.PI/180;const fn=new Function('x','sind','cosd','tand','with(Math){return '+e+'}');return x=>fn(x,a=>Math.sin(a*R),a=>Math.cos(a*R),a=>Math.tan(a*R))}
+const T=[
+['math','معادله درجه دوم (ax²+bx+c=0)',['a','b','c'],([a,b,c])=>{if(!a)return'a نباید صفر باشد';const d=b*b-4*a*c;let s=`Δ = b²−4ac = ${F(b*b)} − ${F(4*a*c)} = ${F(d)}\n`;s+=d>0?`x₁ = (−b+√Δ)/2a = ${F((-b+Math.sqrt(d))/2/a)}\nx₂ = (−b−√Δ)/2a = ${F((-b-Math.sqrt(d))/2/a)}`:d==0?`ریشه مضاعف: x = ${F(-b/2/a)}`:'Δ<0 ← ریشه حقیقی ندارد';return s+`\nS = ${F(-b/a)}   P = ${F(c/a)}`}],
+['math','معادله خطی (ax+b=0)',['a','b'],([a,b])=>a?`ax = −b\nx = ${F(-b)}/${F(a)}\nx = ${F(-b/a)}`:b?'جواب ندارد':'بی‌شمار جواب'],
+['math','معادله قدرمطلق |ax+b|=c',['a','b','c'],([a,b,c])=>!a?'a≠0':c<0?'|…| نمی‌تواند منفی باشد ← جواب ندارد':`ax+b = ±${F(c)}\nx₁ = ${F((c-b)/a)}\nx₂ = ${F((-c-b)/a)}`],
+['math','نامعادله ax+b ? c',['a','b','c',['نوع','>','<','≥','≤']],([a,b,c,o])=>{if(!a)return'a≠0';const f={'>':'<','<':'>','≥':'≤','≤':'≥'};return`ax ${o} ${F(c-b)}\n`+(a<0?`(چون a منفی است جهت عوض می‌شود)\nx ${f[o]} ${F((c-b)/a)}`:`x ${o} ${F((c-b)/a)}`)}],
+['math','توان و رادیکال',['عدد','توان'],([a,n])=>`${F(a)}^${F(n)} = ${F(Math.pow(a,n))}\n√${F(a)} = ${F(Math.sqrt(a))}\n∛${F(a)} = ${F(Math.cbrt(a))}`],
+['math','ب.م.م و ک.م.م',['A','B'],([a,b])=>`ب.م.م = ${gcd(a,b)}\nک.م.م = ${Math.abs(a*b)/gcd(a,b)}`],
+['math','عدد اول و تجزیه',['عدد صحیح'],([n])=>{if(n<2)return'عدد ≥ ۲ بده';let m=n,f=[];for(let p=2;p*p<=m;p++)while(m%p==0){f.push(p);m/=p}if(m>1)f.push(m);return f.length==1?n+' عدد اول است':n+' = '+f.join(' × ')}],
+['math','دنباله حسابی',['a₁','d','n'],([a,d,n])=>{const an=a+(n-1)*d;return`aₙ = a₁+(n−1)d = ${F(an)}\nSₙ = n(a₁+aₙ)/2 = ${F(n*(a+an)/2)}`}],
+['math','دنباله هندسی',['a₁','r','n'],([a,r,n])=>`aₙ = a₁·rⁿ⁻¹ = ${F(a*Math.pow(r,n-1))}\nSₙ = ${r==1?F(a*n):F(a*(Math.pow(r,n)-1)/(r-1))}`],
+['math','ترکیب و جایگشت',['n','r'],([n,r])=>r>n?'r ≤ n':`P(n,r) = ${fac(n)/fac(n-r)}\nC(n,r) = ${fac(n)/fac(n-r)/fac(r)}`],
+['math','درصد و احتمال',['مطلوب','کل'],([a,b])=>`احتمال = ${F(a/b)}\nدرصد = ${F(a/b*100)}%`],
+['math','مثلثات (درجه)',['زاویه'],([d])=>{const r=d*Math.PI/180,z=x=>Math.abs(x)<1e-10?0:x;return`sin = ${F(z(Math.sin(r)))}\ncos = ${F(z(Math.cos(r)))}\ntan = ${Math.abs(Math.cos(r))<1e-10?'تعریف نشده':F(Math.tan(r))}`}],
+['math','آمار (میانگین، میانه، انحراف معیار)',['T:اعداد با کاما: 12,15,18'],([t])=>{const v=fa(t).split(',').map(Number).filter(x=>!isNaN(x));if(!v.length)return'عدد وارد کن';const m=v.reduce((a,b)=>a+b)/v.length,s=[...v].sort((a,b)=>a-b),h=s.length>>1,va=v.reduce((a,b)=>a+(b-m)**2,0)/v.length;return`میانگین = ${F(m)}\nمیانه = ${F(s.length%2?s[h]:(s[h-1]+s[h])/2)}\nواریانس = ${F(va)}\nσ = ${F(Math.sqrt(va))}\nدامنه = ${F(s[s.length-1]-s[0])}
+مد = ${(()=>{const c={};v.forEach(x=>c[x]=(c[x]||0)+1);const mx=Math.max(...Object.values(c));return Object.keys(c).filter(k=>c[k]==mx).join(' , ')})()}`}],
+['math','ماشین‌حساب علمی (sin به درجه)',['T:مثلاً (12+5)*3/2 یا sin(30)'],([t])=>{try{return F(comp(t,1)(0))}catch(e){return'عبارت نامعتبر'}}],
+['geo','فیثاغورس (وتر)',['ضلع a','ضلع b'],([a,b])=>`c = √(a²+b²) = ${F(Math.hypot(a,b))}`],
+['geo','مستطیل',['طول','عرض'],([a,b])=>`مساحت = ${F(a*b)}\nمحیط = ${F(2*(a+b))}\nقطر = ${F(Math.hypot(a,b))}`],
+['geo','دایره',['شعاع'],([r])=>`محیط = 2πr = ${F(2*Math.PI*r)}\nمساحت = πr² = ${F(Math.PI*r*r)}`],
+['geo','مثلث از روی سه ضلع (هرون)',['a','b','c'],([a,b,c])=>{const p=(a+b+c)/2,s=p*(p-a)*(p-b)*(p-c);return s<=0?'این سه ضلع مثلث نمی‌سازند':`محیط = ${F(2*p)}\nمساحت = ${F(Math.sqrt(s))}`}],
+['geo','چندضلعی محدب',['تعداد اضلاع n'],([n])=>`مجموع زوایای داخلی = ${(n-2)*180}°\nهر زاویه (منتظم) = ${F((n-2)*180/n)}°\nتعداد قطرها = ${n*(n-3)/2}`],
+['geo','حجم (مکعب، استوانه)',['ضلع/شعاع','ارتفاع'],([a,h])=>`مکعب = ${F(a**3)}\nاستوانه = πr²h = ${F(Math.PI*a*a*h)}`],
+['phy','سرعت متوسط',['مسافت (m)','زمان (s)'],([d,t])=>`v = d/t = ${F(d/t)} m/s = ${F(d/t*3.6)} km/h`],
+['phy','شتاب',['v₁','v₂','Δt'],([a,b,t])=>`a = Δv/Δt = ${F((b-a)/t)} m/s²`],
+['phy','حرکت با شتاب ثابت',['v₀','a','t'],([v,a,t])=>`v = v₀+at = ${F(v+a*t)}\nΔx = v₀t+½at² = ${F(v*t+a*t*t/2)}`],
+['phy','سقوط آزاد (g=9.8)',['ارتفاع h (m)'],([h])=>`t = √(2h/g) = ${F(Math.sqrt(2*h/9.8))} s\nv = √(2gh) = ${F(Math.sqrt(2*9.8*h))} m/s`],
+['phy','چگالی',['جرم (kg)','حجم (m³)'],([m,v])=>`ρ = m/V = ${F(m/v)} kg/m³ = ${F(m/v/1000)} g/cm³`],
+['phy','فشار',['نیرو (N)','مساحت (m²)'],([f,a])=>`P = F/A = ${F(f/a)} Pa`],
+['phy','کار',['F (N)','d (m)','زاویه θ'],([f,d,t])=>`W = Fd·cosθ = ${F(f*d*Math.cos(t*Math.PI/180))} J`],
+['phy','انرژی جنبشی و تکانه',['جرم (kg)','سرعت (m/s)'],([m,v])=>`K = ½mv² = ${F(m*v*v/2)} J\np = mv = ${F(m*v)} kg·m/s`],
+['phy','انرژی پتانسیل (g=9.8)',['جرم','ارتفاع'],([m,h])=>`U = mgh = ${F(m*9.8*h)} J`],
+['phy','توان',['کار (J)','زمان (s)'],([w,t])=>`P = W/t = ${F(w/t)} W`],
+['phy','گرما Q=mcΔθ',['جرم (kg)','c (آب 4200)','Δθ'],([m,c,d])=>`Q = ${F(m*c*d)} J = ${F(m*c*d/4184)} kcal`],
+['phy','تبدیل دما',['دما',['تبدیل','C→F','F→C','C→K','K→C']],([t,o])=>({'C→F':t*1.8+32,'F→C':(t-32)/1.8,'C→K':t+273.15,'K→C':t-273.15}[o])+' '],
+['phy','قانون اهم',['V (ولت)','R (اهم)'],([v,r])=>`I = V/R = ${F(v/r)} A\nP = VI = ${F(v*v/r)} W`],
+['phy','تبدیل یکا',['مقدار',['از',...Object.keys(U)],['به',...Object.keys(U)]],([v,a,b])=>U[a][0]!=U[b][0]?'یکاها هم‌نوع نیستند':`${F(v)} ${a} = ${F(v*U[a][1]/U[b][1])} ${b}`],
+['chem','جرم مولی از فرمول',['T:H2O ، Ca(OH)2 ، NaCl'],([s])=>{const m=molar(s);return isNaN(m)?'فرمول نامعتبر یا عنصر ناشناخته':`M = ${F(m)} g/mol`}],
+['chem','مول، ذره و حجم گاز',['جرم (g)','جرم مولی M'],([m,M])=>{const n=m/M;return`n = m/M = ${F(n)} mol\nتعداد ذره = ${(n*6.022e23).toExponential(3)}\nحجم گاز (STP) = ${F(n*22.4)} L`}],
+['chem','مولاریته',['مول حل‌شونده','حجم (L)'],([n,v])=>`M = n/V = ${F(n/v)} mol/L`],
+['chem','درصد جرمی',['جرم حل‌شونده','جرم محلول'],([a,b])=>`${F(a/b*100)} %`],
+['chem','رقیق‌سازی C₁V₁=C₂V₂',['C₁','V₁','V₂'],([c,a,b])=>`C₂ = ${F(c*a/b)}\nآب افزوده = ${F(b-a)}`],
+['chem','آرایش الکترونی',['عدد اتمی Z (۱ تا ۳۶)'],([z])=>z>=1&&z<=36?`${E[z-1][0]} : ${econf(z)}`:'Z بین ۱ تا ۳۶'],
+['chem','موازنه واکنش',['T:H2 + O2 -> H2O'],([s])=>bal(s)],
+['math','اتحادها: مربع و مکعب دو جمله‌ای',['a','b'],([a,b])=>`(a+b)² = ${F((a+b)**2)}\n(a−b)² = ${F((a-b)**2)}\na²−b² = ${F(a*a-b*b)}\n(a+b)³ = ${F((a+b)**3)}`],
+['geo','تالس: a/b = c/x',['a','b','c'],([a,b,c])=>`x = b·c/a = ${F(b*c/a)}`],
+['geo','تشابه: نسبت محیط و مساحت',['نسبت تشابه k','مساحت اول'],([k,a])=>`نسبت محیط = ${F(k)}\nنسبت مساحت = k² = ${F(k*k)}\nمساحت دوم = ${F(a*k*k)}`],
+['phy','نیرو و وزن',['جرم (kg)','شتاب a (m/s²)'],([m,a])=>`F = ma = ${F(m*a)} N\nW = mg = ${F(m*9.8)} N`],
+['phy','گرمای نهان Q=mL',['جرم (kg)','L (J/kg)'],([m,l])=>`Q = mL = ${F(m*l)} J`],
+['phy','انبساط طولی ΔL=L₁αΔθ',['L₁ (m)','α (1/K)','Δθ'],([l,a,d])=>`ΔL = ${F(l*a*d)} m\nL₂ = ${F(l+l*a*d)} m`],
+['chem','استوکیومتری (جرم A → جرم B)',['جرم A (g)','M_A','ضریب A','M_B','ضریب B'],([m,ma,ca,mb,cb])=>`n_A = ${F(m/ma)} mol\nn_B = ${F(m/ma*cb/ca)} mol\nجرم B = ${F(m/ma*cb/ca*mb)} g`],
+['chem','گاز کامل PV=nRT (حجم)',['n (mol)','T (K)','P (atm)'],([n,t,p])=>`V = nRT/P = ${F(n*0.0821*t/p)} L`]
+];
+const G_ID={math:'g-math',geo:'g-geo',phy:'g-phy',chem:'g-chem'};
+function fld(f,p,j){const id=`${p}_${j}`;if(Array.isArray(f))return`<select id="${id}">${f.slice(1).map(o=>`<option>${o}</option>`).join('')}</select>`;if(f.startsWith('T:'))return`<input id="${id}" placeholder="${f.slice(2)}">`;return`<input id="${id}" inputmode="text" placeholder="${f}">`}
+function card(i,p){const t=T[i];return`<div class="card" id="${p}${i}"><div class="hd"><h3>${t[1]}</h3><button class="fav" onclick="fav(${i})">${S.fav.includes(i)?'⭐':'☆'}</button></div>${t[2].map((f,j)=>fld(f,p+i,j)).join('')}<button class="btn" onclick="run(${i},'${p}')">محاسبه</button><div class="result" id="${p}${i}r" onclick="copy(this.textContent)">—</div></div>`}
+function run(i,p){const t=T[i];let bad=0;const v=t[2].map((f,j)=>{const x=$(`${p+i}_${j}`).value;if(Array.isArray(f))return x;if(f.startsWith('T:'))return x;const n=parseFloat(fa(x));if(isNaN(n))bad=1;return n});const r=$(`${p+i}r`);if(bad){r.textContent='همه مقدارها را (عدد) وارد کن';return}let o;try{o=t[3](v)}catch(e){o='خطا در محاسبه'}r.textContent=o;S.calc++;xp(2)}
+function fav(i){const k=S.fav.indexOf(i);k<0?S.fav.push(i):S.fav.splice(k,1);save();toast(k<0?'به علاقه‌مندی‌ها اضافه شد ⭐':'حذف شد');render();if($('favorites').classList.contains('active'))favs()}
+function render(){for(const c in G_ID)$(G_ID[c]).innerHTML=T.map((t,i)=>t[0]==c?card(i,'t'):'').join('')}
+function favs(){$('g-fav').innerHTML=S.fav.length?S.fav.map(i=>card(i,'f')).join(''):'<div class="card">هنوز ابزاری ستاره‌دار نکرده‌ای. روی ☆ کنار هر ابزار بزن.</div>'}
+/* lessons */
+const LS={'➗ ریاضی':['مجموعه','الگو و دنباله','مثلثات','توان‌های گویا و عبارت‌های جبری','معادله‌ها و نامعادله‌ها','تابع','شمارش بدون شمردن','آمار و احتمال'],'📐 هندسه':['ترسیم‌های هندسی و استدلال','قضیه تالس','تشابه مثلث‌ها','چندضلعی‌ها','تجسم فضایی'],'⚡ فیزیک':['فیزیک و اندازه‌گیری','ویژگی‌های فیزیکی مواد','کار، انرژی و توان','دما و گرما','ترمودینامیک'],'🧪 شیمی':['کیهان زادگاه الفبای هستی','ردپای گازها در زندگی','آب، آهنگ زندگی']};
+$('lsn').innerHTML=Object.entries(LS).map(([k,v])=>`<div class="card"><h2>${k}</h2>${v.map(x=>`<button class="opt" onclick="go('ai');ask('مبحث «${x}» پایه دهم را از پایه توضیح بده و یک مثال حل کن')">${x}</button>`).join('')}</div>`).join('');
+/* formulas */
+const FM=[['ریاضی','مربع دو جمله‌ای','(a±b)² = a² ± 2ab + b²'],['ریاضی','مزدوج','a²−b² = (a−b)(a+b)'],['ریاضی','دلتا','Δ = b²−4ac'],['ریاضی','ریشه‌ها','x = (−b±√Δ)/2a'],['ریاضی','جمع و ضرب ریشه‌ها','S=−b/a , P=c/a'],['ریاضی','جمله حسابی','aₙ = a₁+(n−1)d'],['ریاضی','مجموع حسابی','Sₙ = n(a₁+aₙ)/2'],['ریاضی','جمله هندسی','aₙ = a₁·rⁿ⁻¹'],['ریاضی','مجموع هندسی','Sₙ = a₁(rⁿ−1)/(r−1)'],['ریاضی','اتحاد مثلثاتی','sin²θ+cos²θ=1'],['ریاضی','تانژانت','tanθ = sinθ/cosθ'],['ریاضی','ترکیب','C(n,r) = n!/(r!(n−r)!)'],['ریاضی','جایگشت','P(n,r) = n!/(n−r)!'],['ریاضی','اجتماع مجموعه‌ها','n(A∪B)=n(A)+n(B)−n(A∩B)'],['ریاضی','احتمال','P(A) = مطلوب/کل'],['ریاضی','انحراف معیار','σ = √(Σ(xᵢ−x̄)²/n)'],['هندسه','فیثاغورس','a²+b²=c²'],['هندسه','تالس','AD/DB = AE/EC'],['هندسه','نسبت مساحت مشابه','S₁/S₂ = k²'],['هندسه','مجموع زوایای n ضلعی','(n−2)×180°'],['هندسه','هرون','S=√(p(p−a)(p−b)(p−c))'],['فیزیک','چگالی','ρ = m/V'],['فیزیک','فشار','P = F/A'],['فیزیک','فشار مایع','P = P₀+ρgh'],['فیزیک','سرعت متوسط','v̄ = Δx/Δt'],['فیزیک','سرعت-زمان','v = v₀+at'],['فیزیک','جابجایی','Δx = ½at²+v₀t'],['فیزیک','مستقل از زمان','v²−v₀² = 2aΔx'],['فیزیک','نیوتن دوم','F = ma'],['فیزیک','کار','W = Fd·cosθ'],['فیزیک','انرژی جنبشی','K = ½mv²'],['فیزیک','انرژی پتانسیل','U = mgh'],['فیزیک','قضیه کار-انرژی','W_net = ΔK'],['فیزیک','توان','P = W/t'],['فیزیک','گرما','Q = mcΔθ'],['فیزیک','گرمای نهان','Q = mL'],['فیزیک','دما','T(K) = θ(°C)+273'],['فیزیک','بویل','P₁V₁=P₂V₂'],['فیزیک','گاز کامل','PV = nRT'],['فیزیک','ترمودینامیک','ΔU = Q+W'],['شیمی','مول','n = m/M'],['شیمی','ذره','N = n×6.02×10²³'],['شیمی','حجم مولی (STP)','V = n×22.4 L'],['شیمی','مولاریته','M = n/V(L)'],['شیمی','رقیق‌سازی','M₁V₁ = M₂V₂'],['شیمی','درصد جرمی','(جرم حل‌شونده/جرم محلول)×100'],['شیمی','بازده','بازده = (واقعی/نظری)×100'],['شیمی','عدد جرمی','A = Z+N'],['شیمی','ظرفیت لایه','2n² الکترون']];
+function fr(){const q=$('fsr').value.trim();$('fl').innerHTML=['ریاضی','هندسه','فیزیک','شیمی'].map(c=>{const r=FM.filter(x=>x[0]==c&&(!q||(x[1]+x[2]).includes(q)));return r.length?`<div class="card"><h2>${{ریاضی:'➗',هندسه:'📐',فیزیک:'⚡',شیمی:'🧪'}[c]} ${c}</h2>${r.map(x=>`<div class="f" onclick="copy('${x[2]}')"><span>${x[1]}</span><b>${x[2]}</b></div>`).join('')}</div>`:''}).join('')||'<div class="card">موردی پیدا نشد</div>'}
+/* search */
+function gsearch(){const q=$('gs').value.trim(),o=$('gsr');if(!q){o.innerHTML='';return}
+const a=[];T.forEach((t,i)=>{if(t[1].includes(q))a.push(`<button class="opt" onclick="go('${{math:'math',geo:'geometry',phy:'physics',chem:'chem'}[t[0]]}');location.hash='t${i}'">🧮 ابزار: ${t[1]}</button>`)});
+FM.filter(x=>(x[1]+x[2]).includes(q)).slice(0,5).forEach(x=>a.push(`<button class="opt" onclick="go('formulas');$('fsr').value='${x[1]}';fr()">📖 ${x[1]}: ${x[2]}</button>`));
+Object.values(LS).flat().filter(x=>x.includes(q)).forEach(x=>a.push(`<button class="opt" onclick="go('ai');ask('مبحث «${x}» را توضیح بده')">📚 درس: ${x}</button>`));o.innerHTML=a.join('')||'چیزی پیدا نشد'}
+/* tip */
+const TP=['اگر سرعت جسم ۲ برابر شود، انرژی جنبشی ۴ برابر می‌شود.','در معادله درجه دوم، اگر Δ<0 باشد ریشه حقیقی وجود ندارد.','برای تبدیل °C به کلوین ۲۷۳ واحد اضافه کن.','۱ مول از هر ماده 6.02×10²³ ذره دارد.','در نامعادله، ضرب در عدد منفی جهت را برعکس می‌کند.','هر مولکول گاز در STP حجم مولی ۲۲.۴ لیتر دارد.'];let ti=new Date().getDate();
+function tip(){$('tip').textContent=TP[ti++%TP.length]}tip();
+/* schedule */
+const DW=['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'],ORD=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+const DS="شنبه: فارسی، فیزیک، آمادگی دفاعی، ریاضی\nیکشنبه: ریاضی، شیمی، هندسه، رسانه\nدوشنبه: فارسی، فیزیک، شیمی، فیزیک\nسه‌شنبه: زبان انگلیسی، عربی، دینی، ریاضی\nچهارشنبه: قرآن، ورزش، جغرافی، هندسه";
+function sch(){const m={};(S.sch2||DS).split('\n').forEach(l=>{const i=l.indexOf(':');if(i>0)m[l.slice(0,i).trim()]=l.slice(i+1).split(/[،,]/).map(x=>x.trim()).filter(Boolean)});return m}
+function schu(){const m=sch(),tm=DW[(new Date().getDay()+1)%7],l=m[tm];$('tmd').textContent=tm;$('tm').textContent=l&&l.length?l.map((x,i)=>(i+1)+') '+x).join(' • '):'تعطیل 🎉'}
+function stab(){const m=sch(),t=DW[new Date().getDay()];$('stb').innerHTML='<tr><th>روز</th>'+[1,2,3,4].map(i=>'<th>زنگ '+i+'</th>').join('')+'</tr>'+ORD.map(d=>`<tr class="${d==t?'tdy':''}"><td><b>${d}</b>${d==t?' (امروز)':''}</td>${[0,1,2,3].map(i=>`<td>${esc((m[d]||[])[i]||'—')}</td>`).join('')}</tr>`).join('')}
+function edSch(){modal(`<h2>📅 ویرایش برنامه</h2><div class="sub">هر روز یک خط: «روز: درس۱، درس۲، درس۳، درس۴»</div><textarea id="sti" rows="9">${esc(S.sch2||DS)}</textarea><button class="btn" onclick="S.sch2=$('sti').value;save();schu();stab();$('md').classList.remove('show')">ذخیره</button> <button class="btn s" onclick="S.sch2=null;save();schu();stab();$('md').classList.remove('show')">برگشت به پیش‌فرض</button>`)}
+/* stats */
+function ref(){$('nm').textContent=S.name||'دوست من';const h=[['🔥','روز متوالی',S.streak],['🧮','محاسبات',S.calc],['🎯','آزمون‌ها',S.quiz],['⭐','XP',S.xp],['🏅','سطح',lvl()],['🏆','بهترین درصد',S.best+'%']];$('hs').innerHTML=h.map(x=>`<div class="card stat"><span>${x[0]} ${x[1]}</span><b>${x[2]}</b></div>`).join('');const lp=S.lp&&S.lp!='home'&&PG.find(p=>p[0]==S.lp);$('cont').innerHTML='📌 <b>ادامه از جایی که متوقف شدی:</b> '+(lp?lp[1]+` <button class="btn" onclick="go('${S.lp}')">ادامه ▶</button>`:'هنوز شروعی نکرده‌ای — از حل‌گر هوشمند یا آزمون شروع کن!')}
+/* graph */
+let G={x:0,y:0,s:10},GF=[];
+function draw(){const c=$('gc'),r=c.getBoundingClientRect(),d=devicePixelRatio||1;if(!r.width)return;c.width=r.width*d;c.height=r.height*d;const x=c.getContext('2d');x.scale(d,d);const W=r.width,H=r.height,sx=W/(2*G.s),st=Math.pow(10,Math.floor(Math.log10(G.s/2.5))),X=px=>W/2+(px-G.x)*sx,Y=py=>H/2-(py-G.y)*sx,cs=getComputedStyle(document.documentElement);
+x.lineWidth=1;x.font='11px sans-serif';x.fillStyle=cs.getPropertyValue('--muted');
+for(let v=Math.ceil((G.x-G.s)/st)*st;v<=G.x+G.s;v+=st){x.strokeStyle=cs.getPropertyValue('--line');x.beginPath();x.moveTo(X(v),0);x.lineTo(X(v),H);x.stroke();x.fillText(+v.toFixed(6),X(v)+2,Y(0)>H-4?H-4:Math.max(12,Y(0)+12))}
+const ys=G.s*H/W;for(let v=Math.ceil((G.y-ys)/st)*st;v<=G.y+ys;v+=st){x.strokeStyle=cs.getPropertyValue('--line');x.beginPath();x.moveTo(0,Y(v));x.lineTo(W,Y(v));x.stroke();x.fillText(+v.toFixed(6),Math.max(2,X(0)+3),Y(v)-2)}
+x.strokeStyle=cs.getPropertyValue('--text');x.lineWidth=1.6;x.beginPath();x.moveTo(X(0),0);x.lineTo(X(0),H);x.moveTo(0,Y(0));x.lineTo(W,Y(0));x.stroke();
+GF=[];$('fx').value.split(/;/).forEach((e,k)=>{e=e.trim();if(!e)return;try{GF.push([comp(e,0),['#36b7ff','#f59e0b','#22c55e','#ef4444','#8b5cf6'][k%5]])}catch(z){toast('تابع نامعتبر: '+e)}});
+GF.forEach(([f,col])=>{x.strokeStyle=col;x.lineWidth=2.2;x.beginPath();let pen=0,py0=0;for(let i=0;i<=W;i+=1){const vx=G.x+(i-W/2)/sx,vy=f(vx),yy=Y(vy);if(!Number.isFinite(vy)||Math.abs(yy)>1e5||(pen&&Math.abs(yy-py0)>H)){pen=0;continue}pen?x.lineTo(i,yy):x.moveTo(i,yy);pen=1;py0=yy}x.stroke()})}
+function zoom(k){G.s*=k;draw()}
+(()=>{const c=$('gc');let dn=0,lx,ly;c.onpointerdown=e=>{dn=1;lx=e.clientX;ly=e.clientY;c.setPointerCapture(e.pointerId)};c.onpointerup=()=>dn=0;c.onpointermove=e=>{if(!dn)return;const k=2*G.s/c.getBoundingClientRect().width;G.x-=(e.clientX-lx)*k;G.y+=(e.clientY-ly)*k;lx=e.clientX;ly=e.clientY;draw()};c.onwheel=e=>{e.preventDefault();zoom(e.deltaY>0?1.1:.9)}})();
+/* labs */
+function lab1(){const h=+$('h0').value,v=+$('v0').value,g=9.8;$('lh0').textContent=h;$('lv0').textContent=v;const tu=v/g,H=h+v*v/2/g,tt=tu+Math.sqrt(2*H/g);$('l1r').textContent=`اوج: ${F(H)} m در t=${F(tu)} s\nبرخورد با زمین: t=${F(tt)} s\nسرعت برخورد: ${F(Math.sqrt(2*g*H))} m/s`;
+const c=$('lc'),r=c.getBoundingClientRect(),x=c.getContext('2d');c.width=r.width;c.height=r.height;x.strokeStyle='#36b7ff';x.lineWidth=2;x.beginPath();for(let i=0;i<=r.width;i++){const t=i/r.width*tt,y=h+v*t-g*t*t/2;i?x.lineTo(i,r.height-8-y/H*(r.height-20)):x.moveTo(i,r.height-8-y/H*(r.height-20))}x.stroke()}
+function lab2(){const m=+$('em').value,v=+$('ev').value,h=+$('eh').value;$('lm').textContent=m;$('lvv').textContent=v;$('lhh').textContent=h;const K=m*v*v/2,U=m*9.8*h;$('l2r').textContent=`K = ${F(K)} J\nU = ${F(U)} J\nE کل = ${F(K+U)} J\np = ${F(m*v)} kg·m/s`;$('lk').style.width=(K+U?K/(K+U)*100:0)+'%'}
+function lab3(){const a=+$('ta').value,b=+$('tb').value,c=+$('tc').value;$('la3').textContent=a;$('lb3').textContent=b;$('lc3').textContent=c;const cv=$('l3c'),r=cv.getBoundingClientRect(),x=cv.getContext('2d');cv.width=r.width;cv.height=r.height;if(a+b<=c||a+c<=b||b+c<=a){$('l3r').textContent='این سه ضلع مثلث نمی‌سازند (نامساوی مثلث)';return}
+const p=(a+b+c)/2,S2=Math.sqrt(p*(p-a)*(p-b)*(p-c)),A=Math.acos((b*b+c*c-a*a)/2/b/c),B=Math.acos((a*a+c*c-b*b)/2/a/c),deg=v=>F(v*180/Math.PI),Cx=b*Math.cos(A),Cy=b*Math.sin(A),k=Math.min((r.width-30)/Math.max(c,Cx,1),(r.height-30)/Math.max(Cy,1)),X=v=>15+v*k,Y=v=>r.height-15-v*k;
+x.strokeStyle='#36b7ff';x.fillStyle='#36b7ff22';x.lineWidth=2;x.beginPath();x.moveTo(X(0),Y(0));x.lineTo(X(c),Y(0));x.lineTo(X(Cx),Y(Cy));x.closePath();x.fill();x.stroke();
+$('l3r').textContent=`محیط = ${F(2*p)}\nمساحت = ${F(S2)}\nزاویه‌ها: ${deg(A)}° , ${deg(B)}° , ${deg(Math.PI-A-B)}°\nنوع: ${Math.abs(a*a+b*b-c*c)<1e-9||Math.abs(a*a+c*c-b*b)<1e-9||Math.abs(b*b+c*c-a*a)<1e-9?'قائم‌الزاویه':a==b&&b==c?'متساوی‌الاضلاع':a==b||b==c||a==c?'متساوی‌الساقین':'مختلف‌الاضلاع'}`}
+function lab4(){const v=+$('mv').value,a=+$('ma').value;$('lmv').textContent=v;$('lma').textContent=a;const cv=$('l4c'),r=cv.getBoundingClientRect(),x=cv.getContext('2d');cv.width=r.width;cv.height=r.height;if(!r.width)return;const TT=10,fv=t=>v+a*t,fx=t=>v*t+a*t*t/2,ts=[...Array(101).keys()].map(i=>i/10),all=ts.flatMap(t=>[fv(t),fx(t)]),lo=Math.min(0,...all),hi=Math.max(1,...all),Y=y=>r.height-10-(y-lo)/(hi-lo)*(r.height-20),X=t=>t/TT*(r.width-10)+5;
+x.strokeStyle='#888';x.beginPath();x.moveTo(0,Y(0));x.lineTo(r.width,Y(0));x.stroke();[[fv,'#36b7ff'],[fx,'#f59e0b']].forEach(([f,c])=>{x.strokeStyle=c;x.lineWidth=2;x.beginPath();ts.forEach((t,i)=>i?x.lineTo(X(t),Y(f(t))):x.moveTo(X(t),Y(f(t))));x.stroke()});$('l4r').textContent=`v(10) = ${F(fv(10))} m/s\nx(10) = ${F(fx(10))} m\n${a==0?'حرکت با سرعت ثابت':a*v<0?'ابتدا کندشونده':'تندشونده'}`}
+/* periodic */
+function ptab(){const q=($('es')||{value:''}).value.trim().toLowerCase();$('pt').innerHTML=E.map((e,i)=>({e,i})).filter(({e,i})=>!q||e[0].toLowerCase().includes(q)||e[1].includes(q)||String(i+1)==q).map(({e,i})=>`<div class="el" onclick="einfo(${i})"><small>${i+1}</small><b>${e[0]}</b><small>${e[1]}</small></div>`).join('')}
+function einfo(i){const e=E[i],z=i+1,gas=['H','He','N','O','F','Ne','Cl','Ar','Kr'].includes(e[0]);$('ei').innerHTML=`<h2>${e[0]} — ${e[1]}</h2>عدد اتمی: ${z}<br>جرم اتمی: ${e[2]}<br>دوره: ${z<3?1:z<11?2:z<19?3:4}<br>حالت ماده (اتاق): ${gas?'گاز':e[0]=='Br'?'مایع':'جامد'}<br>آرایش الکترونی: <b dir="ltr">${econf(z)}</b>`}
+/* quiz */
+const QB=[['math','(a+b)² برابر است با؟',['a²+b²','a²+2ab+b²','a²−2ab+b²','2a+2b'],1,'اتحاد مربع دو جمله‌ای'],['math','مجموع ریشه‌های x²−5x+6=0؟',['۵','۶','−۵','۱'],0,'S = −b/a = 5'],['math','جمله دهم دنباله حسابی a₁=3, d=2؟',['۲۱','۲۳','۲۵','۱۹'],0,'3+9×2=21'],['math','sin30° = ؟',['۱/۲','√۳/۲','۱','√۲/۲'],0,'مقدار مثلثاتی پایه'],['math','n(A)=5, n(B)=4, n(A∩B)=2 ⇒ n(A∪B)=؟',['۷','۹','۶','۱۱'],0,'5+4−2=7'],['math','جواب |x−2|=3؟',['5 یا −1','5','−1','1 یا −5'],0,'x−2=±3'],['math','C(5,2)=؟',['۱۰','۲۰','۵','۱۵'],0,'5!/(2!3!)=10'],['math','جمله چهارم دنباله هندسی a₁=2, r=3؟',['۵۴','۱۸','۸۱','۲۴'],0,'2×3³=54'],
+['geo','وتر مثلث قائم با اضلاع ۳ و ۴؟',['۵','۶','۷','۲۵'],0,'فیثاغورس'],['geo','مجموع زوایای داخلی شش‌ضلعی؟',['۷۲۰°','۵۴۰°','۳۶۰°','۹۰۰°'],0,'(6−2)×180'],['geo','نسبت مساحت دو مثلث متشابه با نسبت تشابه ۲؟',['۴','۲','۸','۱'],0,'k²=4'],['geo','خط موازی یک ضلع مثلث دو ضلع دیگر را چگونه قطع می‌کند؟',['متناسب','مساوی','عمود','نصف'],0,'قضیه تالس'],
+['phy','یکای فشار در SI؟',['پاسکال','نیوتن','ژول','وات'],0,'P=F/A ⇒ N/m² = Pa'],['phy','جابجایی از سکون با a=2 در ۵ ثانیه؟',['۲۵ m','۱۰ m','۵۰ m','۲۰ m'],0,'½·2·25=25'],['phy','۲۷°C چند کلوین؟',['۳۰۰','۲۷۰','۳۲۰','۲۵۰'],0,'T=θ+273'],['phy','با دو برابر شدن سرعت، انرژی جنبشی؟',['۴ برابر','۲ برابر','۸ برابر','ثابت'],0,'K ∝ v²'],['phy','گرمای لازم برای ۲kg آب و ۱۰°C (c=4200)؟',['۸۴۰۰۰ J','۴۲۰۰ J','۸۴۰ J','۴۲۰۰۰ J'],0,'Q=mcΔθ'],['phy','کار نیرویی عمود بر جابجایی؟',['صفر','بیشینه','منفی','Fd'],0,'cos90°=0'],
+['chem','جرم مولی H₂O؟',['۱۸','۱۶','۲۰','۱۷'],0,'2+16'],['chem','۲ مول گاز در STP چند لیتر؟',['۴۴.۸','۲۲.۴','۱۱.۲','۶۷.۲'],0,'2×22.4'],['chem','آرایش Z=11؟',['1s²2s²2p⁶3s¹','1s²2s²2p⁶3p¹','1s²2s²2p⁵3s²','1s²2s²2p⁶'],0,'سدیم'],['chem','۰.۵ مول در ۲ لیتر، مولاریته؟',['۰.۲۵','۱','۴','۰.۵'],0,'M=n/V'],['chem','ظرفیت لایه سوم؟',['۱۸','۸','۳۲','۱۰'],0,'2n²'],['chem','۳۶ گرم آب چند مول است؟',['۲','۱','۱۸','۰.۵'],0,'36/18']];
+const CN={all:'همه',math:'ریاضی',geo:'هندسه',phy:'فیزیک',chem:'شیمی'};let Z={run:0};
+function qmenu(){const dn=S.dc==td();$('qbox').innerHTML=`<div class="card" style="margin-bottom:12px">🔥 <b>چالش روزانه</b> — ۷ سؤال ترکیبی + ۴۰ XP ${dn?'✅ امروز انجام شد':''}<br><button class="btn" onclick="qstart(1)">شروع چالش</button></div><label>درس</label><select id="qs">${Object.entries(CN).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select><label>تعداد سؤال</label><select id="qn"><option>5</option><option>10</option><option>15</option></select><label><input type="checkbox" id="qt" style="width:auto"> زمان‌دار (۴۰ ثانیه برای هر سؤال)</label><button class="btn" onclick="qstart()">شروع آزمون 🚀</button>`}
+function qstart(dl){let q;if(dl){const sd=+td().replace(/-/g,'');q=QB.map((x,i)=>[x,(i*7919+sd*31)%101]).sort((a,b)=>a[1]-b[1]).slice(0,7).map(x=>x[0])}else{const s=$('qs').value,n=+$('qn').value;q=QB.filter(x=>s=='all'||x[0]==s).sort(()=>Math.random()-.5).slice(0,n)}Z={run:1,dl,tm:dl?0:$('qt').checked,i:0,ok:0,by:{},w:[],t0:Date.now(),q};qshow()}
+function qshow(){clearInterval(Z.iv);if(Z.i>=Z.q.length)return qend();const q=Z.q[Z.i],o=q[2].map((t,i)=>[t,i]).sort(()=>Math.random()-.5);$('qbox').innerHTML=`<div class="pr"><i style="width:${Z.i/Z.q.length*100}%"></i></div><p>سؤال ${Z.i+1} از ${Z.q.length} (${CN[q[0]]}) <span id="qtm"></span></p><h3>${q[1]}</h3>${o.map(x=>`<button class="opt" data-c="${x[1]==q[3]?1:0}" onclick="qpick(this)">${x[0]}</button>`).join('')}<div id="qx"></div>`;
+if(Z.tm){Z.t=40;const u=()=>$('qtm').textContent='⏱️ '+Z.t;u();Z.iv=setInterval(()=>{Z.t--;u();if(Z.t<=0){clearInterval(Z.iv);qpick(null)}},1000)}}
+function qpick(el){clearInterval(Z.iv);const q=Z.q[Z.i],by=Z.by[q[0]]=Z.by[q[0]]||[0,0];by[1]++;Qa('#qbox .opt').forEach(b=>{b.disabled=true;if(b.dataset.c=='1')b.classList.add('ok')});if(el&&el.dataset.c=='1'){Z.ok++;by[0]++}else{Z.w.push([q[1],el?el.textContent:'⏱️ بدون پاسخ',q[2][q[3]],q[4]]);if(el)el.classList.add('no')}
+$('qx').innerHTML=`<div class="result" style="direction:rtl;text-align:right;font-family:inherit">💡 ${q[4]}</div><button class="btn" onclick="Z.i++;qshow()">${Z.i+1>=Z.q.length?'پایان':'بعدی'}</button>`}
+function qend(){const n=Z.q.length,p=Math.round(Z.ok/n*100),w=Z.w,sec=Math.round((Date.now()-Z.t0)/1000),mm=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');S.quiz++;S.best=Math.max(S.best,p);for(const k in Z.by){const a=S.sub[k]=S.sub[k]||[0,0];a[0]+=Z.by[k][0];a[1]+=Z.by[k][1]}let b=30+(p>=90?50:0);if(Z.dl&&S.dc!=td()){S.dc=td();b+=40;toast('چالش روزانه کامل شد +۴۰ XP 🔥')}save();xp(b);Z.run=0;
+$('qbox').innerHTML=`<h2>${p>=90?'🏆':p>=60?'👏':'💪'} نتیجه: ${p}%</h2><b>${Z.ok} / ${n}</b> — ✔ ${Z.ok} صحیح — ✖ ${n-Z.ok} غلط — ⏱ ${mm} — +${b} XP<br>${w.length?'<h3>بررسی پاسخ‌های غلط</h3>'+w.map(x=>`<div class="result" style="direction:rtl;text-align:right;font-family:inherit">❓ ${x[0]}<br>❌ ${x[1]}<br>✅ ${x[2]}<br>💡 ${x[3]}</div>`).join(''):'<p>🎉 همه درست بود!</p>'}<br><button class="btn" onclick="qmenu()">آزمون جدید</button> <button class="btn s" onclick="copy('در دهم‌یار ${p}% گرفتم!')">اشتراک نتیجه</button>`}
+/* progress */
+const AC=[['🏅','اولین آزمون',()=>S.quiz>=1],['🔥','۱۰ آزمون',()=>S.quiz>=10],['🧠','۱۰۰ محاسبه',()=>S.calc>=100],['⚡','استاد فیزیک',()=>(S.sub.phy||[0])[0]>=15],['🧪','شیمی‌دان',()=>(S.sub.chem||[0])[0]>=10],['📐','هندسه‌دان',()=>(S.sub.geo||[0])[0]>=8],['💯','نمره کامل',()=>S.best>=100],['🌟','۵۰۰ XP',()=>S.xp>=500],['🔥','۷ روز متوالی',()=>S.streak>=7],['📅','چالش روزانه',()=>!!S.dc]];
+function prog(){$('pf').innerHTML=`<h2>👤 ${esc(S.name)||'دانش‌آموز'}</h2>سطح ${lvl()}<div class="pr"><i style="width:${S.xp%100}%"></i></div><small>${S.xp%100}/100 تا سطح بعد</small><br>محاسبات: ${S.calc} — 🔥 ${S.streak} روز متوالی — آزمون‌ها: ${S.quiz} — بهترین: ${S.best}% — علاقه‌مندی‌ها: ${S.fav.length}`;
+$('pa').innerHTML='<h2>🏆 دستاوردها</h2><div class="grid">'+AC.map(a=>`<div class="card ach ${a[2]()?'on':''}" style="text-align:center"><div style="font-size:30px">${a[0]}</div>${a[1]}</div>`).join('')+'</div>';
+$('pp').innerHTML=Object.keys(CN).slice(1).map(k=>{const a=S.sub[k]||[0,0],p=a[1]?Math.round(a[0]/a[1]*100):0;return`<p>${CN[k]}: ${p}% (${a[0]}/${a[1]})</p><div class="pr"><i style="width:${p}%"></i></div>`}).join('')}
+function setSt(k,v){S.st[k]=v;save();applySet()}
+function applySet(){const t=S.st,R=document.documentElement;if(t.theme=='auto')R.removeAttribute('data-theme');else R.dataset.theme=t.theme;R.style.setProperty('--a',t.ac);R.style.fontSize=t.fs+'px';document.body.classList.toggle('noanim',!t.anim);$('wg').style.display=t.clock?'':'none';if($('graph').classList.contains('active'))draw()}
+function setui(){const t=S.st;$('setbox').innerHTML=`<label>نام تو</label><input value="${esc(S.name)}" oninput="S.name=this.value;save();ref()"><label>تم</label><select onchange="setSt('theme',this.value)">${[['dark','🌙 تیره'],['light','☀️ روشن'],['auto','🖥️ خودکار (طبق دستگاه)']].map(o=>`<option value="${o[0]}" ${t.theme==o[0]?'selected':''}>${o[1]}</option>`).join('')}</select><label>رنگ اصلی</label><div>${['#36b7ff','#8b5cf6','#22c55e','#f59e0b','#ef4444','#ec4899'].map(c=>`<button class="btn" style="background:${c};width:38px;height:38px;padding:0" onclick="setSt('ac','${c}')"></button>`).join(' ')}</div><label>اندازه فونت: ${t.fs}</label><input type="range" min="13" max="20" value="${t.fs}" onchange="setSt('fs',+this.value);setui()"><label><input type="checkbox" style="width:auto" ${t.anim?'checked':''} onchange="setSt('anim',this.checked?1:0)"> انیمیشن‌ها</label><label><input type="checkbox" style="width:auto" ${t.clock?'checked':''} onchange="setSt('clock',this.checked?1:0)"> ویجت ساعت و تاریخ شمسی</label><br><button class="btn d" onclick="if(confirm('همه پیشرفت و تنظیمات این دستگاه پاک شود؟')){try{localStorage.removeItem('dy4')}catch(e){}location.reload()}">🗑️ پاک کردن اطلاعات این دستگاه</button><div class="sub">نسخه ۶.۰ — داده‌ها فقط روی همین دستگاه ذخیره می‌شوند</div>`}
+/* AI */
+const H=[];function bub(c,t){const d=document.createElement('div');d.className='m '+c;d.textContent=t;$('chat').appendChild(d);$('chat').scrollTop=1e9;return d}
+bub('a','سلام! من مهدی هستم 👋 دستیار درسی ریاضی، فیزیک و شیمی دهم. بپرس!');
+const MD={teacher:'مثل معلم صبور توضیح بده: مفهوم، فرمول، مثال عددی، و یک تمرین کوچک.',solver:'مسئله را دقیقاً مرحله‌به‌مرحله حل کن، هر مرحله را شماره‌گذاری کن و پاسخ نهایی را مشخص کن.',short:'کوتاه، دقیق و حداکثر ۵ خط جواب بده.',check:'دانش‌آموز پاسخ خودش را می‌فرستد؛ درستی را بررسی کن، اشتباه را دقیق توضیح بده و اصلاح کن.',practice:'۳ تمرین با سطح آسان، متوسط و سخت از مبحث بساز و پاسخ را آخر جدا بنویس.',summary:'خلاصه منظم درس با نکته‌ها و فرمول‌های مهم بنویس.'};
+async function ask(t){t=(t||$('ain').value).trim();if(!t)return;$('ain').value='';go('ai');bub('u',t);const b=bub('a','در حال فکر کردن…');
+try{const s=await claude.use('sample');if(!s){b.textContent='هوش مصنوعی در این نمایش فعال نیست.';return}
+H.push({role:'user',content:t});const tr=H.slice(-9).map(x=>({...x}));
+tr[0].content=`تو «مهدی»، معلم مهربان و حرفه‌ای دانش‌آموزان پایه دهم ریاضی‌فیزیک ایران هستی (ریاضی ۱، هندسه ۱، فیزیک ۱، شیمی ۱). فقط فارسی و ساده پاسخ بده، فرمول‌ها را بنویس، از درس خارج نشو. ${MD[$('mode').value]}\nاگر یکی از این ابزارهای سایت به سؤال کمک می‌کند در آخرین خط دقیقاً بنویس «ابزار پیشنهادی: نام ابزار»: ${T.map(x=>x[1]).join(' | ')}\n\nسؤال دانش‌آموز:\n`+tr[0].content;
+const r=await s(tr,{cache:false,onText:x=>{b.textContent=x.text;$('chat').scrollTop=1e9}});H.push({role:'assistant',content:r.text});
+const m=r.text.match(/ابزار پیشنهادی:\s*(.+)$/m);if(m){const i=T.findIndex(x=>m[1].includes(x[1]));b.textContent=r.text.replace(m[0],'').trim();if(i>=0){const bt=document.createElement('button');bt.className='btn s';bt.textContent='🧮 باز کردن: '+T[i][1];bt.onclick=()=>{go({math:'math',geo:'geometry',phy:'physics',chem:'chem'}[T[i][0]]);setTimeout(()=>{const e=$('t'+i);e&&e.scrollIntoView({block:'center'})},100)};b.appendChild(document.createElement('br'));b.appendChild(bt)}}
+xp(3)}catch(e){H.pop();b.textContent='خطا: '+((e&&e.code)||'دوباره تلاش کن')}}
+const sg=v=>(v<0?'− ':'+ ')+F(Math.abs(v));
+function solveEq(s){const p=fa(s).split('=');if(p.length!=2)return'معادله باید یک علامت = داشته باشد. مثال: 2x+7=19';let L,R;try{L=comp(p[0],0);R=comp(p[1],0)}catch(e){return'عبارت نامعتبر. از x و + − * / ^ و پرانتز استفاده کن'}
+const f=x=>L(x)-R(x),c=f(0),u=f(1),w=f(-1),a=(u+w)/2-c,b=(u-w)/2;
+if(![a,b,c].every(Number.isFinite)||Math.abs(f(2)-(4*a+2*b+c))>1e-6||Math.abs(f(3)-(9*a+3*b+c))>1e-6)return'فقط معادله‌های خطی و درجه دوم چندجمله‌ای پشتیبانی می‌شود';
+let o=`معادله: ${p[0].trim()} = ${p[1].trim()}\n`;const ok=x=>`\nبررسی: چپ = ${F(L(x))} ، راست = ${F(R(x))} ✓`;
+if(Math.abs(a)<1e-9){if(Math.abs(b)<1e-9)return o+(Math.abs(c)<1e-9?'همیشه درست است: بی‌شمار جواب':'هیچ جوابی ندارد');const x=-c/b;return o+`همه جمله‌ها را یک طرف می‌بریم:\n${F(b)}x ${sg(c)} = 0\n${F(b)}x = ${F(-c)}\nx = ${F(-c)} ÷ ${F(b)}\nx = ${F(x)}\n✓ جواب: x = ${F(x)}`+ok(x)}
+const d=b*b-4*a*c;o+=`به شکل استاندارد:\n${F(a)}x² ${sg(b)}x ${sg(c)} = 0\nΔ = b² − 4ac = ${F(b*b)} − ${F(4*a*c)} = ${F(d)}\n`;if(d<-1e-9)return o+'Δ < 0 ⇒ ریشه حقیقی ندارد';
+const q=Math.sqrt(Math.max(d,0)),x1=(-b+q)/2/a,x2=(-b-q)/2/a;return o+(d<1e-9?`x = −b/2a = ${F(x1)}\n✓ ریشه مضاعف: x = ${F(x1)}`+ok(x1):`x = (−b ± √Δ)/2a\nx₁ = ${F(x1)}\nx₂ = ${F(x2)}\n✓ جواب‌ها: ${F(x1)} و ${F(x2)}`+ok(x1))}
+function slv(){$('sor').textContent=solveEq($('soi').value);S.calc++;xp(3)}
+function bank(){const s=$('bs').value,q=$('bq').value.trim();$('bl').innerHTML=QB.filter(x=>(s=='all'||x[0]==s)&&(!q||x[1].includes(q))).map(x=>`<details><summary>${CN[x[0]]}: ${x[1]}</summary><p>گزینه‌ها: ${x[2].join(' — ')}</p><p>✅ پاسخ: <b>${x[2][x[3]]}</b><br>💡 ${x[4]}</p></details>`).join('')||'موردی یافت نشد'}
+function rtxt(k){return(k=='s'?'پیشنهاد':'گزارش')+' — بخش: '+$('rs').value+'\n'+$('rt').value+'\n\nنسخه: 5.0\nدستگاه: '+navigator.userAgent}
+function report(k){modal(`<h2>${k=='s'?'💡 پیشنهاد قابلیت':'🐞 گزارش مشکل'}</h2><label>کدام بخش؟</label><select id="rs">${PG.map(p=>`<option>${p[1]}</option>`).join('')}</select><label>شرح</label><textarea id="rt" rows="5"></textarea><button class="btn" onclick="window.open('mailto:mahdi89nava@gmail.com?subject='+encodeURIComponent('دهم‌یار: ${k=='s'?'پیشنهاد':'گزارش'}')+'&body='+encodeURIComponent(rtxt('${k}')),'_blank')">ارسال با ایمیل</button> <button class="btn s" onclick="copy(rtxt('${k}'))">کپی متن</button><div class="sub">یا در تلگرام @sitedeveloperdahom و بله @Developer10thgrade پیام بده.</div>`)}
+function bell(){S.bv=1;save();$('bdg').style.display='none';modal(`<h2>🔔 اعلان‌ها</h2><div class="f"><span>🚀 نسخه ۶.۰ منتشر شد</span></div><div class="f"><span>🧠 حل‌گر مرحله‌ای معادله‌ها</span></div><div class="f"><span>📝 بانک سؤال و چالش روزانه</span></div><div class="f"><span>🔬 مثلث تعاملی و نمودار حرکت</span></div><div class="f"><span>📅 برنامه هفتگی و ساعت شمسی</span></div>`)}
+function about(){modal('<h2>درباره دهم‌یار</h2><p>دهم‌یار مجموعه‌ای از ابزارها، فرمول‌ها، آزمون و هوش مصنوعی برای دانش‌آموزان رشته ریاضی‌فیزیک پایه دهم است. پیشرفت شما فقط روی همین دستگاه ذخیره می‌شود.</p>')}
+function terms(){modal('<h2>قوانین استفاده</h2><p>استفاده از دهم‌یار رایگان و آموزشی است. نتایج ابزارها و هوش مصنوعی ممکن است خطا داشته باشد؛ همیشه با کتاب درسی و معلم خود تطبیق بده. کپی یا بازنشر محتوا بدون اجازه ممنوع است.</p>')}
+function clk(){const d=new Date();$('clk').textContent=d.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});$('dt').textContent=d.toLocaleDateString('fa-IR-u-ca-persian',{weekday:'long',day:'numeric',month:'long',year:'numeric'});if(d.getSeconds()==0)schu()}
+/* live stats */
+(async()=>{try{const db=await claude.use('db');if(db){const d=db.doc('stats/main'),sn=await d.get(),k='d'+new Date().toISOString().slice(0,10).replace(/-/g,''),x=sn.exists?sn.data():{};let v=x.visits||0,td=x[k]||0,seen=0;try{seen=sessionStorage.getItem('v')}catch(e){}
+if(!seen){v++;td++;try{sn.exists?await d.update({visits:v,[k]:td}):await d.set({visits:v,[k]:td});sessionStorage.setItem('v','1')}catch(e){}}
+Qa('.s-vis').forEach(e=>e.textContent=v);Qa('.s-td').forEach(e=>e.textContent=td)}}catch(e){}
+try{const r=await claude.use('room');if(r)r.onPeers(c=>Qa('.s-on').forEach(e=>e.textContent=c.peers.length+1))}catch(e){}})();
+/* init */
+(()=>{const t=td(),y=new Date(Date.now()-864e5).toISOString().slice(0,10);if(S.ld!=t){S.streak=S.ld==y?S.streak+1:1;S.ld=t;save()}})();
+$('bs').innerHTML=Object.entries(CN).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+render();fr();ptab();ref();schu();stab();bank();lab1();lab2();lab3();lab4();qmenu();applySet();clk();setInterval(clk,1000);if(S.bv)$('bdg').style.display='none';
+if(location.hash){}
+
+/* ================= DEHOMYAR 6.0 EXTENSIONS ================= */
+const V6KEY='dehomyar_v6';
+let V6={users:[],current:null,notes:[],flash:[],tasks:[],today:[],events:0,profile:{name:'',school:'',grade:'دهم ریاضی‌فیزیک'},timer:1500,run:false};
+try{V6=Object.assign(V6,JSON.parse(localStorage.getItem(V6KEY)||'{}'))}catch(e){}
+const v6save=()=>{try{localStorage.setItem(V6KEY,JSON.stringify(V6))}catch(e){}};
+const v6hash=async s=>{if(window.crypto?.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}return btoa(unescape(encodeURIComponent(s)))};
+function v6msg(x){const e=$('v6authmsg');if(e)e.textContent=x}
+async function v6Signup(){const email=$('v6email').value.trim().toLowerCase(),pass=$('v6pass').value;if(!email||pass.length<6)return v6msg('ایمیل و رمز حداقل ۶ کاراکتری وارد کن.');if(V6.users.some(u=>u.email===email))return v6msg('این حساب محلی قبلاً ساخته شده.');V6.users.push({email,hash:await v6hash(pass),created:Date.now()});V6.current=email;v6save();v6msg('حساب محلی ساخته شد ✅');v6Render()}
+async function v6Login(){const email=$('v6email').value.trim().toLowerCase(),pass=$('v6pass').value,u=V6.users.find(x=>x.email===email);if(!u||u.hash!==await v6hash(pass))return v6msg('ایمیل یا رمز اشتباه است.');V6.current=email;v6save();v6msg('وارد شدی ✅');v6Render()}
+function v6Logout(){V6.current=null;v6save();v6msg('خارج شدی.');v6Render()}
+function v6SaveProfile(){V6.profile={name:$('v6name').value.trim(),school:$('v6school').value.trim(),grade:$('v6grade').value.trim()};v6save();$('v6profilemsg').textContent='پروفایل ذخیره شد ✅';v6Render()}
+function v6Export(){const data={version:6,date:new Date().toISOString(),S,V6};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='dehomyar-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function v6Import(inp){const f=inp.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(d.S)S=d.S;if(d.V6)V6=Object.assign(V6,d.V6);save();v6save();v6Render();toast('پشتیبان بازیابی شد ✅')}catch(e){toast('فایل پشتیبان معتبر نیست')}};r.readAsText(f)}
+function v6AddNote(){const title=$('v6ntitle').value.trim(),body=$('v6nbody').value.trim();if(!body)return toast('متن یادداشت را وارد کن');V6.notes.unshift({id:Date.now(),title:title||'یادداشت بدون عنوان',body,sub:$('v6nsub').value,date:new Date().toLocaleDateString('fa-IR')});v6save();v6ClearNote();v6Render();xp(2)}
+function v6ClearNote(){$('v6ntitle').value='';$('v6nbody').value='';}
+function v6DelNote(id){V6.notes=V6.notes.filter(x=>x.id!==id);v6save();v6Render()}
+function v6AddFlash(){const q=$('v6fq').value.trim(),a=$('v6fa').value.trim();if(!q||!a)return toast('سؤال و پاسخ را وارد کن');V6.flash.unshift({id:Date.now(),q,a,tag:$('v6ftag').value.trim()||'عمومی'});v6save();$('v6fq').value='';$('v6fa').value='';$('v6ftag').value='';v6Render();xp(2)}
+function v6AddTask(){const t=$('v6task').value.trim();if(!t)return toast('عنوان برنامه را وارد کن');V6.tasks.push({id:Date.now(),text:t,day:$('v6day').value,mins:+$('v6mins').value||30,done:false});v6save();$('v6task').value='';v6Render()}
+function v6Task(id){const t=V6.tasks.find(x=>x.id===id);if(t){t.done=!t.done;if(t.done){xp(5);V6.events++}}v6save();v6Render()}
+function v6DelTask(id){V6.tasks=V6.tasks.filter(x=>x.id!==id);v6save();v6Render()}
+let v6ti=null;function v6TimerStart(){if(V6.run)return;V6.run=true;v6ti=setInterval(()=>{if(V6.timer>0)V6.timer--;else{clearInterval(v6ti);V6.run=false;toast('پومودورو تمام شد 🎉');xp(10)}v6Render()},1000);v6Render()}
+function v6TimerPause(){clearInterval(v6ti);V6.run=false;v6Render()}
+function v6TimerReset(){clearInterval(v6ti);V6.run=false;V6.timer=1500;v6Render()}
+function v6Convert(){const n=+$('v6num').value,k=$('v6unit').value,m={"km-m":1000,"m-km":.001,"g-kg":.001,"kg-g":1000,"cm-m":.01,"m-cm":100,"C-K":x=>x+273.15,"K-C":x=>x-273.15,"L-mL":1000,"mL-L":.001};const v=typeof m[k]==='function'?m[k](n):n*m[k];$('v6conv').textContent=Number.isFinite(v)?v.toLocaleString('fa-IR'):'';xp(1)}
+function v6GenPass(){const n=Math.min(64,Math.max(6,+$('v6plen').value||16)),c='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%&*';let x='';crypto.getRandomValues(new Uint32Array(n)).forEach(v=>x+=c[v%c.length]);$('v6passout').textContent=x}
+function v6Percent(){const a=+$('v6pa').value,b=+$('v6pb').value;$('v6pout').textContent=`${a} × ${b}% = ${a*b/100}`;xp(1)}
+const V6Q=[['ریاضی','حل کن: اگر 2x+5=17، x چند است؟',['4','6','8','9'],'6'],['ریاضی','Δ برای x²−5x+6 چیست؟',['1','5','6','25'],'1'],['هندسه','مجموع زاویه‌های مثلث چند درجه است؟',['90','180','270','360'],'180'],['فیزیک','واحد SI نیرو چیست؟',['ژول','نیوتن','وات','پاسکال'],'نیوتن'],['فیزیک','اگر v=20m/s و t=3s باشد، جابه‌جایی با سرعت ثابت؟',['23m','60m','6.67m','17m'],'60m'],['شیمی','یک مول تقریباً چند ذره دارد؟',['6.02×10²³','9.8','3.14','22.4'],'6.02×10²³'],['شیمی','فرمول مول از جرم و جرم مولی؟',['n=m/M','n=M/m','n=mM','n=M+m'],'n=m/M']];
+function v6NewQuestion(){const sub=$('v6bsub').value,a=V6Q.filter(x=>sub==='همه'||x[0]===sub),q=a[Math.floor(Math.random()*a.length)];if(!q)return;$('v6question').innerHTML=`<h3>${q[0]}</h3><p>${q[1]}</p><div class="v6-actions">${q[2].map(o=>`<button class="btn s" onclick="v6Answer(this,${JSON.stringify(q[3])})">${o}</button>`).join('')}</div>`}
+function v6Answer(btn,ans){const ok=btn.textContent===ans;btn.parentElement.querySelectorAll('button').forEach(b=>b.disabled=true);btn.textContent+=ok?' ✅':' ❌';if(ok){xp(10);toast('درست! +۱۰ XP')}else toast('اشتباه؛ پاسخ درست را از گزینه‌ها پیدا کن')}
+const V6ACH=[['first','شروع‌کننده','اولین فعالیتت را ثبت کن',1],['calc','ماشین‌حساب','۱۰ محاسبه',10],['quiz','آزمون‌گر','۵ آزمون',5],['notes','یادداشت‌بردار','۵ یادداشت',5],['xp','هزار XP','رسیدن به ۱۰۰۰ XP',1000]];
+function v6Achieved(id){if(id==='first')return S.xp>0;if(id==='calc')return S.calc>=10;if(id==='quiz')return S.quiz>=5;if(id==='notes')return V6.notes.length>=5;if(id==='xp')return S.xp>=1000;return false}
+function v6AchHTML(full=false){return V6ACH.map(a=>`<div class="v6-row"><span>${v6Achieved(a[0])?'🏆':'🔒'} <b>${a[1]}</b><br><span class="v6-small">${a[2]}</span></span><span>${v6Achieved(a[0])?'باز شده':'در انتظار'}</span></div>`).join('')}
+function v6Periodic(){const q=($('v6esearch').value||'').trim().toLowerCase();$('v6ptable').innerHTML=E.map((e,i)=>({e,i})).filter(o=>!q||o.e[0].toLowerCase().includes(q)||o.e[1].includes(q)).map(o=>`<div class="v6-el" onclick="v6Element(${o.i})"><b>${o.e[0]}</b><span>${o.e[1]}</span></div>`).join('')}
+function v6Element(i){const e=E[i];$('v6edetail').innerHTML=`<b>${i+1}. ${e[1]} (${e[0]})</b><br>جرم اتمی تقریبی: ${e[2]} g/mol<br><span class="v6-small">داده‌های جدول برای آموزش و محاسبه تقریبی هستند.</span>`}
+function v6Render(){
+ const l=lvl(), need=l*100, prev=(l-1)*100;
+ if(!$('v6lvl')) return;
+ $('v6lvl').textContent=l;
+ $('v6bar').style.width=Math.min(100,((S.xp-prev)/(need-prev))*100)+'%';
+ $('v6xptext').textContent=`${S.xp} XP — ${Math.max(0,need-S.xp)} XP تا سطح بعدی`;
+ $('v6today').textContent=V6.events||0;
+ $('v6notesn').textContent=V6.notes.length;
+ $('v6cardsn').textContent=V6.flash.length;
+ $('v6ach').innerHTML=v6AchHTML();
+ $('v6achfull').innerHTML=v6AchHTML(true);
+ $('v6todaylist').innerHTML=V6.tasks.filter(x=>!x.done).slice(0,5).map(t=>`<div class="v6-row"><span>📌 ${esc(t.text)}<br><span class="v6-small">${t.day} • ${t.mins} دقیقه</span></span><button class="btn s" onclick="v6Task(${t.id})">انجام شد</button></div>`).join('')||'<div class="v6-small">برای امروز برنامه‌ای نداری.</div>';
+ $('v6noteslist').innerHTML=V6.notes.map(n=>`<div class="v6-card"><span class="v6-pill">${esc(n.sub)}</span><h3>${esc(n.title)}</h3><p style="white-space:pre-wrap">${esc(n.body)}</p><span class="v6-small">${n.date}</span><button class="btn s v6-danger" onclick="v6DelNote(${n.id})">حذف</button></div>`).join('')||'<div class="v6-card">هنوز یادداشتی نداری.</div>';
+ $('v6flashlist').innerHTML=V6.flash.map(n=>`<div class="v6-card"><span class="v6-pill">${esc(n.tag)}</span><h3>${esc(n.q)}</h3><details><summary>نمایش پاسخ</summary><p>${esc(n.a)}</p></details></div>`).join('')||'<div class="v6-card">هنوز فلش‌کارتی نساختی.</div>';
+ $('v6tasks').innerHTML=V6.tasks.map(t=>`<div class="v6-row"><span>${t.done?'✅':'⬜'} ${esc(t.text)} — ${t.day} — ${t.mins} دقیقه</span><span><button class="btn s" onclick="v6Task(${t.id})">${t.done?'برگردان':'انجام شد'}</button> <button class="btn s v6-danger" onclick="v6DelTask(${t.id})">حذف</button></span></div>`).join('')||'<div class="v6-small">برنامه‌ای ثبت نشده.</div>';
+ $('v6timer').textContent=String(Math.floor(V6.timer/60)).padStart(2,'0')+':'+String(V6.timer%60).padStart(2,'0');
+}
+
+if($('v6name')){ $('v6name').value=V6.profile.name||'';$('v6school').value=V6.profile.school||'';$('v6grade').value=V6.profile.grade||'دهم ریاضی‌فیزیک'; }
+function v6Go(p){go(p)}
+// Extend navigation without replacing the original system.
+const v6Nav=[['v6dashboard','🚀 مرکز دانش‌آموزی'],['v6account','👤 حساب و پروفایل'],['v6notes','📝 یادداشت‌ها'],['v6flash','🧠 فلش‌کارت'],['v6planner','⏱️ برنامه‌ریز'],['v6bank','📝 بانک سؤال+'],['v6achievements','🏆 دستاوردها'],['v6tools','🧰 ابزارها']];
+const dyHwNav=[['dyHomework','📚 تکالیف روزانه'],['dyAdmin','🔐 پنل مدیریت']];
+const v6navEl=$('nav');if(v6navEl){v6navEl.insertAdjacentHTML('beforeend',v6Nav.map(p=>`<button data-p="${p[0]}" onclick="v6Go('${p[0]}')">${p[1]}</button>`).join(''));}
+v6navEl.insertAdjacentHTML('beforeend',dyHwNav.map(p=>`<button data-p="${p[0]}" onclick="v6Go('${p[0]}')">${p[1]}</button>`).join(''));
+const oldGo=go;go=function(p){if(String(p).startsWith('v6')||String(p).startsWith('dy')){Qa('.page').forEach(x=>x.classList.toggle('active',x.id===p));Qa('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.p===p));$('side')?.classList.remove('open');scrollTo(0,0);v6Render(); if(p==='dyHomework') dyLoadHomework(); if(p==='dyAdmin') dyRenderAdmin(); return}oldGo(p)};
+v6Render();v6Periodic();
+
+</script>
+
+<div id="v6cmd" class="v6-command" onclick="if(event.target===this)this.classList.remove('show')"><div class="v6-commandbox"><input id="v6cmdin" placeholder="جستجوی سریع…  (Ctrl+K)" oninput="v6CmdSearch()"><div id="v6cmdlist"></div></div></div>
+<script>
+const V6CMDS=[['داشبورد','v6dashboard'],['حساب و پروفایل','v6account'],['یادداشت‌ها','v6notes'],['فلش‌کارت','v6flash'],['برنامه‌ریز','v6planner'],['بانک سؤال','v6bank'],['دستاوردها','v6achievements'],['ابزارهای دانش‌آموزی','v6tools'],['ریاضی','math'],['هندسه','geometry'],['فیزیک','physics'],['شیمی','chem'],['آزمون','quiz'],['مهدی AI','ai'],['فرمول‌نامه','formulas'],['تکالیف روزانه','dyHomework'],['پنل مدیریت','dyAdmin']];
+function v6CmdSearch(){const q=($('v6cmdin').value||'').trim();$('v6cmdlist').innerHTML=V6CMDS.filter(x=>!q||x[0].includes(q)).map(x=>`<div class="v6-cmditem" onclick="$('v6cmd').classList.remove('show');go('${x[1]}')">🔎 ${x[0]}</div>`).join('')}
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('v6cmd').classList.add('show');$('v6cmdin').focus();v6CmdSearch()}if(e.key==='Escape')$('v6cmd')?.classList.remove('show')});
+</script>
+
+<div id="dy7Splash"><div class="dy7-splash-card"><img class="dy7-logo" src="icons/icon-192.png"><div class="dy7-splash-title">دهم‌یار ۷.۰</div><div class="dy7-splash-sub">همراه هوشمند پایه دهم • Offline First</div></div></div>
+<div id="dy7Banner" class="dy7-banner"></div>
+<button id="dy7Fab" aria-label="پنل کنترل دهم‌یار">⚙️</button>
+<section id="dy7Panel" aria-label="پنل کنترل دهم‌یار">
+  <div class="dy7-row"><div><div class="dy7-title">🎛️ پنل کنترل</div><div class="dy7-small">وضعیت برنامه، اتصال و بروزرسانی</div></div><button class="dy7-btn" id="dy7Close">×</button></div>
+  <div class="dy7-row"><div class="dy7-status"><i id="dy7Dot" class="dy7-dot"></i><div><b id="dy7NetText">در حال بررسی اتصال…</b><div class="dy7-small" id="dy7NetHint">—</div></div></div><button class="dy7-btn" id="dy7Connection">اتصال</button></div>
+  <div class="dy7-grid">
+    <div class="dy7-card"><b>📦 کش آفلاین</b><span class="dy7-small" id="dy7Cache">در حال بررسی…</span></div>
+    <div class="dy7-card"><b>🗃️ صف همگام‌سازی</b><span class="dy7-small" id="dy7Queue">۰ مورد</span></div>
+  </div>
+  <div class="dy7-section">قابلیت‌ها</div>
+  <div class="dy7-online-list">
+    <div class="dy7-feature"><span>🧮 ابزارهای محاسباتی</span><span class="dy7-pill dy7-on">آفلاین</span></div>
+    <div class="dy7-feature"><span>📚 فرمول‌ها و جدول تناوبی</span><span class="dy7-pill dy7-on">آفلاین</span></div>
+    <div class="dy7-feature"><span>📝 آزمون و بانک سؤال داخلی</span><span class="dy7-pill dy7-on">آفلاین</span></div>
+    <div class="dy7-feature"><span>📒 یادداشت و برنامه‌ریزی</span><span class="dy7-pill dy7-on">آفلاین</span></div>
+    <div class="dy7-feature"><span>🤖 مهدی AI</span><span class="dy7-pill dy7-off">نیازمند نت</span></div>
+    <div class="dy7-feature"><span>☁️ همگام‌سازی ابری</span><span class="dy7-pill dy7-off">نیازمند نت</span></div>
+    <div class="dy7-feature"><span>📊 آمار آنلاین</span><span class="dy7-pill dy7-off">نیازمند نت</span></div>
+  </div>
+  <div class="dy7-update"><b>🔄 بروزرسانی</b><div class="dy7-small" id="dy7Version">نسخه نصب‌شده: 8.0.0</div><div class="dy7-grid"><button class="dy7-btn" id="dy7CheckUpdate">بررسی آپدیت</button><button class="dy7-btn dy7-install" id="dy7Install">📲 نصب برنامه</button></div></div>
+  <div class="dy7-small" style="margin-top:12px">نکته: برای نصب PWA باید دهم‌یار از HTTPS یا یک سرور محلی اجرا شود؛ باز کردن مستقیم فایل HTML با file:// سرویس‌ورکر را فعال نمی‌کند.</div>
+</section>
+
+<script>
+(()=>{
+'use strict';
+const V='8.0.0', CACHE='dehomyar-static-v7-'+V, DB='dehomyar-offline-v7', STORE='queue';
+const $=id=>document.getElementById(id);
+let deferredPrompt=null;
+function banner(t){const b=$('dy7Banner');b.textContent=t;b.classList.add('show');clearTimeout(window.__dy7bt);window.__dy7bt=setTimeout(()=>b.classList.remove('show'),3600)}
+function fa(n){try{return new Intl.NumberFormat('fa-IR').format(n)}catch{return String(n)}}
+function online(){return navigator.onLine}
+function updateNet(){
+ const on=online(); $('dy7Dot').className='dy7-dot '+(on?'online':'offline'); $('dy7NetText').textContent=on?'اتصال برقرار است':'آفلاین هستید'; $('dy7NetHint').textContent=on?'قابلیت‌های آنلاین در دسترس‌اند.':'ابزارهای آفلاین همچنان کار می‌کنند؛ درخواست‌های قابل‌صف ذخیره می‌شوند.';
+ if(on) flushQueue();
+}
+function openDB(){return new Promise((res,rej)=>{if(!indexedDB)return rej(new Error('no indexedDB'));const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE,{keyPath:'id',autoIncrement:true})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function queueItem(type,payload){try{const db=await openDB(),tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).add({type,payload,createdAt:Date.now()});tx.oncomplete=()=>{updateQueue();banner('💾 اطلاعات در صف آفلاین ذخیره شد');};}catch(e){localStorage.setItem('dy7_queue_fallback',JSON.stringify([...(JSON.parse(localStorage.getItem('dy7_queue_fallback')||'[]')),{type,payload,createdAt:Date.now()}]));updateQueue()}}
+async function queueCount(){try{const db=await openDB();return await new Promise((res,rej)=>{const r=db.transaction(STORE,'readonly').objectStore(STORE).count();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}catch{return JSON.parse(localStorage.getItem('dy7_queue_fallback')||'[]').length}}
+async function updateQueue(){$('dy7Queue').textContent=fa(await queueCount())+' مورد'}
+async function flushQueue(){
+ if(!online())return; try{const db=await openDB();const store=db.transaction(STORE,'readwrite').objectStore(STORE);const req=store.getAll();req.onsuccess=async()=>{for(const item of req.result){
+   // Hook for future backend: only remove after a successful real request.
+   // For now local actions are acknowledged locally to avoid fake network calls.
+   store.delete(item.id);
+ } updateQueue();};}catch{}
+}
+async function cacheInfo(){if(!('caches' in window)){ $('dy7Cache').textContent='پشتیبانی نمی‌شود';return}try{const c=await caches.open(CACHE);const keys=await c.keys();$('dy7Cache').textContent=fa(keys.length)+' فایل اصلی در کش است'}catch{$('dy7Cache').textContent='در دسترس نیست'}}
+async function registerSW(){if(!('serviceWorker' in navigator))return;try{const reg=await navigator.serviceWorker.register('service-worker.js',{scope:'./'});reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(!nw)return;nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller){banner('✨ نسخه جدید آماده است؛ برای اعمال بروزرسانی پنل را باز کنید.')}})});return reg}catch(e){console.warn('SW',e)}}
+async function checkUpdate(){try{
+ const info=await fetch('/api/update?ts='+Date.now(),{cache:'no-store'}).then(r=>r.json()).catch(()=>null);
+ const reg=await navigator.serviceWorker.getRegistration();
+ if(info&&info.version&&info.version!==V){banner('✨ نسخه جدید '+info.version+' پیدا شد؛ در حال دریافت...');window.__dyUpdatePending=true}
+ if(reg){await reg.update(); if(info&&info.version&&info.version!==V){setTimeout(()=>location.reload(),1800)}else banner('✓ شما آخرین نسخه را دارید')}
+ else banner('ابتدا دهم‌یار را از HTTPS اجرا کنید')
+}catch{banner('⚠️ بررسی بروزرسانی ممکن نشد')}}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('dy7Install').classList.add('show')});
+$('dy7Install').onclick=async()=>{if(!deferredPrompt){banner('📲 از منوی مرورگر گزینه Add to Home screen / Install را بزنید');return}deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('dy7Install').classList.remove('show')};
+$('dy7Fab').onclick=()=>{$('dy7Panel').style.display=$('dy7Panel').style.display==='block'?'none':'block';updateNet();updateQueue();cacheInfo()};
+$('dy7Close').onclick=()=>$('dy7Panel').style.display='none';
+$('dy7CheckUpdate').onclick=checkUpdate;
+$('dy7Connection').onclick=()=>{if(online())banner('🌐 اتصال برقرار است');else{$('dy7Panel').style.display='block';banner('📡 اینترنت قطع است؛ ابزارهای آفلاین فعال‌اند')}};
+window.addEventListener('online',()=>{updateNet();banner('🌐 اینترنت برگشت؛ همگام‌سازی صف آغاز شد')});
+window.addEventListener('offline',()=>{updateNet();banner('📴 آفلاین شدید؛ دهم‌یار همچنان قابل استفاده است')});
+window.addEventListener('load',async()=>{setTimeout(()=>$('dy7Splash').classList.add('hide'),650);$('dy7Version').textContent='نسخه نصب‌شده: '+V;updateNet();updateQueue();cacheInfo();await registerSW();cacheInfo();try{dyLoadNews()}catch(e){}});
+// Public hook for existing app features: queue an operation when a real backend call is unavailable.
+window.DehomYarOffline={queue:queueItem,isOnline:online,queueCount,flush:flushQueue,version:V};
+})();
+
+</script>
+
+<script>
+(()=>{
+const DYA={token:sessionStorage.getItem('dy_admin_token'),admin:!!sessionStorage.getItem('dy_admin_token')};
+const api=async(path,opt={})=>{const h=Object.assign({'Content-Type':'application/json'},opt.headers||{});if(DYA.token)h.Authorization='Bearer '+DYA.token;const r=await fetch(path,{...opt,headers:h});let d={};try{d=await r.json()}catch{};if(!r.ok)throw new Error(d.error||'خطا');return d};
+const esc2=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+window.dyLoadNews=async function(){const box=document.getElementById('dyNewsList');if(!box)return;try{const d=await api('/api/news');const a=d.items||[];box.innerHTML=a.length?a.map(x=>`<article class="v6-card" style="margin:8px 0"><div class="v6-pill">${esc2(x.type||'خبر')}</div><h3>${esc2(x.title)}</h3><div class="v6-small">${esc2(x.date||'')}</div><p style="white-space:pre-wrap">${esc2(x.body)}</p></article>`).join(''):'<div class="v6-small">هنوز خبر یا اطلاعیه‌ای منتشر نشده.</div>';if(d.settings?.maintenance)box.insertAdjacentHTML('afterbegin','<div class="v6-card" style="border:1px solid #f59e0b55">⚠️ سایت موقتاً در حالت اطلاع‌رسانی است.</div>')}catch(e){box.innerHTML='<div class="v6-small">خبرها در دسترس نیستند.</div>'}};
+window.dyLoadHomework=async function(){const box=document.getElementById('dyHwList');if(!box)return;try{const d=await api('/api/homework');if(!d.items?.length){box.innerHTML='<div class="v6-small">هنوز تکلیفی منتشر نشده.</div>';return}box.innerHTML=d.items.map(x=>`<article class="v6-card" style="margin-bottom:12px"><h3>${esc2(x.title)}</h3><div class="v6-small">${esc2(x.subject||'عمومی')} · ${esc2(x.date||'')}</div><p style="white-space:pre-wrap">${esc2(x.body||'')}</p>${x.file?`<a class="btn" href="${esc2(x.file)}" target="_blank" rel="noopener">📎 مشاهده فایل</a>`:''}</article>`).join('')}catch(e){box.innerHTML='<div class="v6-small">تکالیف آنلاین در دسترس نیستند. اینترنت را بررسی کنید.</div>'}};
+window.dyRenderAdmin=async function(){const root=document.getElementById('dyAdminRoot');if(!root)return;if(!DYA.admin){root.innerHTML='<div class="v6-card"><h3>ورود مدیر</h3><input id="dyUser" placeholder="نام کاربری"><input id="dyPass" type="password" placeholder="رمز عبور"><button class="btn" onclick="dyLogin()">ورود</button><p id="dyMsg" class="v6-small"></p></div>';return}try{const [hw,info,news]=await Promise.all([api('/api/homework/admin'),api('/api/admin/settings'),api('/api/news/admin')]);const st=info.settings||{};root.innerHTML=`
+<div class="grid" style="margin-bottom:14px"><div class="card stat"><b>${fa(info.stats.total||0)}</b><span>بازدید کل</span></div><div class="card stat"><b>${fa(info.stats.today||0)}</b><span>بازدید امروز</span></div><div class="card stat"><b>${esc2(st.version||V)}</b><span>نسخه سایت</span></div><div class="card stat"><b>${fa((hw.items||[]).length)}</b><span>تکالیف</span></div><div class="card stat"><b>${fa((news.items||[]).length)}</b><span>خبرها</span></div></div>
+<div class="v6-card"><h3>⚙️ تنظیمات کلی سایت</h3><input id="dySiteTitle" value="${esc2(st.siteTitle||'دهم‌یار')}" placeholder="عنوان سایت"><input id="dySiteSubtitle" value="${esc2(st.siteSubtitle||'')}" placeholder="زیرعنوان سایت"><textarea id="dyAnnouncement" rows="3" placeholder="اطلاعیه کوتاه بالای سایت">${esc2(st.announcement||'')}</textarea><label><input id="dyMaintenance" type="checkbox" style="width:auto" ${st.maintenance?'checked':''}> حالت اطلاع‌رسانی/تعمیرات</label><br><button class="btn" onclick="dySaveSettings()">ذخیره تنظیمات</button><p id="dySettingsMsg" class="v6-small"></p></div>
+<div class="v6-card" style="margin-top:14px"><h3>📢 خبر و اطلاعیه جدید</h3><input id="dyNewsTitle" placeholder="عنوان خبر یا اطلاعیه"><select id="dyNewsType"><option>خبر</option><option>اطلاعیه</option><option>مهم</option></select><input id="dyNewsDate" type="date"><textarea id="dyNewsBody" rows="5" placeholder="متن خبر یا اطلاعیه"></textarea><button class="btn" onclick="dyPublishNews()">📢 انتشار</button><p id="dyNewsMsg" class="v6-small"></p></div>
+<div class="v6-card" style="margin-top:14px"><h3>📚 انتشار تکلیف جدید</h3><input id="dyTitle" placeholder="عنوان تکلیف"><input id="dySubject" placeholder="درس"><input id="dyDate" type="date"><textarea id="dyBody" rows="6" placeholder="متن تکلیف و توضیحات"></textarea><input id="dyFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx"><button class="btn" onclick="dyPublish()">📤 انتشار تکلیف</button><p id="dyMsg" class="v6-small"></p></div>
+<div class="v6-card" style="margin-top:14px"><h3>🔄 انتشار نسخه جدید سایت</h3><p class="v6-small">ZIP نسخه جدید را انتخاب کن. نسخه جدید بعد از انتشار از داخل دهم‌یار با «بررسی آپدیت» دریافت می‌شود.</p><input id="dyUpdateFile" type="file" accept=".zip"><input id="dyUpdateVersion" placeholder="مثلاً 7.3.0"><button class="btn" onclick="dyPublishUpdate()">🚀 انتشار آپدیت</button><p id="dyUpdateMsg" class="v6-small"></p></div>
+<div class="v6-card" style="margin-top:14px"><h3>🔐 تغییر رمز مدیر</h3><input id="dyOldPass" type="password" placeholder="رمز فعلی"><input id="dyNewPass" type="password" placeholder="رمز جدید (حداقل ۱۰ کاراکتر)"><button class="btn" onclick="dyChangePassword()">تغییر رمز</button><p id="dyPassMsg" class="v6-small"></p></div>
+<div class="v6-card" style="margin-top:14px"><h3>💾 پشتیبان مدیریت</h3><p class="v6-small">از اطلاعات مدیریتی مثل تکالیف، خبرها و تنظیمات یک نسخه JSON بگیر و در جای امن نگه دار.</p><button class="btn s" onclick="dyBackup()">⬇️ دریافت پشتیبان</button> <label class="btn s" style="cursor:pointer">↩️ بازیابی پشتیبان<input id="dyRestoreFile" type="file" accept="application/json" hidden onchange="dyRestore(this)"></label></div>
+<div class="v6-card" style="margin-top:14px"><h3>📋 تکالیف منتشرشده</h3>${(hw.items||[]).map(x=>`<div class="v6-row" style="margin:8px 0"><span><b>${esc2(x.title)}</b><br><small>${esc2(x.subject||'عمومی')} · ${esc2(x.date||'')}</small></span><button class="btn s v6-danger" onclick="dyDelete('${esc2(x.id)}')">حذف</button></div>`).join('')||'<div class="v6-small">موردی نیست.</div>'}</div>
+<div class="v6-card" style="margin-top:14px"><h3>📢 خبرهای منتشرشده</h3>${(news.items||[]).map(x=>`<div class="v6-row" style="margin:8px 0"><span><b>${esc2(x.title)}</b><br><small>${esc2(x.type)} · ${esc2(x.date||'')}</small></span><button class="btn s v6-danger" onclick="dyDeleteNews('${esc2(x.id)}')">حذف</button></div>`).join('')||'<div class="v6-small">موردی نیست.</div>'}</div>
+<div class="v6-card" style="margin-top:14px"><h3>🧭 راهنمای نصب روی گوشی</h3><p class="v6-small">اگر سایت با HTTPS باز شده، از منوی مرورگر گزینه «افزودن به صفحه اصلی» یا «Install app» را بزن. بعد از نصب، دهم‌یار مثل یک برنامه جداگانه باز می‌شود.</p></div><div class="v6-card" style="margin-top:14px"><h3>🛠️ کنترل‌های سریع</h3><button class="btn s" onclick="location.reload(true)">بازخوانی سایت</button> <a class="btn s" href="/api/update/download" target="_blank">دانلود آخرین بسته آپدیت</a> <button class="btn s" onclick="dyReleases()">تاریخچه آپدیت‌ها</button><div id="dyReleasesBox" class="v6-small" style="margin-top:8px"></div></div>
+<button class="btn s" onclick="DYA.admin=false;DYA.token=null;sessionStorage.removeItem('dy_admin_token');dyRenderAdmin()">خروج از پنل</button>`}catch(e){DYA.admin=false;root.innerHTML='<div class="v6-small">جلسه مدیریت منقضی شده. دوباره وارد شوید.</div>'}};
+window.dyLogin=async function(){try{const d=await api('/api/admin/login',{method:'POST',body:JSON.stringify({username:document.getElementById('dyUser').value,password:document.getElementById('dyPass').value})});DYA.token=d.token;DYA.admin=true;sessionStorage.setItem('dy_admin_token',d.token);dyRenderAdmin()}catch(e){document.getElementById('dyMsg').textContent=e.message}};
+window.dyPublish=async function(){const msg=document.getElementById('dyMsg');try{const f=document.getElementById('dyFile').files[0];let file=null;if(f){if(f.size>8*1024*1024)throw new Error('حجم فایل بیشتر از ۸ مگابایت است');file={name:f.name,type:f.type,data:await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)})}}await api('/api/homework',{method:'POST',body:JSON.stringify({title:document.getElementById('dyTitle').value,subject:document.getElementById('dySubject').value,date:document.getElementById('dyDate').value,body:document.getElementById('dyBody').value,file})});msg.textContent='تکلیف منتشر شد';dyRenderAdmin();dyLoadHomework()}catch(e){msg.textContent=e.message}};
+window.dyPublishNews=async function(){const msg=document.getElementById('dyNewsMsg');try{await api('/api/news',{method:'POST',body:JSON.stringify({title:document.getElementById('dyNewsTitle').value,type:document.getElementById('dyNewsType').value,date:document.getElementById('dyNewsDate').value,body:document.getElementById('dyNewsBody').value})});msg.textContent='منتشر شد';dyRenderAdmin();dyLoadNews()}catch(e){msg.textContent=e.message}};
+window.dySaveSettings=async function(){try{await api('/api/admin/settings',{method:'POST',body:JSON.stringify({announcement:document.getElementById('dyAnnouncement').value,siteTitle:document.getElementById('dySiteTitle').value,siteSubtitle:document.getElementById('dySiteSubtitle').value,maintenance:document.getElementById('dyMaintenance').checked})});document.getElementById('dySettingsMsg').textContent='ذخیره شد';dyLoadNews()}catch(e){document.getElementById('dySettingsMsg').textContent=e.message}};
+window.dyPublishUpdate=async function(){const msg=document.getElementById('dyUpdateMsg');try{const f=document.getElementById('dyUpdateFile').files[0],v=document.getElementById('dyUpdateVersion').value.trim();if(!f||!v)throw new Error('ZIP و شماره نسخه را وارد کن');if(f.size>25*1024*1024)throw new Error('حجم ZIP بیشتر از ۲۵ مگابایت است');const data=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)});await api('/api/admin/update',{method:'POST',body:JSON.stringify({version:v,data})});msg.textContent='نسخه '+v+' منتشر شد';document.getElementById('dyUpdateFile').value=''}catch(e){msg.textContent=e.message}};
+window.dyDelete=async function(id){if(!confirm('این تکلیف حذف شود؟'))return;try{await api('/api/homework/'+encodeURIComponent(id),{method:'DELETE'});dyRenderAdmin();dyLoadHomework()}catch(e){alert(e.message)}};
+window.dyDeleteNews=async function(id){if(!confirm('این خبر حذف شود؟'))return;try{await api('/api/news/'+encodeURIComponent(id),{method:'DELETE'});dyRenderAdmin();dyLoadNews()}catch(e){alert(e.message)}};
+window.dyReleases=async function(){try{const d=await api('/api/admin/releases');document.getElementById('dyReleasesBox').textContent=(d.items||[]).map(x=>x.file).join('\n')||'هنوز نسخه قدیمی ذخیره نشده.'}catch(e){alert(e.message)}};
+window.dyBackup=async function(){try{const d=await api('/api/admin/backup');const blob=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dehomyar-admin-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)}catch(e){alert(e.message)}};
+window.dyChangePassword=async function(){try{const a=document.getElementById('dyOldPass').value,b=document.getElementById('dyNewPass').value;const d=await api('/api/admin/password',{method:'POST',body:JSON.stringify({current:a,next:b})});document.getElementById('dyPassMsg').textContent='رمز تغییر کرد؛ برای ورود دوباره از رمز جدید استفاده کن';DYA.admin=false;DYA.token=null;sessionStorage.removeItem('dy_admin_token');dyRenderAdmin()}catch(e){document.getElementById('dyPassMsg').textContent=e.message}};
+window.dyRestore=async function(inp){const f=inp.files?.[0];if(!f)return;if(!confirm('اطلاعات فعلی با پشتیبان جایگزین شود؟'))return;try{const text=await f.text();await api('/api/admin/backup/restore',{method:'POST',body:JSON.stringify({data:text})});alert('پشتیبان بازیابی شد');dyRenderAdmin();dyLoadNews();dyLoadHomework()}catch(e){alert(e.message)}finally{inp.value=''}};
+window.dyLoadHomework();window.dyLoadNews();
+})();
+</script>
+</body>
+</html>

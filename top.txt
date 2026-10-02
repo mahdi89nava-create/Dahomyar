@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>دهم‌یار | دستیار هوشمند پایه دهم</title>
+<style>
+:root{--bg:#080d16;--p:#101827;--line:#243149;--text:#eef5ff;--muted:#8fa0b8;--a:#36b7ff;--b:#8b5cf6;--good:#22c55e;--bad:#ef4444;--inp:#0a111d;--res:#0a1220;--hv:#172338;--c1:#111b2b;--c2:#0e1624;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eef2f8;--p:#fff;--line:#d4dce8;--text:#172033;--muted:#627086;--inp:#f6f8fc;--res:#f1f5fb;--hv:#e3ebf6;--c1:#fff;--c2:#f7f9fd}}
+:root[data-theme="light"]{--bg:#eef2f8;--p:#fff;--line:#d4dce8;--text:#172033;--muted:#627086;--inp:#f6f8fc;--res:#f1f5fb;--hv:#e3ebf6;--c1:#fff;--c2:#f7f9fd}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:radial-gradient(circle at 20% 0,var(--hv),var(--bg) 40%);color:var(--text);font-family:Vazirmatn,Tahoma,Arial,sans-serif;overflow-x:hidden;line-height:1.7}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.side{width:260px;background:var(--p);border-left:1px solid var(--line);position:fixed;right:0;top:env(safe-area-inset-top,0px);bottom:0;z-index:20;padding:16px;overflow:auto}
+.logo{font-size:25px;font-weight:900;padding:8px 8px 16px;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo small{display:block;color:var(--muted);font-size:11px}
+.nav button{display:block;width:100%;border:0;background:transparent;color:var(--text);opacity:.8;text-align:right;padding:10px 12px;border-radius:12px;margin-bottom:4px;transition:.2s}
+.nav button:hover,.nav button.active{background:var(--hv);opacity:1;transform:translateX(-3px)}
+.main{margin-right:260px;padding:20px;max-width:1500px}
+.bar{background:linear-gradient(120deg,#7c5cff55,#22d3ee33);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:16px;display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.mb{display:none}
+.page{display:none;animation:in .35s}.page.active{display:block}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+h1{font-size:28px;margin:0 0 6px}h2{margin:0 0 12px}h3{margin:0 0 8px}
+.sub{color:var(--muted);margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:linear-gradient(145deg,var(--c1),var(--c2));border:1px solid var(--line);border-radius:18px;padding:16px;transition:.25s}
+.card:hover{border-color:var(--a)}
+.hd{display:flex;justify-content:space-between;align-items:flex-start}
+.fav{background:none;border:0;font-size:20px;color:var(--text)}
+.stat b{display:block;font-size:26px}.stat span{color:var(--muted);font-size:13px}
+.btn{border:0;border-radius:12px;padding:9px 15px;background:linear-gradient(135deg,var(--a),#2878ff);color:#fff;font-weight:bold;margin:3px 0}
+.btn.s{background:var(--hv);color:var(--text)}.btn.d{background:#9d2424}
+input,select,textarea{width:100%;background:var(--inp);color:var(--text);border:1px solid var(--line);border-radius:11px;padding:10px;outline:none;margin:4px 0}
+input:focus,select:focus,textarea:focus{border-color:var(--a)}
+.result{margin-top:8px;padding:10px;border-radius:12px;background:var(--res);border:1px dashed var(--line);min-height:38px;white-space:pre-wrap;color:var(--a);cursor:copy;direction:ltr;text-align:left;font-family:monospace;font-size:14px}
+.tag{display:inline-block;background:var(--hv);border:1px solid var(--line);padding:3px 10px;border-radius:30px;font-size:12px;margin:3px;cursor:pointer}
+.pr{height:9px;background:var(--hv);border-radius:20px;overflow:hidden}.pr i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--b));transition:.8s}
+.f{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line);cursor:copy}
+.f b{direction:ltr;font-family:monospace;color:var(--a)}
+canvas{width:100%;height:320px;background:var(--res);border:1px solid var(--line);border-radius:14px;touch-action:none}
+.pt{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:5px;margin:12px 0}
+.el{padding:8px 2px;background:var(--hv);border:1px solid var(--line);border-radius:8px;text-align:center;cursor:pointer;font-size:13px}
+.el small{display:block;font-size:10px;color:var(--muted)}.el:hover{border-color:var(--a)}
+.ch{height:300px;overflow:auto;background:var(--res);border-radius:12px;padding:10px}
+.m{padding:8px 12px;border-radius:14px;margin:6px 0;max-width:90%;white-space:pre-wrap}
+.m.u{background:var(--b);color:#fff;margin-left:auto}.m.a{background:var(--hv)}
+.opt{display:block;width:100%;text-align:right;margin:6px 0;background:var(--hv);color:var(--text);border:1px solid var(--line);padding:10px;border-radius:10px}
+.opt.ok{background:#123820;border-color:var(--good)}.opt.no{background:#421b1b;border-color:var(--bad)}
+.modal{position:fixed;inset:0;background:#0009;display:none;place-items:center;z-index:50;padding:16px}.modal.show{display:grid}
+.mbx{background:var(--p);border:1px solid var(--line);border-radius:20px;padding:20px;max-width:560px;width:100%;max-height:90vh;overflow:auto}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:16px;background:var(--p);border:1px solid var(--a);padding:10px 16px;border-radius:12px;z-index:100;opacity:0;transform:translateY(20px);transition:.3s;pointer-events:none}.toast.show{opacity:1;transform:none}
+footer{margin-top:30px;border-top:1px solid var(--line);padding:20px 4px;color:var(--muted);text-align:center}
+footer a{color:var(--a);text-decoration:none}
+.fs{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}.fs div{background:var(--p);border:1px solid var(--line);border-radius:14px;padding:8px 18px;color:var(--text);font-size:18px}.fs small{display:block;font-size:11px;color:var(--muted)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--good);margin-left:5px}
+.ach{opacity:.35;filter:grayscale(1)}.ach.on{opacity:1;filter:none}
+table{width:100%;border-collapse:collapse}td,th{padding:9px;border-bottom:1px solid var(--line);text-align:center}
+tr.tdy{background:var(--hv);font-weight:700}
+.wg{display:flex;gap:10px;align-items:center;font-size:13px;background:var(--p);border:1px solid var(--line);padding:4px 12px;border-radius:12px}#clk{font-family:monospace;font-size:16px;color:var(--a)}
+#bdg{background:var(--bad);color:#fff;border-radius:10px;padding:0 6px;font-size:11px;margin-right:4px}
+details p{margin:6px 0}summary{cursor:pointer}
+.ct{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0}.ct a{background:var(--p);border:1px solid var(--line);padding:6px 14px;border-radius:12px}
+.noanim *{animation:none!important;transition:none!important}
+@media(max-width:850px){.side{transform:translateX(100%);transition:.3s}.side.open{transform:none}.main{margin:0;padding:12px}.mb{display:inline-block}}
+</style>
+
+<style id="dehomyar-v6-css">
+.v6-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.v6-card{background:var(--card,#111827);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:16px;box-shadow:0 8px 25px #0002}.v6-card h3{margin-top:0}.v6-pill{display:inline-flex;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--ac,#36b7ff) 18%,transparent);color:var(--ac,#36b7ff);font-size:12px}.v6-progress{height:9px;background:#ffffff12;border-radius:99px;overflow:hidden}.v6-progress i{display:block;height:100%;background:var(--ac,#36b7ff);border-radius:99px}.v6-list{display:flex;flex-direction:column;gap:8px}.v6-row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px;border-radius:12px;background:#ffffff08}.v6-row input,.v6-row textarea,.v6-card input,.v6-card select{width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:1px solid #ffffff18;background:#0002;color:inherit}.v6-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.v6-danger{border-color:#ef4444!important}.v6-small{font-size:12px;opacity:.72}.v6-modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;z-index:10000;padding:16px}.v6-modal.show{display:flex}.v6-modalbox{max-width:560px;width:100%;max-height:88vh;overflow:auto;background:var(--card,#111827);border:1px solid #ffffff18;border-radius:22px;padding:20px}.v6-stat{font-size:25px;font-weight:800}.v6-nav{position:relative}.v6-badge{position:absolute;top:5px;left:5px;font-size:9px;padding:2px 5px;border-radius:99px;background:#ef4444;color:#fff}.v6-table{display:grid;grid-template-columns:repeat(18,minmax(32px,1fr));gap:5px;overflow:auto}.v6-el{min-height:52px;border:1px solid #ffffff16;border-radius:8px;padding:4px;text-align:center;cursor:pointer;background:#ffffff06}.v6-el b{display:block;font-size:13px}.v6-el span{font-size:9px;opacity:.7}.v6-command{position:fixed;inset:0;background:#000a;display:none;z-index:10001;align-items:flex-start;justify-content:center;padding-top:10vh}.v6-command.show{display:flex}.v6-commandbox{width:min(680px,92vw);background:var(--card,#111827);border-radius:20px;padding:14px}.v6-commandbox input{width:100%;font-size:18px;padding:13px;box-sizing:border-box}.v6-cmditem{padding:12px;border-radius:10px;cursor:pointer}.v6-cmditem:hover{background:#ffffff0d}@media(max-width:650px){.v6-table{grid-template-columns:repeat(9,minmax(40px,1fr))}.v6-row{flex-direction:column;align-items:stretch}}
+</style>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#10182f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="دهم‌یار">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style id="dehomyar7-pwa-style">
+:root{--pwa-a:#7c5cff;--pwa-b:#20d9ff;--pwa-c:#ff5db1;--pwa-bg:#081025}
+#dy7Splash{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 20%,#263a7c 0,#10182f 38%,#050914 100%);color:#fff;transition:opacity .55s,visibility .55s}
+#dy7Splash.hide{opacity:0;visibility:hidden;pointer-events:none}.dy7-splash-card{text-align:center;padding:34px;border-radius:30px;background:rgba(255,255,255,.08);backdrop-filter:blur(20px);box-shadow:0 25px 80px rgba(0,0,0,.35);animation:dy7Float 3s ease-in-out infinite}.dy7-logo{width:86px;height:86px;border-radius:25px;margin:auto auto 15px;box-shadow:0 12px 35px #0005;animation:dy7Pop .8s cubic-bezier(.2,.9,.2,1)}.dy7-splash-title{font-size:28px;font-weight:900}.dy7-splash-sub{opacity:.72;margin-top:7px;font-size:13px}@keyframes dy7Float{50%{transform:translateY(-8px)}}@keyframes dy7Pop{from{transform:scale(.6) rotate(-8deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+#dy7Fab{position:fixed;right:18px;bottom:18px;z-index:9000;width:54px;height:54px;border:0;border-radius:18px;background:linear-gradient(135deg,var(--pwa-a),var(--pwa-b));color:white;font-size:23px;box-shadow:0 12px 35px #0005;cursor:pointer;transition:.25s}#dy7Fab:hover{transform:translateY(-4px) rotate(3deg)}
+#dy7Panel{position:fixed;right:18px;bottom:82px;width:min(390px,calc(100vw - 36px));max-height:78vh;overflow:auto;z-index:8999;padding:18px;border-radius:25px;background:rgba(10,17,40,.96);color:#eef4ff;border:1px solid #ffffff18;box-shadow:0 25px 80px #0009;backdrop-filter:blur(18px);display:none}.dy7-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid #ffffff10}.dy7-row:last-child{border-bottom:0}.dy7-title{font-weight:900;font-size:18px}.dy7-pill{padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800;background:#ffffff12}.dy7-on{background:#1fd58a22;color:#59f0b2}.dy7-off{background:#ffb02022;color:#ffd06b}.dy7-btn{border:1px solid #ffffff18;background:#ffffff0d;color:#fff;border-radius:12px;padding:9px 11px;cursor:pointer}.dy7-btn:hover{background:#ffffff18}.dy7-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.dy7-card{padding:12px;border-radius:16px;background:linear-gradient(135deg,#ffffff0d,#ffffff04);border:1px solid #ffffff0c}.dy7-card b{display:block;margin-bottom:4px}.dy7-small{font-size:11px;opacity:.7;line-height:1.6}.dy7-status{display:flex;align-items:center;gap:8px}.dy7-dot{width:9px;height:9px;border-radius:50%;background:#ffb020;box-shadow:0 0 12px currentColor}.dy7-dot.online{background:#39e69a}.dy7-dot.offline{background:#ffb020}.dy7-section{margin-top:15px;font-size:12px;font-weight:900;opacity:.65}.dy7-update{margin-top:12px;padding:12px;border-radius:15px;background:linear-gradient(135deg,#7c5cff20,#20d9ff14);border:1px solid #7c5cff35}.dy7-install{display:none}.dy7-install.show{display:block}.dy7-banner{position:fixed;top:12px;left:50%;transform:translateX(-50%) translateY(-150%);z-index:10000;max-width:calc(100vw - 24px);padding:10px 14px;border-radius:14px;background:#121c3d;color:#fff;border:1px solid #ffffff1c;box-shadow:0 15px 40px #0006;transition:.35s;font-size:12px}.dy7-banner.show{transform:translateX(-50%) translateY(0)}
+.dy7-online-list{display:grid;gap:7px;margin-top:8px}.dy7-feature{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:12px;background:#ffffff08}.dy7-feature span:first-child{font-size:12px}.dy7-feature span:last-child{font-size:10px;padding:3px 7px;border-radius:8px}
+@media(max-width:600px){#dy7Panel{right:10px;bottom:76px;width:calc(100vw - 20px)}#dy7Fab{right:10px;bottom:10px}.dy7-grid{grid-template-columns:1fr 1fr}.dy7-splash-card{margin:18px}}
+</style>
+
+</head>
+<body>
+<aside class="side" id="side"><div class="logo">دهم‌یار<small>دستیار هوشمند دانش‌آموز دهم</small></div><div class="nav" id="nav"></div></aside>
+<main class="main">
+<div class="bar"><div><button class="btn s mb" onclick="$('side').classList.toggle('open')">☰</button> 📅 <b>فردا (<span id="tmd"></span>):</b> <span id="tm"></span></div><div class="wg" id="wg"><span id="clk"></span><span id="dt"></span></div><div><button class="btn s" onclick="go('schedule')">📅 برنامه</button> <button class="btn s" onclick="bell()">🔔<span id="bdg">۳</span></button></div></div>
+
+<section id="home" class="page active">
+<h1>داشبورد دهم‌یار 🚀</h1><div class="sub">سلام <span id="nm">دوست من</span> 👋 امروز چه چیزی می‌خوای یاد بگیری؟</div>
+<div class="card" id="cont"></div><br><div class="grid" id="hs"></div><br>
+<div class="card"><input id="gs" placeholder="🔎 جست‌وجوی ابزار، فرمول یا درس…" oninput="gsearch()"><div id="gsr"></div></div><br>
+<div class="grid2"><div class="card"><h2>⚡ دسترسی سریع</h2><button class="btn" onclick="go('math')">🧮 ریاضی</button> <button class="btn" onclick="go('physics')">⚡ فیزیک</button> <button class="btn" onclick="go('chem')">🧪 شیمی</button> <button class="btn" onclick="go('quiz')">🎯 آزمون</button> <button class="btn" onclick="go('ai')">🤖 مهدی AI</button></div>
+<div class="card"><h2>💡 نکته امروز</h2><p id="tip"></p><button class="btn s" onclick="tip()">نکته بعدی</button></div></div>
+</section>
+
+<section id="lessons" class="page"><h1>📚 درس‌ها</h1><div class="sub">روی هر مبحث بزن تا مهدی AI برایت توضیح بدهد</div><div class="grid2" id="lsn"></div></section>
+<section id="math" class="page"><h1>➗ ابزار ریاضی</h1><div class="sub">همراه با مراحل حل</div><div class="grid2" id="g-math"></div></section>
+<section id="geometry" class="page"><h1>📐 هندسه</h1><div class="grid2" id="g-geo"></div></section>
+<section id="physics" class="page"><h1>⚡ ابزار فیزیک</h1><div class="grid2" id="g-phy"></div></section>
+<section id="chem" class="page"><h1>🧪 ابزار شیمی</h1><div class="grid2" id="g-chem"></div></section>
+
+<section id="graph" class="page"><h1>📈 نمودار و تابع</h1><div class="sub">چند تابع را با ; جدا کن. مثال: x^2 ; sin(x) ; 2x+1 — با موس/انگشت جابجا و زوم کن</div>
+<div class="card"><input id="fx" value="x^2 ; sin(x) ; 2x+1"><button class="btn" onclick="draw()">رسم</button> <button class="btn s" onclick="zoom(.7)">＋</button> <button class="btn s" onclick="zoom(1.4)">－</button> <button class="btn s" onclick="G.x=0;G.y=0;G.s=10;draw()">ریست</button><br><canvas id="gc"></canvas></div></section>
+
+<section id="lab" class="page"><h1>🔬 آزمایشگاه تعاملی</h1><div class="grid2">
+<div class="card"><h3>پرتاب قائم</h3>ارتفاع اولیه: <b id="lh0">20</b> m<input type="range" id="h0" min="0" max="100" value="20" oninput="lab1()">سرعت اولیه: <b id="lv0">15</b> m/s<input type="range" id="v0" min="0" max="50" value="15" oninput="lab1()"><canvas id="lc" style="height:200px"></canvas><div class="result" id="l1r"></div></div>
+<div class="card"><h3>انرژی و تکانه</h3>جرم: <b id="lm">10</b> kg<input type="range" id="em" min="1" max="100" value="10" oninput="lab2()">سرعت: <b id="lvv">10</b> m/s<input type="range" id="ev" min="0" max="50" value="10" oninput="lab2()">ارتفاع: <b id="lhh">5</b> m<input type="range" id="eh" min="0" max="100" value="5" oninput="lab2()"><div class="result" id="l2r"></div><div class="pr"><i id="lk" style="width:0"></i></div><small>سهم انرژی جنبشی از کل</small></div><div class="card"><h3>مثلث تعاملی</h3>a: <b id="la3">6</b><input type="range" id="ta" min="1" max="20" value="6" oninput="lab3()">b: <b id="lb3">8</b><input type="range" id="tb" min="1" max="20" value="8" oninput="lab3()">c: <b id="lc3">10</b><input type="range" id="tc" min="1" max="20" value="10" oninput="lab3()"><canvas id="l3c" style="height:200px"></canvas><div class="result" id="l3r"></div></div>
+<div class="card"><h3>نمودار حرکت (v–t آبی، x–t نارنجی)</h3>v₀: <b id="lmv">5</b><input type="range" id="mv" min="-20" max="20" value="5" oninput="lab4()">a: <b id="lma">2</b><input type="range" id="ma" min="-10" max="10" value="2" oninput="lab4()"><canvas id="l4c" style="height:200px"></canvas><div class="result" id="l4r"></div></div></div></section>
+
+<section id="periodic" class="page"><h1>⚛️ جدول تناوبی (۳۶ عنصر اول)</h1><input id="es" placeholder="جست‌وجوی نام، نماد یا عدد اتمی" oninput="ptab()"><div class="pt" id="pt"></div><div class="card" id="ei">روی یک عنصر بزن.</div></section>
+<section id="formulas" class="page"><h1>📖 فرمول‌نامه</h1><div class="sub">با کلیک روی هر فرمول کپی می‌شود</div><input id="fsr" placeholder="🔍 جست‌وجو…" oninput="fr()"><div class="grid2" id="fl"></div></section>
+
+<section id="quiz" class="page"><h1>🎯 آزمون</h1><div class="card" id="qbox"></div></section>
+
+<section id="progress" class="page"><h1>🏆 پیشرفت و دستاوردها</h1><div class="grid2"><div class="card" id="pf"></div><div class="card" id="pa"></div></div><br><div class="card"><h2>🎓 عملکرد آزمون‌ها</h2><div id="pp"></div></div></section>
+
+<section id="ai" class="page"><h1>🤖 مهدی AI</h1><div class="card"><select id="mode"><option value="teacher">👨‍🏫 حالت معلم (توضیح کامل)</option><option value="solver">🧩 حالت حل مسئله (مرحله‌به‌مرحله)</option><option value="short">⚡ پاسخ کوتاه و خلاصه</option><option value="check">✅ بررسی پاسخ من</option><option value="practice">🎯 تولید تمرین</option><option value="summary">📄 خلاصه درس</option></select>
+<div class="ch" id="chat"></div><div style="display:flex;gap:6px"><input id="ain" placeholder="سؤالت رو بنویس…" onkeydown="if(event.key==='Enter')ask()"><button class="btn" onclick="ask()">ارسال</button></div>
+<span class="tag" onclick="ask('معادله درجه دوم را با مثال توضیح بده')">معادله درجه ۲</span><span class="tag" onclick="ask('مفهوم مول را ساده توضیح بده')">مول</span><span class="tag" onclick="ask('فرق دما و گرما چیست؟')">دما و گرما</span><span class="tag" onclick="ask('تشابه مثلث‌ها را توضیح بده')">تشابه</span></div></section>
+
+<section id="schedule" class="page"><h1>📅 برنامه هفتگی</h1><div class="sub">هر درس یک زنگ — ۴ زنگ در روز</div><div class="card" style="overflow:auto"><table id="stb"></table></div><br><button class="btn" onclick="edSch()">✏️ ویرایش برنامه</button></section>
+<section id="solver" class="page"><h1>🧠 حل‌گر هوشمند</h1><div class="sub">معادله خطی یا درجه دوم را بنویس؛ مراحل حل را ببین</div><div class="card"><input id="soi" value="2x+7=19" onkeydown="if(event.key==='Enter')slv()"><button class="btn" onclick="slv()">حل کن</button> <button class="btn s" onclick="ask('این معادله را مرحله‌به‌مرحله توضیح بده: '+$('soi').value)">🤖 توضیح مهدی AI</button><div><span class="tag" onclick="$('soi').value='3x-5=x+9';slv()">3x−5=x+9</span><span class="tag" onclick="$('soi').value='x^2-5x+6=0';slv()">x²−5x+6=0</span><span class="tag" onclick="$('soi').value='2x^2+3x+5=0';slv()">Δ&lt;0</span></div><div class="result" id="sor" onclick="copy(this.textContent)">—</div></div></section>
+<section id="bank" class="page"><h1>📝 بانک سؤال</h1><div class="grid2"><select id="bs" onchange="bank()"></select><input id="bq" placeholder="جستجو در سؤال‌ها…" oninput="bank()"></div><br><div class="card" id="bl"></div><br><button class="btn" onclick="go('quiz')">🎯 برو به آزمون</button></section>
+<section id="favorites" class="page"><h1>⭐ علاقه‌مندی‌ها</h1><div class="grid2" id="g-fav"></div></section>
+
+<section id="settings" class="page"><h1>⚙️ تنظیمات</h1><div class="card" id="setbox"></div></section>
+
+
+<section id="v6account" class="page"><h1>👤 حساب و پروفایل</h1><div class="sub">حساب محلی این نسخه روی همین مرورگر ذخیره می‌شود؛ برای حساب آنلاین به بک‌اند نیاز است.</div><div class="v6-grid"><div class="v6-card"><h3>ورود / ثبت‌نام محلی</h3><input id="v6email" placeholder="ایمیل"><input id="v6pass" type="password" placeholder="رمز عبور" style="margin-top:8px"><div class="v6-actions"><button class="btn" onclick="v6Login()">ورود</button><button class="btn s" onclick="v6Signup()">ثبت‌نام</button><button class="btn s" onclick="v6Logout()">خروج</button></div><p id="v6authmsg" class="v6-small"></p></div><div class="v6-card"><h3>پروفایل</h3><input id="v6name" placeholder="نام نمایشی"><input id="v6school" placeholder="نام مدرسه" style="margin-top:8px"><input id="v6grade" value="دهم ریاضی‌فیزیک" style="margin-top:8px"><div class="v6-actions"><button class="btn" onclick="v6SaveProfile()">ذخیره پروفایل</button></div><p id="v6profilemsg"></p></div><div class="v6-card"><h3>☁️ همگام‌سازی</h3><p>پشتیبان‌گیری JSON بین دستگاه‌ها فعال است. این با Cloud Sync واقعی فرق دارد.</p><div class="v6-actions"><button class="btn" onclick="v6Export()">خروجی/پشتیبان</button><label class="btn s" style="cursor:pointer">ورود پشتیبان<input type="file" accept="application/json" hidden onchange="v6Import(this)"></label></div></div></div></section>
+<section id="v6dashboard" class="page"><h1>🚀 مرکز دانش‌آموزی</h1><div class="v6-grid"><div class="v6-card"><span class="v6-pill">سطح</span><div class="v6-stat" id="v6lvl">1</div><div class="v6-progress"><i id="v6bar" style="width:0%"></i></div><p id="v6xptext" class="v6-small"></p></div><div class="v6-card"><span class="v6-pill">امروز</span><div class="v6-stat" id="v6today">0</div><p>فعالیت ثبت‌شده</p></div><div class="v6-card"><span class="v6-pill">یادداشت</span><div class="v6-stat" id="v6notesn">0</div><p>یادداشت ذخیره‌شده</p></div><div class="v6-card"><span class="v6-pill">فلش‌کارت</span><div class="v6-stat" id="v6cardsn">0</div><p>کارت مرور</p></div></div><div class="v6-grid" style="margin-top:14px"><div class="v6-card"><h3>🎯 کارهای امروز</h3><div id="v6todaylist" class="v6-list"></div></div><div class="v6-card"><h3>🏅 دستاوردها</h3><div id="v6ach" class="v6-list"></div></div></div></section>
+<section id="v6notes" class="page"><h1>📝 دفتر یادداشت</h1><div class="v6-card"><input id="v6ntitle" placeholder="عنوان"><textarea id="v6nbody" rows="6" placeholder="یادداشت، خلاصه درس، فرمول یا نکته..."></textarea><select id="v6nsub"><option>عمومی</option><option>ریاضی</option><option>هندسه</option><option>فیزیک</option><option>شیمی</option></select><div class="v6-actions"><button class="btn" onclick="v6AddNote()">ذخیره یادداشت</button><button class="btn s" onclick="v6ClearNote()">پاک‌کردن فرم</button></div></div><div id="v6noteslist" class="v6-grid" style="margin-top:14px"></div></section>
+<section id="v6flash" class="page"><h1>🧠 فلش‌کارت</h1><div class="v6-card"><input id="v6fq" placeholder="سؤال / مفهوم"><input id="v6fa" placeholder="پاسخ" style="margin-top:8px"><input id="v6ftag" placeholder="درس" style="margin-top:8px"><button class="btn" onclick="v6AddFlash()" style="margin-top:8px">افزودن کارت</button></div><div id="v6flashlist" class="v6-grid" style="margin-top:14px"></div></section>
+<section id="v6planner" class="page"><h1>📅 برنامه‌ریز مطالعه</h1><div class="v6-card"><div class="v6-row"><input id="v6task" placeholder="مثلاً ۳۰ تست ریاضی"><select id="v6day"><option>شنبه</option><option>یکشنبه</option><option>دوشنبه</option><option>سه‌شنبه</option><option>چهارشنبه</option><option>پنجشنبه</option><option>جمعه</option></select><input id="v6mins" type="number" value="30" min="5"></div><button class="btn" onclick="v6AddTask()">افزودن برنامه</button></div><div id="v6tasks" class="v6-list" style="margin-top:14px"></div><div class="v6-card" style="margin-top:14px"><h3>⏱️ پومودورو</h3><div class="v6-stat" id="v6timer">25:00</div><div class="v6-actions"><button class="btn" onclick="v6TimerStart()">شروع</button><button class="btn s" onclick="v6TimerPause()">مکث</button><button class="btn s" onclick="v6TimerReset()">ریست</button></div></div></section>
+<section id="v6bank" class="page"><h1>📝 بانک سؤال گسترده</h1><div class="v6-card"><select id="v6bsub"><option>همه</option><option>ریاضی</option><option>هندسه</option><option>فیزیک</option><option>شیمی</option></select><button class="btn" onclick="v6NewQuestion()">سؤال تصادفی</button><div id="v6question" style="margin-top:14px"></div></div></section>
+<section id="v6achievements" class="page"><h1>🏆 دستاوردها</h1><div id="v6achfull" class="v6-grid"></div></section>
+<section id="v6tools" class="page"><h1>🧰 ابزارهای دانش‌آموزی</h1><div class="v6-grid"><div class="v6-card"><h3>🔢 تبدیل واحد</h3><input id="v6num" type="number" value="1"><select id="v6unit"><option value="km-m">km → m</option><option value="m-km">m → km</option><option value="g-kg">g → kg</option><option value="kg-g">kg → g</option><option value="cm-m">cm → m</option><option value="m-cm">m → cm</option><option value="C-K">°C → K</option><option value="K-C">K → °C</option><option value="L-mL">L → mL</option><option value="mL-L">mL → L</option></select><button class="btn" onclick="v6Convert()">تبدیل</button><div id="v6conv" class="result">—</div></div><div class="v6-card"><h3>🔐 رمزساز</h3><input id="v6plen" type="number" value="16" min="6" max="64"><button class="btn" onclick="v6GenPass()">ساخت رمز</button><div id="v6passout" class="result">—</div></div><div class="v6-card"><h3>🧮 درصد</h3><input id="v6pa" type="number" placeholder="عدد"><input id="v6pb" type="number" placeholder="درصد"><button class="btn" onclick="v6Percent()">محاسبه</button><div id="v6pout" class="result">—</div></div></div></section>
+<section id="v6periodic" class="page"><h1>⚛️ جدول تناوبی کامل</h1><div class="v6-card"><input id="v6esearch" placeholder="جستجوی عنصر یا نماد" oninput="v6Periodic()"><div id="v6ptable" class="v6-table" style="margin-top:12px"></div><div id="v6edetail" class="result" style="margin-top:12px">روی یک عنصر بزن.</div></div></section>
+<footer>
+<div class="fs"><div><span class="dot"></span><span class="s-on">1</span><small>آنلاین همین لحظه</small></div><div><span class="s-vis">—</span><small>کل بازدیدها</small></div><div><span class="s-td">—</span><small>بازدید امروز</small></div></div>
+<p>✨ هر روز یک قدم کوچک، سال بعد یک جهش بزرگ.</p>
+<p><b>دهم‌یار</b> — همراه هوشمند دانش‌آموزان رشته ریاضی‌فیزیک پایه دهم</p>
+<div class="ct"><a href="https://t.me/sitedeveloperdahom" target="_blank" rel="noopener">✈️ تلگرام: @sitedeveloperdahom</a><a href="https://ble.ir/Developer10thgrade" target="_blank" rel="noopener">💬 بله: @Developer10thgrade</a><a href="mailto:mahdi89nava@gmail.com">✉️ mahdi89nava@gmail.com</a></div>
+<p><a href="#" onclick="report('b');return false">🐞 گزارش مشکل</a> &nbsp;|&nbsp; <a href="#" onclick="report('s');return false">💡 پیشنهاد قابلیت</a> &nbsp;|&nbsp; <a href="#" onclick="about();return false">درباره دهم‌یار</a> &nbsp;|&nbsp; <a href="#" onclick="terms();return false">قوانین استفاده</a></p>
+<p style="font-size:13px">© تمامی حقوق این وب‌سایت برای «دهم‌یار» محفوظ است. هرگونه کپی‌برداری یا بازنشر محتوا بدون اجازه کتبی ممنوع می‌باشد. — نسخه ۶.۰ — توسعه‌دهنده: مهدی</p>
+</footer>
+</main>
+<div class="modal" id="md" onclick="if(event.target===this)this.classList.remove('show')"><div class="mbx" id="mbx"></div></div>
+<div class="toast" id="ts"></div>
+
+<script>
+const $=i=>document.getElementById(i),Qa=s=>[...document.querySelectorAll(s)];
+const fa=s=>String(s).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/٫/g,'.').replace(/،/g,',');
+const F=x=>Number.isFinite(x)?String(+x.toPrecision(7)):'تعریف نشده';
+let S={};try{S=JSON.parse(localStorage.getItem('dy4')||'{}')}catch(e){}
+S=Object.assign({xp:0,calc:0,quiz:0,best:0,fav:[],name:'',sch:null,sub:{}},S);
+S.st=Object.assign({theme:'dark',ac:'#36b7ff',anim:1,clock:1,fs:16},S.st||{});S.streak=S.streak||0;
+const td=()=>new Date().toISOString().slice(0,10);
+function esc(x){return String(x==null?'':x).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';')}
+const save=()=>{try{localStorage.setItem('dy4',JSON.stringify(S))}catch(e){}};
+function toast(m){const t=$('ts');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function xp(n){S.xp+=n;save();ref()}
+const lvl=()=>1+Math.floor(S.xp/100);
+function copy(t){try{navigator.clipboard.writeText(t).then(()=>toast('کپی شد ✅'))}catch(e){toast('کپی نشد')}}
+function modal(h){$('mbx').innerHTML=h;$('md').classList.add('show')}
+/* nav */
+const PG=[['home','🏠 داشبورد'],['lessons','📚 درس‌ها'],['math','➗ ریاضی'],['geometry','📐 هندسه'],['physics','⚡ فیزیک'],['chem','🧪 شیمی'],['graph','📈 نمودار'],['lab','🔬 آزمایشگاه'],['periodic','⚛️ جدول تناوبی'],['formulas','📖 فرمول‌نامه'],['quiz','🎯 آزمون'],['progress','🏆 پیشرفت'],['ai','🤖 مهدی AI'],['favorites','⭐ علاقه‌مندی‌ها'],['settings','⚙️ تنظیمات']];
+PG.splice(1,0,['schedule','📅 برنامه هفتگی']);PG.splice(3,0,['solver','🧠 حل‌گر هوشمند']);PG.splice(PG.findIndex(p=>p[0]=='quiz')+1,0,['bank','📝 بانک سؤال']);
+$('nav').innerHTML=PG.map(p=>`<button data-p="${p[0]}" onclick="go('${p[0]}')">${p[1]}</button>`).join('');
+function go(p){Qa('.page').forEach(x=>x.classList.toggle('active',x.id==p));Qa('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.p==p));$('side').classList.remove('open');scrollTo(0,0);
+if(p!='home'){S.lp=p;save()}if(p=='home')ref();if(p=='schedule')stab();if(p=='bank')bank();if(p=='progress')prog();if(p=='favorites')favs();if(p=='graph')setTimeout(draw,50);if(p=='lab'){lab1();lab2();lab3();lab4()}if(p=='quiz'&&!Z.run)qmenu();if(p=='settings')setui()}
+/* elements */
+const E=`H|هیدروژن|1.008;He|هلیم|4.003;Li|لیتیم|6.94;Be|بریلیم|9.012;B|بور|10.81;C|کربن|12.011;N|نیتروژن|14.007;O|اکسیژن|15.999;F|فلوئور|18.998;Ne|نئون|20.180;Na|سدیم|22.990;Mg|منیزیم|24.305;Al|آلومینیم|26.982;Si|سیلیسیم|28.085;P|فسفر|30.974;S|گوگرد|32.06;Cl|کلر|35.45;Ar|آرگون|39.948;K|پتاسیم|39.098;Ca|کلسیم|40.078;Sc|اسکاندیم|44.956;Ti|تیتانیم|47.867;V|وانادیم|50.942;Cr|کروم|51.996;Mn|منگنز|54.938;Fe|آهن|55.845;Co|کبالت|58.933;Ni|نیکل|58.693;Cu|مس|63.546;Zn|روی|65.38;Ga|گالیم|69.723;Ge|ژرمانیم|72.630;As|آرسنیک|74.922;Se|سلنیوم|78.971;Br|برم|79.904;Kr|کریپتون|83.798;Rb|روبیدیم|85.468;Sr|استرانسیم|87.62;Y|ایتریم|88.906;Zr|زیرکونیم|91.224;Nb|نیوبیم|92.906;Mo|مولیبدن|95.95;Tc|تکنسیم|98;Ru|روتنیم|101.07;Rh|رودیم|102.906;Pd|پالادیم|106.42;Ag|نقره|107.868;Cd|کادمیم|112.414;In|ایندیوم|114.818;Sn|قلع|118.710;Sb|آنتیموان|121.760;Te|تلوریم|127.60;I|ید|126.904;Xe|زنون|131.293;Cs|سزیم|132.905;Ba|باریم|137.327;La|لانتان|138.905;Ce|سریم|140.116;Pr|پرازئودیمیم|140.908;Nd|نئودیمیم|144.242;Pm|پرومتیم|145;Sm|ساماریم|150.36;Eu|یوروپیم|151.964;Gd|گادولینیم|157.25;Tb|تربیم|158.925;Dy|دیسپروزیم|162.500;Ho|هولمیم|164.930;Er|اربیم|167.259;Tm|تولیم|168.934;Yb|ایتربیم|173.045;Lu|لوتتیم|174.967;Hf|هافنیم|178.49;Ta|تانتال|180.948;W|تنگستن|183.84;Re|رنیوم|186.207;Os|اسمیم|190.23;Ir|ایریدیم|192.217;Pt|پلاتین|195.084;Au|طلا|196.967;Hg|جیوه|200.592;Tl|تالیم|204.38;Pb|سرب|207.2;Bi|بیسموت|208.980;Po|پولونیم|209;At|آستاتین|210;Rn|رادون|222;Fr|فرانسیم|223;Ra|رادیم|226;Ac|اکتینیم|227;Th|توریوم|232.038;Pa|پروتاکتینیم|231.036;U|اورانیم|238.029;Np|نپتونیم|237;Pu|پلوتونیم|244;Am|آمریسیم|243;Cm|کوریوم|247;Bk|برکلیم|247;Cf|کالیفرنیم|251;Es|اینشتینیم|252;Fm|فرمیم|257;Md|مندلیفیم|258;No|نوبلیم|259;Lr|لارنسیم|266;Rf|رادرفوردیم|267;Db|دوبنیم|268;Sg|سیبورگیم|269;Bh|بوهریم|270;Hs|هاسیم|277;Mt|مایتنریم|278;Ds|دارمشتاتیم|281;Rg|رونتگنیم|282;Cn|کوپرنیسیم|285;Nh|نیهونیوم|286;Fl|فلروویوم|289;Mc|مسکوویم|290;Lv|لیورموریم|293;Ts|تنسین|294;Og|اوگانسون|294`.split(';').map(s=>s.split('|'));
+const MM={};E.forEach(e=>MM[e[0]]=+e[2]);
+function cnt(s){let i=0;function p(){const c={};while(i<s.length){const ch=s[i];if(ch=='('){i++;const n=p();let d='';while(/\d/.test(s[i]||''))d+=s[i++];for(const k in n)c[k]=(c[k]||0)+n[k]*(+d||1)}else if(ch==')'){i++;return c}else if(/[A-Z]/.test(ch)){let e=ch;i++;while(/[a-z]/.test(s[i]||''))e+=s[i++];let d='';while(/\d/.test(s[i]||''))d+=s[i++];c[e]=(c[e]||0)+(+d||1)}else i++}return c}return p()}
+function molar(s){const c=cnt(s.trim());let t=0;for(const k in c){if(!MM[k])return NaN;t+=MM[k]*c[k]}return t}
+function econf(z){const o=[['1s',2],['2s',2],['2p',6],['3s',2],['3p',6],['4s',2],['3d',10],['4p',6]],r={};let k=z;o.forEach(([a,c])=>{const t=Math.min(k,c);if(t>0)r[a]=t;k-=t});if(z==24){r['4s']=1;r['3d']=5}if(z==29){r['4s']=1;r['3d']=10}return o.filter(x=>r[x[0]]).map(x=>x[0]+r[x[0]]).join(' ')}
+function bal(s){const[L,R]=s.split(/->|=|→/);if(!R)return'مثال: H2 + O2 -> H2O';const l=L.split('+').map(x=>x.trim()),r=R.split('+').map(x=>x.trim()),sp=[...l,...r],sg=sp.map((_,i)=>i<l.length?1:-1),cs=sp.map(cnt),els=[...new Set(cs.flatMap(c=>Object.keys(c)))],k=Array(sp.length).fill(1);
+function rec(i){if(i==sp.length)return els.every(e=>cs.reduce((t,c,j)=>t+(c[e]||0)*k[j]*sg[j],0)==0);for(k[i]=1;k[i]<=8;k[i]++)if(rec(i+1))return true;return false}
+if(!rec(0))return'بالانس پیدا نشد';const f=(a,b)=>a.map((x,i)=>(k[i+b]>1?k[i+b]:'')+x).join(' + ');return f(l,0)+' → '+f(r,l.length)}
+/* tools */
+const U={m:['L',1],km:['L',1e3],cm:['L',.01],mm:['L',.001],kg:['M',1e3],g:['M',1],mg:['M',.001],'m³':['V',1e6],L:['V',1e3],mL:['V',1],h:['T',3600],min:['T',60],s:['T',1],'m/s':['S',1],'km/h':['S',1/3.6],Pa:['P',1],kPa:['P',1e3],atm:['P',101325],J:['E',1],kJ:['E',1e3],cal:['E',4.184]};
+const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a),fac=n=>{let r=1;for(let i=2;i<=n;i++)r*=i;return r};
+function comp(e,deg){e=fa(e).replace(/π/g,'PI').replace(/\^/g,'**').replace(/(\d|\))\s*(x|\(|sin|cos|tan|sqrt|abs|log|ln|exp|PI)/g,'$1*$2').replace(/\bx\s*\(/g,'x*(').replace(/\bln\b/g,'LN').replace(/\blog\b/g,'log10').replace(/\bLN\b/g,'log');
+if(e.replace(/\b(sin|cos|tan|asin|acos|atan|sqrt|cbrt|abs|log10|log|exp|floor|ceil|round|max|min|pow|PI|E)\b/g,'').replace(/[0-9x+\-*/().,\s%]/g,''))throw 0;
+if(deg)e=e.replace(/\b(sin|cos|tan)\(/g,'$1d(');const R=Math.PI/180;const fn=new Function('x','sind','cosd','tand','with(Math){return '+e+'}');return x=>fn(x,a=>Math.sin(a*R),a=>Math.cos(a*R),a=>Math.tan(a*R))}
+const T=[
+['math','معادله درجه دوم (ax²+bx+c=0)',['a','b','c'],([a,b,c])=>{if(!a)return'a نباید صفر باشد';const d=b*b-4*a*c;let s=`Δ = b²−4ac = ${F(b*b)} − ${F(4*a*c)} = ${F(d)}\n`;s+=d>0?`x₁ = (−b+√Δ)/2a = ${F((-b+Math.sqrt(d))/2/a)}\nx₂ = (−b−√Δ)/2a = ${F((-b-Math.sqrt(d))/2/a)}`:d==0?`ریشه مضاعف: x = ${F(-b/2/a)}`:'Δ<0 ← ریشه حقیقی ندارد';return s+`\nS = ${F(-b/a)}   P = ${F(c/a)}`}],
+['math','معادله خطی (ax+b=0)',['a','b'],([a,b])=>a?`ax = −b\nx = ${F(-b)}/${F(a)}\nx = ${F(-b/a)}`:b?'جواب ندارد':'بی‌شمار جواب'],
+['math','معادله قدرمطلق |ax+b|=c',['a','b','c'],([a,b,c])=>!a?'a≠0':c<0?'|…| نمی‌تواند منفی باشد ← جواب ندارد':`ax+b = ±${F(c)}\nx₁ = ${F((c-b)/a)}\nx₂ = ${F((-c-b)/a)}`],
+['math','نامعادله ax+b ? c',['a','b','c',['نوع','>','<','≥','≤']],([a,b,c,o])=>{if(!a)return'a≠0';const f={'>':'<','<':'>','≥':'≤','≤':'≥'};return`ax ${o} ${F(c-b)}\n`+(a<0?`(چون a منفی است جهت عوض می‌شود)\nx ${f[o]} ${F((c-b)/a)}`:`x ${o} ${F((c-b)/a)}`)}],
+['math','توان و رادیکال',['عدد','توان'],([a,n])=>`${F(a)}^${F(n)} = ${F(Math.pow(a,n))}\n√${F(a)} = ${F(Math.sqrt(a))}\n∛${F(a)} = ${F(Math.cbrt(a))}`],
+['math','ب.م.م و ک.م.م',['A','B'],([a,b])=>`ب.م.م = ${gcd(a,b)}\nک.م.م = ${Math.abs(a*b)/gcd(a,b)}`],
+['math','عدد اول و تجزیه',['عدد صحیح'],([n])=>{if(n<2)return'عدد ≥ ۲ بده';let m=n,f=[];for(let p=2;p*p<=m;p++)while(m%p==0){f.push(p);m/=p}if(m>1)f.push(m);return f.length==1?n+' عدد اول است':n+' = '+f.join(' × ')}],
+['math','دنباله حسابی',['a₁','d','n'],([a,d,n])=>{const an=a+(n-1)*d;return`aₙ = a₁+(n−1)d = ${F(an)}\nSₙ = n(a₁+aₙ)/2 = ${F(n*(a+an)/2)}`}],
+['math','دنباله هندسی',['a₁','r','n'],([a,r,n])=>`aₙ = a₁·rⁿ⁻¹ = ${F(a*Math.pow(r,n-1))}\nSₙ = ${r==1?F(a*n):F(a*(Math.pow(r,n)-1)/(r-1))}`],
+['math','ترکیب و جایگشت',['n','r'],([n,r])=>r>n?'r ≤ n':`P(n,r) = ${fac(n)/fac(n-r)}\nC(n,r) = ${fac(n)/fac(n-r)/fac(r)}`],
+['math','درصد و احتمال',['مطلوب','کل'],([a,b])=>`احتمال = ${F(a/b)}\nدرصد = ${F(a/b*100)}%`],
+['math','مثلثات (درجه)',['زاویه'],([d])=>{const r=d*Math.PI/180,z=x=>Math.abs(x)<1e-10?0:x;return`sin = ${F(z(Math.sin(r)))}\ncos = ${F(z(Math.cos(r)))}\ntan = ${Math.abs(Math.cos(r))<1e-10?'تعریف نشده':F(Math.tan(r))}`}],
+['math','آمار (میانگین، میانه، انحراف معیار)',['T:اعداد با کاما: 12,15,18'],([t])=>{const v=fa(t).split(',').map(Number).filter(x=>!isNaN(x));if(!v.length)return'عدد وارد کن';const m=v.reduce((a,b)=>a+b)/v.length,s=[...v].sort((a,b)=>a-b),h=s.length>>1,va=v.reduce((a,b)=>a+(b-m)**2,0)/v.length;return`میانگین = ${F(m)}\nمیانه = ${F(s.length%2?s[h]:(s[h-1]+s[h])/2)}\nواریانس = ${F(va)}\nσ = ${F(Math.sqrt(va))}\nدامنه = ${F(s[s.length-1]-s[0])}
+مد = ${(()=>{const c={};v.forEach(x=>c[x]=(c[x]||0)+1);const mx=Math.max(...Object.values(c));return Object.keys(c).filter(k=>c[k]==mx).join(' , ')})()}`}],
+['math','ماشین‌حساب علمی (sin به درجه)',['T:مثلاً (12+5)*3/2 یا sin(30)'],([t])=>{try{return F(comp(t,1)(0))}catch(e){return'عبارت نامعتبر'}}],
+['geo','فیثاغورس (وتر)',['ضلع a','ضلع b'],([a,b])=>`c = √(a²+b²) = ${F(Math.hypot(a,b))}`],
+['geo','مستطیل',['طول','عرض'],([a,b])=>`مساحت = ${F(a*b)}\nمحیط = ${F(2*(a+b))}\nقطر = ${F(Math.hypot(a,b))}`],
+['geo','دایره',['شعاع'],([r])=>`محیط = 2πr = ${F(2*Math.PI*r)}\nمساحت = πr² = ${F(Math.PI*r*r)}`],
+['geo','مثلث از روی سه ضلع (هرون)',['a','b','c'],([a,b,c])=>{const p=(a+b+c)/2,s=p*(p-a)*(p-b)*(p-c);return s<=0?'این سه ضلع مثلث نمی‌سازند':`محیط = ${F(2*p)}\nمساحت = ${F(Math.sqrt(s))}`}],
+['geo','چندضلعی محدب',['تعداد اضلاع n'],([n])=>`مجموع زوایای داخلی = ${(n-2)*180}°\nهر زاویه (منتظم) = ${F((n-2)*180/n)}°\nتعداد قطرها = ${n*(n-3)/2}`],
+['geo','حجم (مکعب، استوانه)',['ضلع/شعاع','ارتفاع'],([a,h])=>`مکعب = ${F(a**3)}\nاستوانه = πr²h = ${F(Math.PI*a*a*h)}`],
+['phy','سرعت متوسط',['مسافت (m)','زمان (s)'],([d,t])=>`v = d/t = ${F(d/t)} m/s = ${F(d/t*3.6)} km/h`],
+['phy','شتاب',['v₁','v₂','Δt'],([a,b,t])=>`a = Δv/Δt = ${F((b-a)/t)} m/s²`],
+['phy','حرکت با شتاب ثابت',['v₀','a','t'],([v,a,t])=>`v = v₀+at = ${F(v+a*t)}\nΔx = v₀t+½at² = ${F(v*t+a*t*t/2)}`],
+['phy','سقوط آزاد (g=9.8)',['ارتفاع h (m)'],([h])=>`t = √(2h/g) = ${F(Math.sqrt(2*h/9.8))} s\nv = √(2gh) = ${F(Math.sqrt(2*9.8*h))} m/s`],
+['phy','چگالی',['جرم (kg)','حجم (m³)'],([m,v])=>`ρ = m/V = ${F(m/v)} kg/m³ = ${F(m/v/1000)} g/cm³`],
+['phy','فشار',['نیرو (N)','مساحت (m²)'],([f,a])=>`P = F/A = ${F(f/a)} Pa`],
+['phy','کار',['F (N)','d (m)','زاویه θ'],([f,d,t])=>`W = Fd·cosθ = ${F(f*d*Math.cos(t*Math.PI/180))} J`],
+['phy','انرژی جنبشی و تکانه',['جرم (kg)','سرعت (m/s)'],([m,v])=>`K = ½mv² = ${F(m*v*v/2)} J\np = mv = ${F(m*v)} kg·m/s`],
+['phy','انرژی پتانسیل (g=9.8)',['جرم','ارتفاع'],([m,h])=>`U = mgh = ${F(m*9.8*h)} J`],
+['phy','توان',['کار (J)','زمان (s)'],([w,t])=>`P = W/t = ${F(w/t)} W`],
+['phy','گرما Q=mcΔθ',['جرم (kg)','c (آب 4200)','Δθ'],([m,c,d])=>`Q = ${F(m*c*d)} J = ${F(m*c*d/4184)} kcal`],
+['phy','تبدیل دما',['دما',['تبدیل','C→F','F→C','C→K','K→C']],([t,o])=>({'C→F':t*1.8+32,'F→C':(t-32)/1.8,'C→K':t+273.15,'K→C':t-273.15}[o])+' '],
+['phy','قانون اهم',['V (ولت)','R (اهم)'],([v,r])=>`I = V/R = ${F(v/r)} A\nP = VI = ${F(v*v/r)} W`],
+['phy','تبدیل یکا',['مقدار',['از',...Object.keys(U)],['به',...Object.keys(U)]],([v,a,b])=>U[a][0]!=U[b][0]?'یکاها هم‌نوع نیستند':`${F(v)} ${a} = ${F(v*U[a][1]/U[b][1])} ${b}`],
