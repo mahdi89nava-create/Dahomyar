@@ -458,7 +458,7 @@ document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLower
 <script>
 (()=>{
 'use strict';
-const V='8.0.0', CACHE='dehomyar-static-v7-'+V, DB='dehomyar-offline-v7', STORE='queue';
+const V='8.0.1', CACHE='dehomyar-static-v7-'+V, DB='dehomyar-offline-v7', STORE='queue';
 const $=id=>document.getElementById(id);
 let deferredPrompt=null;
 function banner(t){const b=$('dy7Banner');b.textContent=t;b.classList.add('show');clearTimeout(window.__dy7bt);window.__dy7bt=setTimeout(()=>b.classList.remove('show'),3600)}
@@ -506,7 +506,7 @@ window.DehomYarOffline={queue:queueItem,isOnline:online,queueCount,flush:flushQu
 <script>
 (()=>{
 const DYA={token:sessionStorage.getItem('dy_admin_token'),admin:!!sessionStorage.getItem('dy_admin_token')};
-const api=async(path,opt={})=>{const h=Object.assign({'Content-Type':'application/json'},opt.headers||{});if(DYA.token)h.Authorization='Bearer '+DYA.token;const r=await fetch(path,{...opt,headers:h});let d={};try{d=await r.json()}catch{};if(!r.ok)throw new Error(d.error||'خطا');return d};
+const api=async(path,opt={})=>{const h=Object.assign({'Content-Type':'application/json','Cache-Control':'no-cache'},opt.headers||{});if(DYA.token)h.Authorization='Bearer '+DYA.token;const sep=path.includes('?')?'&':'?';const target=path.startsWith('/api/')?path+sep+'_ts='+Date.now():path;const r=await fetch(target,{...opt,headers:h,cache:'no-store'});let d={};try{d=await r.json()}catch{};if(!r.ok)throw new Error(d.error||'خطا');return d};
 const esc2=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 window.dyLoadNews=async function(){const box=document.getElementById('dyNewsList');if(!box)return;try{const d=await api('/api/news');const a=d.items||[];box.innerHTML=a.length?a.map(x=>`<article class="v6-card" style="margin:8px 0"><div class="v6-pill">${esc2(x.type||'خبر')}</div><h3>${esc2(x.title)}</h3><div class="v6-small">${esc2(x.date||'')}</div><p style="white-space:pre-wrap">${esc2(x.body)}</p></article>`).join(''):'<div class="v6-small">هنوز خبر یا اطلاعیه‌ای منتشر نشده.</div>';if(d.settings?.maintenance)box.insertAdjacentHTML('afterbegin','<div class="v6-card" style="border:1px solid #f59e0b55">⚠️ سایت موقتاً در حالت اطلاع‌رسانی است.</div>')}catch(e){box.innerHTML='<div class="v6-small">خبرها در دسترس نیستند.</div>'}};
 window.dyLoadHomework=async function(){const box=document.getElementById('dyHwList');if(!box)return;try{const d=await api('/api/homework');if(!d.items?.length){box.innerHTML='<div class="v6-small">هنوز تکلیفی منتشر نشده.</div>';return}box.innerHTML=d.items.map(x=>`<article class="v6-card" style="margin-bottom:12px"><h3>${esc2(x.title)}</h3><div class="v6-small">${esc2(x.subject||'عمومی')} · ${esc2(x.date||'')}</div><p style="white-space:pre-wrap">${esc2(x.body||'')}</p>${x.file?`<a class="btn" href="${esc2(x.file)}" target="_blank" rel="noopener">📎 مشاهده فایل</a>`:''}</article>`).join('')}catch(e){box.innerHTML='<div class="v6-small">تکالیف آنلاین در دسترس نیستند. اینترنت را بررسی کنید.</div>'}};
