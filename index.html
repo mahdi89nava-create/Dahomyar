@@ -451,14 +451,14 @@ document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLower
     <div class="dy7-feature"><span>☁️ همگام‌سازی ابری</span><span class="dy7-pill dy7-off">نیازمند نت</span></div>
     <div class="dy7-feature"><span>📊 آمار آنلاین</span><span class="dy7-pill dy7-off">نیازمند نت</span></div>
   </div>
-  <div class="dy7-update"><b>🔄 بروزرسانی</b><div class="dy7-small" id="dy7Version">نسخه نصب‌شده: 8.0.0</div><div class="dy7-grid"><button class="dy7-btn" id="dy7CheckUpdate">بررسی آپدیت</button><button class="dy7-btn dy7-install" id="dy7Install">📲 نصب برنامه</button></div></div>
+  <div class="dy7-update"><b>🔄 بروزرسانی</b><div class="dy7-small" id="dy7Version">نسخه نصب‌شده: 10.0.0</div><div class="dy7-grid"><button class="dy7-btn" id="dy7CheckUpdate">بررسی آپدیت</button><button class="dy7-btn dy7-install" id="dy7Install">📲 نصب برنامه</button></div></div>
   <div class="dy7-small" style="margin-top:12px">نکته: برای نصب PWA باید دهم‌یار از HTTPS یا یک سرور محلی اجرا شود؛ باز کردن مستقیم فایل HTML با file:// سرویس‌ورکر را فعال نمی‌کند.</div>
 </section>
 
 <script>
 (()=>{
 'use strict';
-const V='8.0.1', CACHE='dehomyar-static-v7-'+V, DB='dehomyar-offline-v7', STORE='queue';
+const V='10.0.0', CACHE='dehomyar-static-v7-'+V, DB='dehomyar-offline-v7', STORE='queue';
 const $=id=>document.getElementById(id);
 let deferredPrompt=null;
 function banner(t){const b=$('dy7Banner');b.textContent=t;b.classList.add('show');clearTimeout(window.__dy7bt);window.__dy7bt=setTimeout(()=>b.classList.remove('show'),3600)}
