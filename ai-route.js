@@ -3,7 +3,7 @@ module.exports=async function aiRoute(req,res,body,json){
  if(!q)return json(res,400,{error:'سؤال خالی است'});
  const url=process.env.AI_API_URL||'';
  const key=process.env.AI_API_KEY||'';
- if(url&&key){try{const rr=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization:'Bearer '+key},body:JSON.stringify({model:process.env.AI_MODEL||'default',input:q,subject,mode,language:'fa'})});const d=await rr.json();if(!rr.ok)throw new Error(d?.error?.message||'AI provider error');const answer=String(d.output_text||d.answer||d.text||'').trim();if(answer)return json(res,200,{answer,mode,subject});}catch(e){console.error('[AI provider]',e.message)}}
+ if(url&&key){try{const rr=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:process.env.AI_MODEL||'default',input:q,subject,mode,language:'fa'})});const d=await rr.json();if(!rr.ok)throw new Error(d?.error?.message||'AI provider error');const answer=String(d.output_text||d.answer||d.text||'').trim();if(answer)return json(res,200,{answer,mode,subject});}catch(e){console.error('[AI provider]',e.message)}}
  const answer=localAnswer(q,subject,mode); return json(res,200,{answer,mode,subject,local:true});
 };
 function localAnswer(q,subject,mode){
