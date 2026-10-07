@@ -564,8 +564,8 @@ window.dyLoadHomework();window.dyLoadNews();
    <button data-v10tab="lessons">📚 درس‌ها</button><button data-v10tab="quiz">📝 آزمون‌ساز</button>
    <button data-v10tab="weak">📊 نقاط ضعف</button><button data-v10tab="mistakes">❌ دفتر اشتباهات</button>
    <button data-v10tab="flash">🧠 فلش‌کارت</button><button data-v10tab="plan">📅 برنامه</button>
-   <button data-v10tab="notes">📄 جزوه‌ساز</button><button data-v10tab="exam">⏱️ حالت امتحان</button>
-   <button data-v10tab="ai">🤖 مهدی AI</button>
+   <button data-v10tab="notes">📄 جزوه‌ساز</button>
+   <button data-v10tab="ai">🤖 مهدی AI</button><button data-v10tab="search">🔎 جستجوی هوشمند</button><button data-v10tab="cyber">🛡️ مسیر امنیت سایبری</button>
   </div>
   <div class="dh10body">
    <section id="dh10-home" class="dh10page active"></section>
@@ -577,8 +577,8 @@ window.dyLoadHomework();window.dyLoadNews();
    <section id="dh10-flash" class="dh10page"></section>
    <section id="dh10-plan" class="dh10page"></section>
    <section id="dh10-notes" class="dh10page"></section>
-   <section id="dh10-exam" class="dh10page"></section>
-   <section id="dh10-ai" class="dh10page"></section>
+
+   <section id="dh10-ai" class="dh10page"></section><section id="dh10-search" class="dh10page"></section><section id="dh10-cyber" class="dh10page"></section>
   </div>
  </div>
 </div>
@@ -613,13 +613,13 @@ const bank=[
  {s:'زیست‌شناسی',q:'واحد بنیادی حیات چیست؟',o:['بافت','اندام','سلول','مولکول'],a:2,c:'سلول'},
  {s:'جامعه‌شناسی',q:'فرهنگ بیشتر به چه چیزی اشاره دارد؟',o:['ویژگی‌های ارثی','الگوهای مشترک زندگی','قد','آب‌وهوا'],a:1,c:'فرهنگ'}
 ];
-function addXP(n){state.xp+=n;save()}
-function level(){return Math.floor(state.xp/100)+1}
+function addXP(n){}
+function level(){return 1}
 function renderHome(){
  const need=level()*100, pct=Math.min(100,Math.round((state.xp%100)));
  $('dh10-home').innerHTML='<div class="dh10grid">'+
  '<div class="dh10card"><div class="dh10muted">رشته فعلی</div><div class="dh10stat">🎓 '+esc(state.track)+'</div><div>'+btn('تغییر رشته','primary','onclick="dh10Tab(\\' رشته\\')"')+'</div></div>'+
- '<div class="dh10card"><div class="dh10muted">سطح</div><div class="dh10stat">Level '+level()+'</div><div class="dh10bar"><i style="width:'+pct+'%"></i></div><div class="dh10muted">'+state.xp+' XP · هدف بعدی '+need+' XP</div></div>'+
+ '<div class="dh10bar"><i style="width:'+pct+'%"></i></div><div class="dh10muted">'+state.xp+' XP · هدف بعدی '+need+' XP</div></div>'+
  '<div class="dh10card"><div class="dh10muted">عملکرد</div><div class="dh10stat">'+state.answers.length+' پاسخ</div><div class="dh10muted">'+state.mistakes.length+' اشتباه ذخیره‌شده · '+state.plans.length+' برنامه</div></div>'+
  '</div><div class="dh10card" style="margin-top:12px"><h3>🎯 مأموریت‌های امروز</h3><p>یک آزمون ۱۰ سؤالی، مرور ۵ فلش‌کارت و یک جلسه مطالعه را کامل کن.</p>'+btn('شروع آزمون سریع','primary','onclick="dh10Tab(\\'quiz\\')"')+' '+btn('برنامه امروز','', 'onclick="dh10Tab(\\'plan\\')"')+'</div>'+
  '<div class="dh10card" style="margin-top:12px"><h3>🏅 دستاوردها</h3><span class="dh10badge">🚀 شروع v10</span>'+ (state.answers.length>=10?'<span class="dh10badge">🔥 10 پاسخ</span>':'')+(state.mistakes.length>=5?'<span class="dh10badge">🧠 شکار اشتباهات</span>':'')+(state.plans.length>=3?'<span class="dh10badge">📅 برنامه‌ریز</span>':'')+'</div>';
@@ -701,12 +701,28 @@ function renderNotes(){
 window.dh10SaveNotes=function(){state.notes=$('dh10NotesText').value;save();$('dh10NoteOut').textContent='جزوه ذخیره شد ✓'};
 window.dh10MakeFlash=function(){let t=$('dh10NotesText').value.trim();if(!t)return;let parts=t.split(/[.!؟\n]/).filter(Boolean).slice(0,10);state.flash=parts.map(function(x){return {q:'نکته را توضیح بده: '+x.slice(0,70),a:x.trim(),s:'جزوه شخصی'}});save();$('dh10NoteOut').textContent='از متن '+state.flash.length+' فلش‌کارت ساخته شد. برو بخش فلش‌کارت.'};
 window.dh10MakeTextQuiz=function(){let t=$('dh10NotesText').value.trim();if(!t)return;let parts=t.split(/[.!؟\n]/).filter(Boolean).slice(0,5);state.generated=parts.map(function(x){return {s:'جزوه شخصی',q:'کدام عبارت به این نکته نزدیک‌تر است؟ '+x.slice(0,80),o:[x.trim(),'گزینه دیگر','گزینه دیگر','گزینه دیگر'],a:0,c:'جزوه'}});save();$('dh10NoteOut').textContent='آزمون از متن آماده شد؛ در نسخه بعدی بانک سؤال شخصی مستقیماً به آزمون‌ساز وصل می‌شود.'};
-function renderExam(){quizHTML($('dh10-exam'),true)}
+
+function renderSearch(){
+ $('dh10-search').innerHTML='<div class="dh10card"><h3>🔎 جستجوی هوشمند دهم‌یار</h3><p class="dh10muted">یک واژه یا مفهوم بنویس؛ دهم‌یار بین درس‌ها، موضوعات آزمون و دفتر اشتباهات جست‌وجو می‌کند.</p><input id="dh10SearchQ" class="dh10input" placeholder="مثلاً تابع، نیرو، عربی...">'+btn('جستجو','primary','onclick="dh10DoSearch()"')+'<div id="dh10SearchOut" class="dh10grid" style="margin-top:12px"></div></div>';
+}
+window.dh10DoSearch=function(){
+ let q=($('dh10SearchQ').value||'').trim().toLowerCase(), out=$('dh10SearchOut'); if(!q){out.innerHTML='<div class="dh10card">عبارت جستجو را وارد کن.</div>';return}
+ let results=[];
+ (tracks[state.track]||[]).forEach(function(s){if(s.toLowerCase().includes(q))results.push({t:'📚 درس',x:s,d:'درس رشته '+state.track})});
+ bank.forEach(function(x){if((x.q+' '+x.s+' '+x.c).toLowerCase().includes(q))results.push({t:'📝 سؤال',x:x.q,d:x.s+' · '+x.c})});
+ state.mistakes.forEach(function(x){if((x.q+' '+x.subject+' '+x.chapter).toLowerCase().includes(q))results.push({t:'❌ دفتر اشتباهات',x:x.q,d:x.subject+' · '+x.chapter})});
+ if('امنیت سایبری'.includes(q)||'cyber'.includes(q))results.push({t:'🛡️ مسیر',x:'امنیت سایبری',d:'Linux → Networking → Web → Security → CTF'});
+ out.innerHTML=(results.slice(0,30).map(function(r){return '<div class="dh10card"><span class="dh10badge">'+esc(r.t)+'</span><h3>'+esc(r.x)+'</h3><div class="dh10muted">'+esc(r.d)+'</div></div>'}).join(''))||'<div class="dh10card">نتیجه‌ای پیدا نشد؛ می‌توانی همین موضوع را از مهدی AI بپرسی.</div>';
+};
+function renderCyber(){
+ $('dh10-cyber').innerHTML='<div class="dh10card"><h3>🛡️ مسیر یادگیری امنیت سایبری</h3><p class="dh10muted">نقشه راه آموزشی مرحله‌ای برای هدف بلندمدت امنیت شبکه و سایبری.</p><div class="dh10grid">'+
+ [['۱','مبانی','سیستم‌عامل، فایل و سخت‌افزار'],['۲','Linux','ترمینال، فایل‌ها و دسترسی‌ها'],['۳','Networking','IP، DNS، HTTP و مدل OSI'],['۴','Python','متغیر، شرط، حلقه، تابع و فایل'],['۵','Web','HTML، CSS، JavaScript و HTTP'],['۶','Cybersecurity','احراز هویت، رمزنگاری، تهدیدها و دفاع'],['۷','تمرین دفاعی','آزمایشگاه‌های آموزشی و سناریوهای امن'],['۸','CTF آموزشی','چالش‌های قانونی در محیط‌های آزمایشی']].map(function(x){return '<div class="dh10card"><span class="dh10badge">'+x[0]+'</span><h3>'+esc(x[1])+'</h3><p class="dh10muted">'+esc(x[2])+'</p></div>'}).join('')+'</div></div>';
+}
 function renderAI(){
  $('dh10-ai').innerHTML='<div class="dh10card"><h3>🤖 مهدی AI v10</h3><p class="dh10muted">معلم، حل‌گر، بررسی پاسخ، تمرین‌ساز و خلاصه‌ساز.</p><select id="dh10AIsub" class="dh10select"><option>عمومی</option>'+ (tracks[state.track]||[]).map(function(x){return '<option>'+esc(x)+'</option>'}).join('')+'</select><select id="dh10AImode" class="dh10select"><option value="teacher">معلم خصوصی</option><option value="solve">حل مرحله‌ای</option><option value="check">بررسی پاسخ</option><option value="practice">تمرین‌ساز</option><option value="summary">خلاصه‌ساز</option></select><textarea id="dh10AIQ" class="dh10textarea" rows="7" placeholder="سؤال، متن درس یا پاسخ خودت را وارد کن..."></textarea>'+btn('پرسش از مهدی AI','primary','onclick="dh10AskAI()"')+'<div id="dh10AIOut" class="dh10card" style="margin-top:12px;white-space:pre-wrap"></div></div><div class="dh10card" style="margin-top:12px"><h3>📸 حل سؤال از عکس</h3><p class="dh10muted">عکس را انتخاب کن؛ فعلاً برای OCR واقعی نیاز به اتصال OCR/AI تصویری داریم. زیرساخت رابط آماده است.</p><input id="dh10Image" type="file" accept="image/*" class="dh10input"><div id="dh10ImageMsg" class="dh10muted"></div></div>';
 }
 window.dh10AskAI=async function(){let out=$('dh10AIOut');out.textContent='در حال فکر کردن...';try{let r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:$('dh10AIQ').value,subject:$('dh10AIsub').value,mode:$('dh10AImode').value})});let d=await r.json();if(!r.ok)throw new Error(d.error||'خطا');out.textContent=d.answer||'پاسخی دریافت نشد.'}catch(e){out.textContent='⚠️ '+e.message}};
-function renderAll(){renderHome();renderTrack();renderLessons();renderQuiz();renderWeak();renderMistakes();renderFlash();renderPlan();renderNotes();renderExam();renderAI()}
+function renderAll(){renderHome();renderTrack();renderLessons();renderQuiz();renderWeak();renderMistakes();renderFlash();renderPlan();renderNotes();renderAI();renderSearch();renderCyber()}
 window.dh10Tab=function(name){document.querySelectorAll('[data-v10tab]').forEach(function(b){b.classList.toggle('active',b.dataset.v10tab===name)});document.querySelectorAll('.dh10page').forEach(function(p){p.classList.remove('active')});let p=$('dh10-'+name);if(p)p.classList.add('active');renderAll()};
 document.querySelectorAll('[data-v10tab]').forEach(function(b){b.addEventListener('click',function(){dh10Tab(b.dataset.v10tab)})});
 $('dhV10Fab').onclick=function(){$('dhV10Overlay').style.display='block';renderAll()};
