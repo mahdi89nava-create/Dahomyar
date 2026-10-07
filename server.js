@@ -5,7 +5,7 @@ const ROOT=__dirname, DATA=process.env.DATA_DIR ? path.resolve(process.env.DATA_
 fs.mkdirSync(UP,{recursive:true});
 const DB=path.join(DATA,'homework.json'); if(!fs.existsSync(DB))fs.writeFileSync(DB,'[]');
 const NEWS=path.join(DATA,'news.json'); if(!fs.existsSync(NEWS))fs.writeFileSync(NEWS,'[]');
-const SETTINGS=path.join(DATA,'site-settings.json'); if(!fs.existsSync(SETTINGS))fs.writeFileSync(SETTINGS,JSON.stringify({version:'7.4.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()},null,2));
+const SETTINGS=path.join(DATA,'site-settings.json'); if(!fs.existsSync(SETTINGS))fs.writeFileSync(SETTINGS,JSON.stringify({version:'10.0.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()},null,2));
 const STATS=path.join(DATA,'stats.json'); if(!fs.existsSync(STATS))fs.writeFileSync(STATS,JSON.stringify({total:0,today:0,lastDay:new Date().toISOString().slice(0,10)},null,2));
 const RELEASE=path.join(DATA,'dehomyar-latest.zip');
 const RELEASES=path.join(DATA,'releases'); const CURRENT=path.join(DATA,'current'); fs.mkdirSync(RELEASES,{recursive:true}); fs.mkdirSync(CURRENT,{recursive:true});
@@ -21,7 +21,7 @@ function read(){try{return JSON.parse(fs.readFileSync(DB,'utf8'))}catch{return[]
 function readJson(file,fallback){try{return JSON.parse(fs.readFileSync(file,'utf8'))}catch{return fallback}}
 function writeJson(file,x){fs.writeFileSync(file,JSON.stringify(x,null,2))}
 function bumpStats(){const x=readJson(STATS,{total:0,today:0,lastDay:''});const d=new Date().toISOString().slice(0,10);if(x.lastDay!==d){x.today=0;x.lastDay=d}x.total++;x.today++;writeJson(STATS,x);return x}
-function settings(){return readJson(SETTINGS,{version:'7.4.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()})}
+function settings(){return readJson(SETTINGS,{version:'10.0.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()})}
 function news(){return readJson(NEWS,[])} function writeNews(x){writeJson(NEWS,x)}
 function safeReleaseEntries(zip){const allowed=/^(index\.html|manifest\.json|service-worker\.js|offline\.html|icons\/(icon-192\.png|icon-512\.png))$/;return zip.getEntries().filter(e=>!e.isDirectory()).map(e=>e.entryName.replace(/\\/g,'/')).filter(n=>allowed.test(n))}
 function installRelease(zipBuf,version){
