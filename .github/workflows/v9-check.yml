@@ -1,0 +1,16 @@
+name: DehomYar V9 checks
+on:
+  push:
+    branches: ["v9-ai-redesign"]
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node --check server.js
+      - run: node --check ai-route.js
+      - run: node --check ai-ui.js
+      - run: npm install

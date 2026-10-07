@@ -1,5 +1,6 @@
 const http=require('http'),fs=require('fs'),path=require('path'),crypto=require('crypto'),url=require('url'),child_process=require('child_process');
 const AdmZip=require('adm-zip');
+const aiRoute=require('./ai-route');
 const ROOT=__dirname, DATA=process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(ROOT,'data'), UP=path.join(DATA,'uploads');
 fs.mkdirSync(UP,{recursive:true});
 const DB=path.join(DATA,'homework.json'); if(!fs.existsSync(DB))fs.writeFileSync(DB,'[]');
@@ -46,6 +47,7 @@ function security(res){res.setHeader('X-Content-Type-Options','nosniff');res.set
 
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.pdf':'application/pdf','.doc':'application/msword','.docx':'application/vnd.openxmlformats-officedocument.wordprocessingml.document'};
 const server=http.createServer(async(req,res)=>{try{security(res); const u=url.parse(req.url,true); if(req.method==='OPTIONS'){res.writeHead(204,{'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type, Authorization','Access-Control-Allow-Methods':'GET,POST,DELETE,OPTIONS'});return res.end()}
+if(u.pathname==='/api/ai'&&req.method==='POST'){return aiRoute(req,res,body,json)}
 if(u.pathname==='/api/homework'&&req.method==='GET'){const items=read().sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); res.setHeader('X-DH-Data-Count',String(items.length)); res.setHeader('X-DH-Server-Time',String(Date.now())); console.log('[API] GET /api/homework -> '+items.length+' items'); return json(res,200,{items})}
 if(u.pathname==='/api/news'&&req.method==='GET'){return json(res,200,{items:news().filter(x=>x.published!==false).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,30),settings:settings()})}
 if(u.pathname==='/api/update'&&req.method==='GET'){return json(res,200,{version:settings().version,announcement:settings().announcement||'',updatedAt:settings().updatedAt||0,hasPackage:fs.existsSync(RELEASE)})}
