@@ -92,17 +92,35 @@ function patchAdminForm(){
  }
 }
 function repairStuckOverlays(){
+ // Recover stale full-screen UI left behind by interrupted navigation or cached scripts.
  const splash=$('dy7Splash');
- if(splash){splash.classList.add('hide');splash.style.display='none';}
+ if(splash){splash.classList.add('hide');splash.style.display='none';splash.setAttribute('aria-hidden','true');}
  const learning=$('dhV10Overlay');
  if(learning){learning.style.display='none';learning.setAttribute('aria-hidden','true');}
  const control=$('dy7Panel');
  if(control){control.style.display='none';}
+ const modal=$('md');
+ if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}
+ const command=$('v6cmd');
+ if(command){command.classList.remove('show');}
+ document.querySelectorAll('.modal.show,[role="dialog"].show').forEach(el=>{
+   if(el.id!=='dhV10Overlay') {el.classList.remove('show');el.setAttribute('aria-hidden','true');}
+ });
  document.documentElement.classList.remove('dy-global-blur');
  document.body.style.filter='none';
+ document.body.style.backdropFilter='none';
+ document.body.style.webkitBackdropFilter='none';
 }
 function boot(){
  repairStuckOverlays();ensurePortal();patchHomework();patchAdminForm();
+ // A navigation tap must never leave an unrelated dialog covering the page.
+ document.addEventListener('click',e=>{
+   if(e.target.closest('#nav button,[data-p]')){
+     const modal=$('md');if(modal){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');}
+     const cmd=$('v6cmd');if(cmd)cmd.classList.remove('show');
+     const panel=$('dy7Panel');if(panel)panel.style.display='none';
+   }
+ });
  const settings=$('settings');if(settings&&window.MutationObserver){new MutationObserver(()=>{if($('setbox')&&!$('dyPublicSettings'))ensurePortal()}).observe(settings,{childList:true,subtree:true})}
  if($('dyHomework')&&$('dyHwList'))window.dyLoadHomework?.();
  document.addEventListener('click',e=>{const b=e.target.closest('#nav button');if(b&&b.dataset.p==='dyHomework')setTimeout(()=>window.dyLoadHomework?.(),50)});
