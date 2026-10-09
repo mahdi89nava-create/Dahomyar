@@ -28,3 +28,10 @@ html[data-theme="dark"] .dy-subject-chip,html[data-theme="dark"] .dy-homework-me
 #dhV10Overlay[style*="display: block"]{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 body,body *{text-rendering:optimizeLegibility}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+
+/* v16: overlay recovery and no page-wide blur on modal backgrounds */
+#dhV10Overlay,#md,.modal,.v6-command{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+#dhV10Overlay{background:rgba(5,9,18,.94)!important}
+#md,.modal{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+#dy7Splash.hide{display:none!important;visibility:hidden!important;pointer-events:none!important}
