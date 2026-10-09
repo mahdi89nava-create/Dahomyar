@@ -107,15 +107,15 @@ if(u.pathname==='/api/admin/class-codes'&&req.method==='POST'){
  return json(res,201,{classId,code,message:'این کد فقط همین بار نمایش داده می‌شود؛ آن را امن به نماینده بده.'});
 }
 if(u.pathname==='/api/class/homework'&&req.method==='GET'){
- const a=classAuth(req,['student','representative']),classId=String(u.query.classId||a?.classId||'');
- if(!CLASS_IDS.includes(classId))return json(res,400,{error:'کلاس را مشخص کن.'});
- if(a&&a.classId!==classId)return json(res,403,{error:'به فضای این کلاس دسترسی نداری.'});
+ const a=classAuth(req,['student','representative']);if(!a)return json(res,401,{error:'برای دیدن تکالیف کلاس وارد حساب شو.'});
+ const classId=String(u.query.classId||a.classId);if(!CLASS_IDS.includes(classId))return json(res,400,{error:'کلاس را مشخص کن.'});
+ if(a.classId!==classId)return json(res,403,{error:'به فضای این کلاس دسترسی نداری.'});
  return json(res,200,{items:classItems(classId)});
 }
 if(u.pathname==='/api/class/announcements'&&req.method==='GET'){
- const a=classAuth(req,['student','representative']),classId=String(u.query.classId||a?.classId||'');
- if(!CLASS_IDS.includes(classId))return json(res,400,{error:'کلاس را مشخص کن.'});
- if(a&&a.classId!==classId)return json(res,403,{error:'به فضای این کلاس دسترسی نداری.'});
+ const a=classAuth(req,['student','representative']);if(!a)return json(res,401,{error:'برای دیدن اطلاعیه‌های کلاس وارد حساب شو.'});
+ const classId=String(u.query.classId||a.classId);if(!CLASS_IDS.includes(classId))return json(res,400,{error:'کلاس را مشخص کن.'});
+ if(a.classId!==classId)return json(res,403,{error:'به فضای این کلاس دسترسی نداری.'});
  const items=readClassNews().filter(n=>n.classId===classId).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
  return json(res,200,{items});
 }
@@ -137,7 +137,7 @@ if(u.pathname==='/api/class/announcements/'&&req.method==='DELETE'){
  writeClassNews(items.filter(n=>n.id!==item.id));return json(res,200,{ok:true});
 }
 if(u.pathname==='/api/ai'&&req.method==='POST'){const key=clientKey(req);if(!allowRate(aiLimits,key,12,60*1000))return json(res,429,{error:'درخواست‌های مهدی AI زیاد شده؛ یک دقیقه دیگر دوباره امتحان کن'});return aiRoute(req,res,body,json)}
-if(u.pathname==='/api/homework'&&req.method==='GET'){const classId=String(u.query.classId||'all');const items=read().filter(x=>classId==='all'?(!x.classId||x.classId==='all'):(!x.classId||x.classId==='all'||x.classId===classId)).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));res.setHeader('X-DH-Data-Count',String(items.length));res.setHeader('X-DH-Server-Time',String(Date.now()));return json(res,200,{items})}
+if(u.pathname==='/api/homework'&&req.method==='GET'){const classId=String(u.query.classId||'all'),a=classId==='all'?null:classAuth(req,['student','representative']);if(classId!=='all'&&(!CLASS_IDS.includes(classId)||!a))return json(res,401,{error:'برای دیدن تکالیف کلاس وارد حساب شو.'});if(a&&a.classId!==classId)return json(res,403,{error:'به فضای این کلاس دسترسی نداری.'});const items=read().filter(x=>classId==='all'?(!x.classId||x.classId==='all'):(!x.classId||x.classId==='all'||x.classId===classId)).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));res.setHeader('X-DH-Data-Count',String(items.length));res.setHeader('X-DH-Server-Time',String(Date.now()));return json(res,200,{items})}
 if(u.pathname==='/api/news'&&req.method==='GET'){return json(res,200,{items:news().filter(x=>x.published!==false).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,30),settings:settings()})}
 if(u.pathname==='/api/update'&&req.method==='GET'){return json(res,200,{version:settings().version,announcement:settings().announcement||'',updatedAt:settings().updatedAt||0,hasPackage:fs.existsSync(RELEASE)})}
 if(u.pathname==='/api/stats'&&req.method==='GET'){return json(res,200,readJson(STATS,{total:0,today:0,lastDay:''}))}
