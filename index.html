@@ -555,17 +555,17 @@ window.dyLoadHomework();window.dyLoadNews();
 @media(max-width:650px){#dhV10Overlay{padding:5px}.dh10head{padding:12px}.dh10body{padding:10px}}
 </style>
 
-<button id="dhV10Fab">🚀 دهم‌یار v10</button>
+<button id="dhV10Fab">🚀 دهم‌یار v12</button>
 <div id="dhV10Overlay">
  <div id="dhV10Panel">
-  <div class="dh10head"><div><h2>🚀 دهم‌یار v10</h2><div class="dh10muted">مرکز یادگیری، آزمون، مرور و برنامه‌ریزی</div></div><button class="dh10btn" id="dhV10Close">✕</button></div>
+  <div class="dh10head"><div><h2>🚀 دهم‌یار v12</h2><div class="dh10muted">مرکز یادگیری، آزمون، مرور و برنامه‌ریزی</div></div><button class="dh10btn" id="dhV10Close">✕</button></div>
   <div class="dh10tabs">
-   <button data-v10tab="home" class="active">🏠 خانه</button><button data-v10tab=" رشته">🎓 رشته</button>
-   <button data-v10tab="lessons">📚 درس‌ها</button><button data-v10tab="quiz">📝 آزمون‌ساز</button>
-   <button data-v10tab="weak">📊 نقاط ضعف</button><button data-v10tab="mistakes">❌ دفتر اشتباهات</button>
-   <button data-v10tab="flash">🧠 فلش‌کارت</button><button data-v10tab="plan">📅 برنامه</button>
-   <button data-v10tab="notes">📄 جزوه‌ساز</button>
-   <button data-v10tab="ai">🤖 مهدی AI</button><button data-v10tab="search">🔎 جستجوی هوشمند</button><button data-v10tab="cyber">🛡️ مسیر امنیت سایبری</button>
+   <button data-v12tab="home" class="active">🏠 خانه</button><button data-v12tab=" رشته">🎓 رشته</button>
+   <button data-v12tab="lessons">📚 درس‌ها</button><button data-v12tab="quiz">📝 آزمون‌ساز</button>
+   <button data-v12tab="weak">📊 نقاط ضعف</button><button data-v12tab="mistakes">❌ دفتر اشتباهات</button>
+   <button data-v12tab="flash">🧠 فلش‌کارت</button><button data-v12tab="plan">📅 برنامه</button>
+   <button data-v12tab="notes">📄 جزوه‌ساز</button>
+   <button data-v12tab="ai">🤖 مهدی AI</button><button data-v12tab="search">🔎 جستجوی هوشمند</button><button data-v12tab="cyber">🛡️ مسیر امنیت سایبری</button>
   </div>
   <div class="dh10body">
    <section id="dh10-home" class="dh10page active"></section>
@@ -586,7 +586,7 @@ window.dyLoadHomework();window.dyLoadNews();
 <script>
 (function(){
 'use strict';
-const K='dehomyar_v10';
+const K='dehomyar_v12';
 const state=JSON.parse(localStorage.getItem(K)||'{}');
 state.track=state.track||'ریاضی‌فیزیک'; state.xp=state.xp||0; state.answers=state.answers||[]; state.mistakes=state.mistakes||[];
 state.plans=state.plans||[]; state.flash=state.flash||[]; state.notes=state.notes||'';
@@ -597,7 +597,7 @@ function btn(t,cls,attr){return '<button class="dh10btn '+(cls||'')+'" '+(attr||
 const tracks={
  'ریاضی‌فیزیک':['ریاضی','هندسه','فیزیک','شیمی','فارسی','عربی','دینی','زبان انگلیسی'],
  'تجربی':['ریاضی','هندسه','فیزیک','شیمی','زیست‌شناسی','فارسی','عربی','دینی','زبان انگلیسی'],
- 'انسانی':['ریاضی و آمار','علوم و فنون ادبی','جامعه‌شناسی','اقتصاد','منطق','عربی','تاریخ','جغرافیا','فارسی','دینی','زبان انگلیسی']
+ 'انسانی':['ریاضی و آمار','علوم و فنون ادبی','اقتصاد','منطق','عربی','تاریخ','جغرافیا','فارسی','دینی','زبان انگلیسی']
 };
 const bank=[
  {s:'ریاضی',q:'اگر f(x)=2x+3 باشد، f(2) چند است؟',o:['5','7','4','8'],a:1,c:'تابع'},
@@ -622,7 +622,7 @@ function renderHome(){
  '<div class="dh10bar"><i style="width:'+pct+'%"></i></div><div class="dh10muted">'+state.xp+' XP · هدف بعدی '+need+' XP</div></div>'+
  '<div class="dh10card"><div class="dh10muted">عملکرد</div><div class="dh10stat">'+state.answers.length+' پاسخ</div><div class="dh10muted">'+state.mistakes.length+' اشتباه ذخیره‌شده · '+state.plans.length+' برنامه</div></div>'+
  '</div><div class="dh10card" style="margin-top:12px"><h3>🎯 مأموریت‌های امروز</h3><p>یک آزمون ۱۰ سؤالی، مرور ۵ فلش‌کارت و یک جلسه مطالعه را کامل کن.</p>'+btn('شروع آزمون سریع','primary','onclick="dh10Tab(\\'quiz\\')"')+' '+btn('برنامه امروز','', 'onclick="dh10Tab(\\'plan\\')"')+'</div>'+
- '<div class="dh10card" style="margin-top:12px"><h3>🏅 دستاوردها</h3><span class="dh10badge">🚀 شروع v10</span>'+ (state.answers.length>=10?'<span class="dh10badge">🔥 10 پاسخ</span>':'')+(state.mistakes.length>=5?'<span class="dh10badge">🧠 شکار اشتباهات</span>':'')+(state.plans.length>=3?'<span class="dh10badge">📅 برنامه‌ریز</span>':'')+'</div>';
+ '<div class="dh10card" style="margin-top:12px"><h3>🏅 دستاوردها</h3><span class="dh10badge">🚀 شروع v12</span>'+ (state.answers.length>=10?'<span class="dh10badge">🔥 10 پاسخ</span>':'')+(state.mistakes.length>=5?'<span class="dh10badge">🧠 شکار اشتباهات</span>':'')+(state.plans.length>=3?'<span class="dh10badge">📅 برنامه‌ریز</span>':'')+'</div>';
 }
 function renderTrack(){
  $('dh10- رشته').innerHTML='<div class="dh10card"><h3>🎓 انتخاب رشته تحصیلی</h3><p class="dh10muted">این انتخاب مسیر درس‌ها و آزمون‌های دهم‌یار را تعیین می‌کند.</p><select class="dh10select" id="dh10Track"><option>ریاضی‌فیزیک</option><option>تجربی</option><option>انسانی</option></select>'+btn('ذخیره رشته','primary','onclick="dh10SaveTrack()"')+'<p id="dh10TrackMsg" class="dh10muted"></p></div>';
@@ -719,12 +719,12 @@ function renderCyber(){
  [['۱','مبانی','سیستم‌عامل، فایل و سخت‌افزار'],['۲','Linux','ترمینال، فایل‌ها و دسترسی‌ها'],['۳','Networking','IP، DNS، HTTP و مدل OSI'],['۴','Python','متغیر، شرط، حلقه، تابع و فایل'],['۵','Web','HTML، CSS، JavaScript و HTTP'],['۶','Cybersecurity','احراز هویت، رمزنگاری، تهدیدها و دفاع'],['۷','تمرین دفاعی','آزمایشگاه‌های آموزشی و سناریوهای امن'],['۸','CTF آموزشی','چالش‌های قانونی در محیط‌های آزمایشی']].map(function(x){return '<div class="dh10card"><span class="dh10badge">'+x[0]+'</span><h3>'+esc(x[1])+'</h3><p class="dh10muted">'+esc(x[2])+'</p></div>'}).join('')+'</div></div>';
 }
 function renderAI(){
- $('dh10-ai').innerHTML='<div class="dh10card"><h3>🤖 مهدی AI v10</h3><p class="dh10muted">معلم، حل‌گر، بررسی پاسخ، تمرین‌ساز و خلاصه‌ساز.</p><select id="dh10AIsub" class="dh10select"><option>عمومی</option>'+ (tracks[state.track]||[]).map(function(x){return '<option>'+esc(x)+'</option>'}).join('')+'</select><select id="dh10AImode" class="dh10select"><option value="teacher">معلم خصوصی</option><option value="solve">حل مرحله‌ای</option><option value="check">بررسی پاسخ</option><option value="practice">تمرین‌ساز</option><option value="summary">خلاصه‌ساز</option></select><textarea id="dh10AIQ" class="dh10textarea" rows="7" placeholder="سؤال، متن درس یا پاسخ خودت را وارد کن..."></textarea>'+btn('پرسش از مهدی AI','primary','onclick="dh10AskAI()"')+'<div id="dh10AIOut" class="dh10card" style="margin-top:12px;white-space:pre-wrap"></div></div><div class="dh10card" style="margin-top:12px"><h3>📸 حل سؤال از عکس</h3><p class="dh10muted">عکس را انتخاب کن؛ فعلاً برای OCR واقعی نیاز به اتصال OCR/AI تصویری داریم. زیرساخت رابط آماده است.</p><input id="dh10Image" type="file" accept="image/*" class="dh10input"><div id="dh10ImageMsg" class="dh10muted"></div></div>';
+ $('dh10-ai').innerHTML='<div class="dh10card"><h3>🤖 مهدی AI v12</h3><p class="dh10muted">معلم، حل‌گر، بررسی پاسخ، تمرین‌ساز و خلاصه‌ساز.</p><select id="dh10AIsub" class="dh10select"><option>عمومی</option>'+ (tracks[state.track]||[]).map(function(x){return '<option>'+esc(x)+'</option>'}).join('')+'</select><select id="dh10AImode" class="dh10select"><option value="teacher">معلم خصوصی</option><option value="solve">حل مرحله‌ای</option><option value="check">بررسی پاسخ</option><option value="practice">تمرین‌ساز</option><option value="summary">خلاصه‌ساز</option></select><textarea id="dh10AIQ" class="dh10textarea" rows="7" placeholder="سؤال، متن درس یا پاسخ خودت را وارد کن..."></textarea>'+btn('پرسش از مهدی AI','primary','onclick="dh10AskAI()"')+'<div id="dh10AIOut" class="dh10card" style="margin-top:12px;white-space:pre-wrap"></div></div><div class="dh10card" style="margin-top:12px"><h3>📸 حل سؤال از عکس</h3><p class="dh10muted">عکس را انتخاب کن؛ فعلاً برای OCR واقعی نیاز به اتصال OCR/AI تصویری داریم. زیرساخت رابط آماده است.</p><input id="dh10Image" type="file" accept="image/*" class="dh10input"><div id="dh10ImageMsg" class="dh10muted"></div></div>';
 }
 window.dh10AskAI=async function(){let out=$('dh10AIOut');out.textContent='در حال فکر کردن...';try{let r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:$('dh10AIQ').value,subject:$('dh10AIsub').value,mode:$('dh10AImode').value})});let d=await r.json();if(!r.ok)throw new Error(d.error||'خطا');out.textContent=d.answer||'پاسخی دریافت نشد.'}catch(e){out.textContent='⚠️ '+e.message}};
 function renderAll(){renderHome();renderTrack();renderLessons();renderQuiz();renderWeak();renderMistakes();renderFlash();renderPlan();renderNotes();renderAI();renderSearch();renderCyber()}
-window.dh10Tab=function(name){document.querySelectorAll('[data-v10tab]').forEach(function(b){b.classList.toggle('active',b.dataset.v10tab===name)});document.querySelectorAll('.dh10page').forEach(function(p){p.classList.remove('active')});let p=$('dh10-'+name);if(p)p.classList.add('active');renderAll()};
-document.querySelectorAll('[data-v10tab]').forEach(function(b){b.addEventListener('click',function(){dh10Tab(b.dataset.v10tab)})});
+window.dh10Tab=function(name){document.querySelectorAll('[data-v12tab]').forEach(function(b){b.classList.toggle('active',b.dataset.v12tab===name)});document.querySelectorAll('.dh10page').forEach(function(p){p.classList.remove('active')});let p=$('dh10-'+name);if(p)p.classList.add('active');renderAll()};
+document.querySelectorAll('[data-v12tab]').forEach(function(b){b.addEventListener('click',function(){dh10Tab(b.dataset.v12tab)})});
 $('dhV10Fab').onclick=function(){$('dhV10Overlay').style.display='block';renderAll()};
 $('dhV10Close').onclick=function(){$('dhV10Overlay').style.display='none'};
 $('dhV10Overlay').addEventListener('click',function(e){if(e.target===this)this.style.display='none'});
