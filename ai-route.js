@@ -1,15 +1,49 @@
+'use strict';
+const MODES={
+ teacher:'آموزگار خصوصی: توضیح روشن و مرحله‌ای بده، از مثال ساده شروع کن و در پایان یک سؤال کوتاه برای سنجش فهم مطرح کن.',
+ solve:'حل مرحله‌به‌مرحله: داده‌ها، خواسته، روش، محاسبات با واحد و پاسخ نهایی را جدا کن. اگر اطلاعات کافی نیست، سؤال روشن‌کننده بپرس.',
+ check:'بررسی پاسخ: پاسخ دانش‌آموز را منصفانه ارزیابی کن؛ بخش درست، خطای دقیق و روش اصلاح را توضیح بده. اگر پاسخ دانش‌آموز ارائه نشده، درخواستش کن.',
+ practice:'تمرین‌ساز: سه تمرین از ساده تا متوسط بساز؛ پاسخ‌ها را در بخش جداگانه بیاور تا امکان تلاش مستقل باشد.',
+ summary:'خلاصه‌ساز: خلاصه ساختاریافته، تعریف‌های کلیدی، نکته‌های پرتکرار و چند پرسش مرور ارائه بده.'
+};
+const SUBJECTS=['ریاضی','هندسه','فیزیک','شیمی','فارسی','عربی','زبان انگلیسی','دینی','جامعه‌شناسی','تاریخ و جغرافیا','نگارش','تفکر و سواد دیجیتال','عمومی'];
 module.exports=async function aiRoute(req,res,body,json){
- const x=await body(req),q=String(x.question||'').trim().slice(0,12000),subject=String(x.subject||'عمومی').slice(0,40),mode=String(x.mode||'teacher').slice(0,30);
+ const x=await body(req,32*1024),q=String(x.question||'').trim().slice(0,8000);
+ const subject=SUBJECTS.includes(String(x.subject||''))?String(x.subject):'عمومی';
+ const mode=Object.prototype.hasOwnProperty.call(MODES,String(x.mode))?String(x.mode):'teacher';
  if(!q)return json(res,400,{error:'سؤال خالی است'});
- const url=process.env.AI_API_URL||'';
- const key=process.env.AI_API_KEY||'';
- if(url&&key){try{const rr=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:process.env.AI_MODEL||'default',input:q,subject,mode,language:'fa'})});const d=await rr.json();if(!rr.ok)throw new Error(d?.error?.message||'AI provider error');const answer=String(d.output_text||d.answer||d.text||'').trim();if(answer)return json(res,200,{answer,mode,subject});}catch(e){console.error('[AI provider]',e.message)}}
- const answer=localAnswer(q,subject,mode); return json(res,200,{answer,mode,subject,local:true});
+ const history=Array.isArray(x.history)?x.history.slice(-6).map(m=>({role:m&&m.role==='assistant'?'assistant':'user',content:String(m&&m.content||'').slice(0,1200)})): [];
+ const apiUrl=process.env.AI_API_URL||'',key=process.env.AI_API_KEY||'';
+ if(apiUrl&&key){
+  try{
+   const parsed=new URL(apiUrl);
+   if(parsed.protocol!=='https:'&&parsed.hostname!=='localhost'&&parsed.hostname!=='127.0.0.1')throw new Error('AI_API_URL باید از HTTPS استفاده کند');
+   const prompt='تو دستیار آموزشی فارسی دهم‌یار هستی و برای دانش‌آموز پایه دهم درس می‌دهی. زبان پاسخ فارسی و مناسب دانش‌آموز باشد. درس: '+subject+'. حالت: '+MODES[mode]+'\nاصول: درست و دقیق باش؛ جواب را جعل نکن؛ اگر مطمئن نیستی صریح بگو؛ راه‌حل را مرحله‌ای و قابل فهم بنویس؛ در تکالیف به یادگیری کمک کن و صرفاً ادعای نمره یا قطعیت نکن.\nسؤال دانش‌آموز:\n'+q;
+   const payload={model:process.env.AI_MODEL||'default',input:prompt,subject,mode,language:'fa',history};
+   const rr=await fetch(apiUrl,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify(payload),signal:AbortSignal.timeout(20000)});
+   const d=await rr.json().catch(()=>({}));
+   if(!rr.ok)throw new Error('AI provider returned HTTP '+rr.status);
+   const raw=d.output_text||d.answer||d.text||(d.choices&&d.choices[0]&&(d.choices[0].message?.content||d.choices[0].text))||'';
+   const answer=String(raw).trim().slice(0,24000);
+   if(answer)return json(res,200,{answer,mode,subject,local:false});
+   throw new Error('AI provider returned an empty answer');
+  }catch(e){console.error('[AI provider]',String(e.message||e).slice(0,240));}
+ }
+ return json(res,200,{answer:localAnswer(q,subject,mode),mode,subject,local:true,notice:'پاسخ محلی و محدود است؛ برای پاسخ‌های مولد واقعی، تنظیم امن AI_API_URL و AI_API_KEY در سرور لازم است.'});
 };
 function localAnswer(q,subject,mode){
- const m={teacher:'توضیح آموزشی',solve:'حل مرحله‌به‌مرحله',check:'بررسی پاسخ',practice:'تمرین‌سازی',summary:'خلاصه درس'}[mode]||'توضیح آموزشی';
- if(/فیثاغورس|مثلث قائم/.test(q))return 'قضیهٔ فیثاغورس می‌گوید در مثلث قائم‌الزاویه، مربع وتر برابر مجموع مربع دو ضلع قائم است: a²+b²=c². ابتدا وتر را مشخص کن، سپس مقادیر را جای‌گذاری و در پایان جذر بگیر.\n\nدهم‌یار: '+m+' برای '+subject;
- if(/تابع|دامنه|برد/.test(q))return 'برای تابع، ابتدا رابطهٔ y=f(x) را مشخص کن. دامنه مجموعهٔ xهای مجاز است و برد مجموعهٔ yهایی است که تابع تولید می‌کند. برای سؤال‌های دامنه، مخرج را صفر نکن و داخل رادیکال زوج را منفی نکن.\n\nدهم‌یار: '+m+' برای '+subject;
- if(/نیرو|شتاب|قانون دوم نیوتن/.test(q))return 'قانون دوم نیوتن: F_net = m×a. نیروهای وارد بر جسم را مشخص کن، جهت مثبت را انتخاب کن، برآیند نیروها را بنویس و سپس a را به‌دست بیاور.\n\nدهم‌یار: '+m+' برای '+subject;
- return 'سؤال دریافت شد، اما برای پاسخ دقیق‌تر به محتوای درس یا صورت کامل مسئله نیاز دارم.\n\nموضوع: '+subject+'\nحالت: '+m+'\n\nصورت کامل سؤال، گزینه‌ها یا پاسخ خودت را وارد کن تا دهم‌یار بتواند دقیق‌تر بررسی کند.';
+ const m=MODES[mode]||MODES.teacher;
+ if(mode==='practice')return 'تمرین‌های پیشنهادی برای '+subject+':\n۱) تعریف یا قاعده اصلی این مبحث را با زبان خودت بنویس.\n۲) یک مثال ساده بساز و آن را مرحله‌به‌مرحله حل کن.\n۳) یک مثال کمی دشوارتر حل کن و پاسخ را با روش دوم بررسی کن.\n\nاگر نام دقیق فصل یا متن کتاب را بفرستی، می‌توان تمرین مرتبط‌تری ساخت.';
+ if(mode==='summary')return 'برای خلاصه '+subject+' این قالب را پر کن:\n• مفهوم اصلی و تعریف‌ها\n• فرمول‌ها/قاعده‌ها یا واژه‌های کلیدی\n• یک مثال حل‌شده\n• سه نکته‌ای که احتمال اشتباه در آن‌ها داری\n• سه سؤال برای مرور فعال\n\nاین حالت آفلاین متن کتاب را نمی‌بیند؛ فصل یا متن درس را بفرست تا بر اساس همان کمک کنم.';
+ if(mode==='check'&&!/پاسخ من|جواب من|حل من|پاسخم|جوابم|پاسخ:|جواب:/.test(q))return 'برای بررسی دقیق، لطفاً صورت سؤال و پاسخ خودت را در همین پیام بنویس. سپس بخش درست، اشتباه احتمالی و راه اصلاح را جدا می‌کنم.';
+ if(/مجموعه|اشتراک|اجتماع|متمم/.test(q))return 'یادآوری مجموعه‌ها: اشتراک (A∩B) عضوهای مشترک، اجتماع (A∪B) همه عضوهای دو مجموعه بدون تکرار، و متمم A عضوهای مجموعه مرجع هستند که در A نیستند. ابتدا مجموعه مرجع را مشخص کن و سپس عضوها را بررسی کن.\n\nمثال: اگر U={1,2,3,4} و A={1,3} باشد، متمم A برابر {2,4} است.\n\nحالت درخواست: '+m;
+ if(/تابع|دامنه|برد/.test(q))return 'برای تابع، ابتدا رابطه y=f(x) را مشخص کن. دامنه مجموعه ورودی‌های مجاز و برد مجموعه خروجی‌های به‌دست‌آمده است. در دامنه، مخرج نباید صفر شود و عبارت زیر رادیکال با درجه زوج باید نامنفی باشد.\n\nبرای بررسی یک سؤال مشخص، رابطه تابع را کامل بفرست.';
+ if(/فیثاغورس|مثلث قائم|وتر/.test(q))return 'در مثلث قائم‌الزاویه، مربع وتر برابر مجموع مربع دو ضلع قائم است: a²+b²=c². ابتدا وتر را روبه‌روی زاویه ۹۰ درجه پیدا کن، سپس مقادیر را جای‌گذاری و در پایان جذر بگیر.\n\nمثال: اگر ضلع‌های قائم ۳ و ۴ باشند، وتر √(3²+4²)=۵ است.';
+ if(/نیرو|شتاب|قانون دوم نیوتن/.test(q))return 'قانون دوم نیوتن: برآیند نیروها برابر جرم ضرب‌در شتاب است: F_net=m×a. نیروها را با جهت مشخص بنویس، برآیند را محاسبه کن و یکاها را بررسی کن. یکای نیرو نیوتن و یکای شتاب m/s² است.';
+ if(/عدد اتمی|پروتون|نوترون|اتم/.test(q))return 'عدد اتمی تعداد پروتون‌های هسته را نشان می‌دهد. در اتم خنثی، تعداد الکترون‌ها با پروتون‌ها برابر است. عدد جرمی برابر مجموع پروتون‌ها و نوترون‌هاست.';
+ if(/حال ساده|present simple|goes|do و does/i.test(q))return 'در زبان انگلیسی، حال ساده برای عادت‌ها و واقعیت‌ها استفاده می‌شود. با he/she/it معمولاً به فعل s یا es اضافه می‌کنیم: She goes to school. در پرسشی و منفی معمولاً از does و شکل ساده فعل استفاده می‌کنیم.';
+ if(/ماضی|مضارع|فعل عربی|ترجمه عربی/.test(q))return 'برای ترجمه عربی، ابتدا فعل را پیدا کن و زمان آن را تشخیص بده؛ سپس فاعل یا ضمیر و نقش بقیه واژه‌ها را بررسی کن. فعل ماضی معمولاً بر کاری در گذشته دلالت می‌کند و مضارع برای حال/آینده به کار می‌رود؛ بافت جمله مهم است.';
+ if(/آرایه|تشبیه|استعاره|قلمرو ادبی/.test(q))return 'برای بررسی آرایه ادبی، اول معنی ساده جمله یا بیت را بفهم. در تشبیه شباهت میان دو چیز مطرح می‌شود؛ در استعاره، یک واژه در معنایی تصویری و غیرمستقیم به کار می‌رود. برای تشخیص قطعی، متن کامل بیت یا جمله لازم است.';
+ if(/خلاصه|جمع.?بندی/.test(q)||mode==='summary')return 'برای خلاصه‌سازی دقیق، متن یا عنوان فصل را بفرست. قالب پیشنهادی: تعریف‌های کلیدی، نکته‌های مهم، مثال، اشتباه‌های رایج و سه پرسش مرور.';
+ return 'من درخواستت را در درس «'+subject+'» دریافت کردم، اما این نسخه آفلاین دانش‌نامه کامل یا مدل زبانی واقعی نیست.\n\nبرای کمک دقیق‌تر، متن کامل سؤال، گزینه‌ها، نام فصل و پاسخ خودت را بفرست. می‌توانم آن را مرحله‌ای بررسی کنم و مشخص کنم کدام بخش نیاز به اطلاعات بیشتری دارد.';
 }
