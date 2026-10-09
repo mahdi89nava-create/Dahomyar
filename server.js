@@ -10,7 +10,12 @@ const STATS=path.join(DATA,'stats.json'); if(!fs.existsSync(STATS))fs.writeFileS
 const RELEASE=path.join(DATA,'dehomyar-latest.zip');
 const RELEASES=path.join(DATA,'releases'); const CURRENT=path.join(DATA,'current'); fs.mkdirSync(RELEASES,{recursive:true}); fs.mkdirSync(CURRENT,{recursive:true});
 const ADMIN_FILE=path.join(DATA,'admin.json');
-const sessions=new Map(), loginFails=new Map(), aiLimits=new Map();
+const USERS_FILE=path.join(DATA,'users.json'), REPS_FILE=path.join(DATA,'class-representatives.json'), CLASS_NEWS_FILE=path.join(DATA,'class-announcements.json');
+if(!fs.existsSync(USERS_FILE))fs.writeFileSync(USERS_FILE,'[]');
+if(!fs.existsSync(REPS_FILE))fs.writeFileSync(REPS_FILE,'{}');
+if(!fs.existsSync(CLASS_NEWS_FILE))fs.writeFileSync(CLASS_NEWS_FILE,'[]');
+const CLASS_IDS=['101','102','103','104'];
+const sessions=new Map(), classSessions=new Map(), loginFails=new Map(), aiLimits=new Map(), accountLimits=new Map();
 const DEFAULT_USER=process.env.ADMIN_USER || 'mahdinava89nava', DEFAULT_PASS=process.env.ADMIN_PASSWORD || '';
 if(!DEFAULT_PASS){console.error('ADMIN_PASSWORD is required on first startup'); process.exit(1)}
 function hashPassword(password,salt=crypto.randomBytes(16).toString('hex')){const hash=crypto.scryptSync(password,salt,64).toString('hex');return {salt,hash}}
@@ -45,14 +50,94 @@ function installRelease(zipBuf,version){
 function json(res,code,obj){const b=JSON.stringify(obj);res.writeHead(code,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(b)}
 function body(req,maxBytes=12e6){return new Promise((resolve,reject)=>{let s='',n=0,failed=false;req.on('data',c=>{if(failed)return;n+=c.length;if(n>maxBytes){failed=true;s='';reject(Object.assign(new Error('حجم درخواست زیاد است'),{status:413}));return}s+=c});req.on('end',()=>{if(failed)return;try{resolve(JSON.parse(s||'{}'))}catch(e){reject(Object.assign(new Error('JSON نامعتبر است'),{status:400}))}});req.on('error',e=>{if(!failed)reject(e)})})}
 function auth(req){const h=req.headers.authorization||'';if(!h.startsWith('Bearer '))return false;const t=h.slice(7),exp=sessions.get(t);if(!exp)return false;if(exp<Date.now()){sessions.delete(t);return false}return true}
+function classAuth(req,roles){const h=req.headers.authorization||'';if(!h.startsWith('Bearer '))return null;const t=h.slice(7),v=classSessions.get(t);if(!v)return null;if(v.exp<Date.now()){classSessions.delete(t);return null}if(roles&&!roles.includes(v.role))return null;return v}
+function classCodeHash(code,salt){return crypto.scryptSync(String(code),salt,64).toString('hex')}
+function safeUser(u){return {id:u.id,username:u.username,name:u.name,classId:u.classId,createdAt:u.createdAt}}
+function readUsers(){const a=readJson(USERS_FILE,[]);return Array.isArray(a)?a:[]}
+function writeUsers(a){writeJson(USERS_FILE,a)}
+function readReps(){return readJson(REPS_FILE,{})}
+function readClassNews(){const a=readJson(CLASS_NEWS_FILE,[]);return Array.isArray(a)?a:[]}
+function writeClassNews(a){writeJson(CLASS_NEWS_FILE,a)}
+function classItems(classId){return read().filter(x=>!x.classId||x.classId==='all'||x.classId===classId).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))}
+
 function clientKey(req){return String(req.headers['x-forwarded-for']||req.socket.remoteAddress||'unknown').split(',')[0].trim()}
 function allowRate(map,key,max,windowMs){const now=Date.now();let r=map.get(key);if(!r||r.until<=now)r={count:0,until:now+windowMs};r.count++;map.set(key,r);if(map.size>5000){for(const [k,v] of map)if(v.until<=now)map.delete(k)}return r.count<=max}
 function security(res,req){res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('X-Frame-Options','DENY');res.setHeader('Referrer-Policy','no-referrer');res.setHeader('Permissions-Policy','camera=(),microphone=(),geolocation=()');res.setHeader('Cross-Origin-Resource-Policy','same-origin');res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'");if(req.headers['x-forwarded-proto']==='https')res.setHeader('Strict-Transport-Security','max-age=15552000; includeSubDomains')}
 
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.json':'application/json','.css':'text/css','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.pdf':'application/pdf','.doc':'application/msword','.docx':'application/vnd.openxmlformats-officedocument.wordprocessingml.document'};
 const server=http.createServer(async(req,res)=>{try{security(res,req); const u=url.parse(req.url,true); const origin=req.headers.origin; if(origin){let originHost='';try{originHost=new URL(origin).host}catch{}if(originHost!==String(req.headers.host||''))return json(res,403,{error:'درخواست بین‌سایتی رد شد'})} if(req.method==='OPTIONS'){res.writeHead(204,{'Allow':'GET, POST, DELETE, OPTIONS','Cache-Control':'no-store'});return res.end()}
+// Student accounts and class-separated workspaces. Passwords/codes are stored as scrypt hashes.
+if(u.pathname==='/api/account/register'&&req.method==='POST'){
+ const key='register:'+clientKey(req);if(!allowRate(accountLimits,key,8,60*60*1000))return json(res,429,{error:'تعداد ثبت‌نام‌ها زیاد است؛ کمی بعد دوباره تلاش کن'});
+ const x=await body(req,20000),name=String(x.name||'').trim().slice(0,80),username=String(x.username||'').trim().toLowerCase(),password=String(x.password||''),classId=String(x.classId||'');
+ if(name.length<2||!/^[a-z0-9_.-]{3,24}$/.test(username)||password.length<10||password.length>200||!CLASS_IDS.includes(classId))return json(res,400,{error:'نام، نام کاربری معتبر، رمز حداقل ۱۰ کاراکتری و کلاس را کامل وارد کن.'});
+ const users=readUsers();if(users.some(a=>a.username===username))return json(res,409,{error:'این نام کاربری قبلاً ثبت شده است.'});
+ const h=hashPassword(password);const user={id:crypto.randomBytes(12).toString('hex'),username,name,classId,salt:h.salt,hash:h.hash,createdAt:Date.now()};
+ users.push(user);writeUsers(users);const token=crypto.randomBytes(32).toString('hex');classSessions.set(token,{exp:Date.now()+7*24*60*60*1000,role:'student',userId:user.id,username:user.username,name:user.name,classId:user.classId});
+ return json(res,201,{token,user:safeUser(user)});
+}
+if(u.pathname==='/api/account/login'&&req.method==='POST'){
+ const key='login:'+clientKey(req);if(!allowRate(accountLimits,key,15,15*60*1000))return json(res,429,{error:'تلاش‌های ورود زیاد است؛ کمی بعد دوباره امتحان کن'});
+ const x=await body(req,20000),username=String(x.username||'').trim().toLowerCase(),password=String(x.password||''),user=readUsers().find(a=>a.username===username);
+ if(!user||!verifyPassword(password,user))return json(res,401,{error:'نام کاربری یا رمز عبور درست نیست.'});
+ const token=crypto.randomBytes(32).toString('hex');classSessions.set(token,{exp:Date.now()+7*24*60*60*1000,role:'student',userId:user.id,username:user.username,name:user.name,classId:user.classId});
+ return json(res,200,{token,user:safeUser(user)});
+}
+if(u.pathname==='/api/account/me'&&req.method==='GET'){
+ const a=classAuth(req,['student','representative']);if(!a)return json(res,401,{error:'وارد حساب شو.'});
+ return json(res,200,{role:a.role,user:a.role==='student'?safeUser(readUsers().find(x=>x.id===a.userId)||{id:a.userId,username:a.username,name:a.name,classId:a.classId}):{username:a.username,name:a.name,classId:a.classId}});
+}
+if(u.pathname==='/api/account/logout'&&req.method==='POST'){const h=req.headers.authorization||'';if(h.startsWith('Bearer '))classSessions.delete(h.slice(7));return json(res,200,{ok:true})}
+if(u.pathname==='/api/class/representative/login'&&req.method==='POST'){
+ const key='rep-login:'+clientKey(req);if(!allowRate(accountLimits,key,10,15*60*1000))return json(res,429,{error:'تلاش‌های زیاد؛ چند دقیقه بعد دوباره امتحان کن'});
+ const x=await body(req,20000),classId=String(x.classId||''),code=String(x.code||'').trim(),cfg=readReps()[classId];
+ if(!CLASS_IDS.includes(classId)||!cfg||!code||!crypto.timingSafeEqual(Buffer.from(classCodeHash(code,cfg.salt),'hex'),Buffer.from(cfg.hash,'hex')))return json(res,401,{error:'کد نماینده یا کلاس اشتباه است.'});
+ const token=crypto.randomBytes(32).toString('hex');classSessions.set(token,{exp:Date.now()+8*60*60*1000,role:'representative',username:'rep-'+classId,name:'نماینده کلاس '+classId,classId});
+ return json(res,200,{token,user:{username:'rep-'+classId,name:'نماینده کلاس '+classId,classId},role:'representative'});
+}
+if(u.pathname==='/api/admin/class-codes'&&req.method==='GET'){
+ if(!auth(req))return json(res,401,{error:'فقط مدیر اصلی می‌تواند کدهای کلاس را مدیریت کند.'});
+ const reps=readReps();return json(res,200,{classes:CLASS_IDS.map(classId=>({classId,hasCode:!!reps[classId],updatedAt:reps[classId]?.updatedAt||null}))});
+}
+if(u.pathname==='/api/admin/class-codes'&&req.method==='POST'){
+ if(!auth(req))return json(res,401,{error:'فقط مدیر اصلی می‌تواند کدهای کلاس را مدیریت کند.'});
+ const x=await body(req,20000),classId=String(x.classId||'');if(!CLASS_IDS.includes(classId))return json(res,400,{error:'کلاس نامعتبر است.'});
+ const code=crypto.randomBytes(9).toString('base64url'),salt=crypto.randomBytes(16).toString('hex'),reps=readReps();
+ reps[classId]={salt,hash:classCodeHash(code,salt),updatedAt:Date.now()};writeJson(REPS_FILE,reps);
+ return json(res,201,{classId,code,message:'این کد فقط همین بار نمایش داده می‌شود؛ آن را امن به نماینده بده.'});
+}
+if(u.pathname==='/api/class/homework'&&req.method==='GET'){
+ const a=classAuth(req,['student','representative']),classId=String(u.query.classId||a?.classId||'');
+ if(!CLASS_IDS.includes(classId))return json(res,400,{error:'کلاس را مشخص کن.'});
+ if(a&&a.classId!==classId)return json(res,403,{error:'به فضای این کلاس دسترسی نداری.'});
+ return json(res,200,{items:classItems(classId)});
+}
+if(u.pathname==='/api/class/announcements'&&req.method==='GET'){
+ const a=classAuth(req,['student','representative']),classId=String(u.query.classId||a?.classId||'');
+ if(!CLASS_IDS.includes(classId))return json(res,400,{error:'کلاس را مشخص کن.'});
+ if(a&&a.classId!==classId)return json(res,403,{error:'به فضای این کلاس دسترسی نداری.'});
+ const items=readClassNews().filter(n=>n.classId===classId).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+ return json(res,200,{items});
+}
+if(u.pathname==='/api/class/homework'&&req.method==='POST'){
+ const a=classAuth(req,['representative']);if(!a)return json(res,401,{error:'فقط نماینده واردشده می‌تواند تکلیف منتشر کند.'});
+ const x=await body(req);if(!String(x.title||'').trim()||!String(x.body||'').trim())return json(res,400,{error:'عنوان و توضیحات تکلیف لازم است.'});
+ const item={id:crypto.randomBytes(10).toString('hex'),title:String(x.title).trim().slice(0,160),body:String(x.body).trim().slice(0,10000),subject:String(x.subject||'عمومی').slice(0,80),date:String(x.date||'').slice(0,30),classId:a.classId,createdAt:Date.now(),createdBy:a.username};
+ const items=read();items.push(item);write(items);return json(res,201,{item});
+}
+if(u.pathname==='/api/class/announcements'&&req.method==='POST'){
+ const a=classAuth(req,['representative']);if(!a)return json(res,401,{error:'فقط نماینده واردشده می‌تواند اطلاعیه منتشر کند.'});
+ const x=await body(req,20000);if(!String(x.title||'').trim()||!String(x.body||'').trim())return json(res,400,{error:'عنوان و متن اطلاعیه لازم است.'});
+ const items=readClassNews(),item={id:crypto.randomBytes(10).toString('hex'),classId:a.classId,title:String(x.title).trim().slice(0,180),body:String(x.body).trim().slice(0,10000),type:String(x.type||'اطلاعیه').slice(0,30),createdAt:Date.now(),createdBy:a.username};
+ items.push(item);writeClassNews(items);return json(res,201,{item});
+}
+if(u.pathname==='/api/class/announcements/'&&req.method==='DELETE'){
+ const a=classAuth(req,['representative']);if(!a)return json(res,401,{error:'فقط نماینده واردشده می‌تواند اطلاعیه حذف کند.'});
+ const x=await body(req,20000),items=readClassNews(),item=items.find(n=>n.id===String(x.id)&&n.classId===a.classId);if(!item)return json(res,404,{error:'اطلاعیه پیدا نشد.'});
+ writeClassNews(items.filter(n=>n.id!==item.id));return json(res,200,{ok:true});
+}
 if(u.pathname==='/api/ai'&&req.method==='POST'){const key=clientKey(req);if(!allowRate(aiLimits,key,12,60*1000))return json(res,429,{error:'درخواست‌های مهدی AI زیاد شده؛ یک دقیقه دیگر دوباره امتحان کن'});return aiRoute(req,res,body,json)}
-if(u.pathname==='/api/homework'&&req.method==='GET'){const items=read().sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); res.setHeader('X-DH-Data-Count',String(items.length)); res.setHeader('X-DH-Server-Time',String(Date.now())); console.log('[API] GET /api/homework -> '+items.length+' items'); return json(res,200,{items})}
+if(u.pathname==='/api/homework'&&req.method==='GET'){const classId=String(u.query.classId||'all');const items=read().filter(x=>classId==='all'?(!x.classId||x.classId==='all'):(!x.classId||x.classId==='all'||x.classId===classId)).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));res.setHeader('X-DH-Data-Count',String(items.length));res.setHeader('X-DH-Server-Time',String(Date.now()));return json(res,200,{items})}
 if(u.pathname==='/api/news'&&req.method==='GET'){return json(res,200,{items:news().filter(x=>x.published!==false).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,30),settings:settings()})}
 if(u.pathname==='/api/update'&&req.method==='GET'){return json(res,200,{version:settings().version,announcement:settings().announcement||'',updatedAt:settings().updatedAt||0,hasPackage:fs.existsSync(RELEASE)})}
 if(u.pathname==='/api/stats'&&req.method==='GET'){return json(res,200,readJson(STATS,{total:0,today:0,lastDay:''}))}
