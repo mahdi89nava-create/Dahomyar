@@ -198,3 +198,10 @@ hr{border:0;border-top:1px solid var(--dy-line)}
  body.dy-nav-open:after{content:"";position:fixed;inset:0;background:rgba(19,29,54,.38);backdrop-filter:blur(2px);z-index:10000}
  .bar{position:relative!important;z-index:5!important}
 }
+
+
+/* v17 emergency fix: the legacy mobile nav dimmer was covering the entire page */
+body.dy-nav-open:after{display:none!important;content:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;pointer-events:none!important}
+html,body{filter:none!important;-webkit-filter:none!important}
+#dy7Splash{display:none!important;visibility:hidden!important;pointer-events:none!important}
+#dhV10Overlay{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
