@@ -125,6 +125,14 @@ function boot(){
  if($('dyHomework')&&$('dyHwList'))window.dyLoadHomework?.();
  document.addEventListener('click',e=>{const b=e.target.closest('#nav button');if(b&&b.dataset.p==='dyHomework')setTimeout(()=>window.dyLoadHomework?.(),50)});
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();\nwindow.addEventListener('load',()=>{const s=document.getElementById('dy7Splash');if(s){s.classList.add('hide');s.style.display='none'}}, {once:true});\nsetTimeout(()=>{const s=document.getElementById('dy7Splash');if(s){s.classList.add('hide');s.style.display='none'}},1800);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+// Always clear the legacy mobile navigation dimmer when the user interacts.
+const clearLegacyDimmer=()=>document.body?.classList.remove('dy-nav-open');
+document.addEventListener('click',clearLegacyDimmer,true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')clearLegacyDimmer()},true);
+window.addEventListener('pageshow',clearLegacyDimmer);
+
+window.addEventListener('load',()=>{const s=document.getElementById('dy7Splash');if(s){s.classList.add('hide');s.style.display='none'}}, {once:true});
+setTimeout(()=>{const s=document.getElementById('dy7Splash');if(s){s.classList.add('hide');s.style.display='none'}},1800);
 window.addEventListener('storage',e=>{if(e.key===key){try{prefs=JSON.parse(e.newValue||'{}')}catch{}applyTheme(prefs.theme||'dark')}});
 })();
