@@ -69,9 +69,27 @@ function patchHomework(){
 }
 function patchAdminForm(){
  const fn=window.dyRenderAdmin;if(typeof fn!=='function'||fn.__dy14)return;
- const old=fn;
- window.dyRenderAdmin=async function(){await old();const root=$('dyAdminRoot');if(!root||!$('dyClassId')&&!root.querySelector('#dyTitle'))return;
- const subject=$('dySubject');if(subject&&!$('dyClassId')){const w=document.createElement('div');w.className='dy-admin-class';w.innerHTML='<label for="dyClassId">🏫 کلاس مقصد</label><select id="dyClassId" class="dy-select"><option value="all">همهٔ کلاس‌ها</option><option value="101">۱۰۱ · رشته مشخص نشده</option><option value="102">۱۰۲ · رشته مشخص نشده</option><option value="103">۱۰۳ · ریاضی‌فیزیک</option><option value="104">۱۰۴ · رشته مشخص نشده</option></select>';subject.insertAdjacentElement('afterend',w);const pub=root.querySelector('button[onclick*="dyPublishHomework"]');if(pub){const orig=window.dyPublishHomework;if(orig&&!orig.__dy14){window.dyPublishHomework=async function(){const originalFetch=window.fetch;const select=$('dyClassId');if(!select)return orig();const title=$('dyTitle')?.value,sub=$('dySubject')?.value,date=$('dyDate')?.value,body=$('dyBody')?.value;const fileInput=$('dyFile');const form={title,subject:sub,date,body,classId:select.value};if(fileInput?.files?.[0]){const f=fileInput.files[0];form.file={name:f.name,data:await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(f)})}}try{const token=localStorage.getItem('dyAdminToken')||sessionStorage.getItem('dyAdminToken')||'';const response=await originalFetch('/api/homework',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify(form)});const d=await response.json();if(!response.ok)throw Error(d.error||'انتشار تکلیف ناموفق بود');const msg=$('dyHwMsg')||$('dyMsg');if(msg)msg.textContent='تکلیف کلاس '+(select.value==='all'?'همه':select.value)+' منتشر شد';window.dyLoadHomework?.();await old();}catch(e){alert(e.message)}};window.dyPublishHomework.__dy14=true}}}
+ const oldRender=fn;
+ window.dyRenderAdmin=async function(){await oldRender();const root=$('dyAdminRoot');if(!root||!$('dyTitle'))return;
+ const subject=$('dySubject');if(subject&&!$('dyClassId')){const w=document.createElement('div');w.className='dy-admin-class';w.innerHTML='<label for="dyClassId">🏫 کلاس مقصد</label><select id="dyClassId" class="dy-select"><option value="all">همهٔ کلاس‌ها</option><option value="101">۱۰۱ · رشته مشخص نشده</option><option value="102">۱۰۲ · رشته مشخص نشده</option><option value="103">۱۰۳ · ریاضی‌فیزیک</option><option value="104">۱۰۴ · رشته مشخص نشده</option></select>';subject.insertAdjacentElement('afterend',w)}
+ };
+ window.dyRenderAdmin.__dy14=true;
+ const originalPublish=window.dyPublish;
+ if(typeof originalPublish==='function'&&!originalPublish.__dy14){
+  window.dyPublish=async function(){
+   const msg=$('dyMsg');try{
+    const f=$('dyFile')?.files?.[0];let file=null;
+    if(f){if(f.size>8*1024*1024)throw Error('حجم فایل بیشتر از ۸ مگابایت است');file={name:f.name,type:f.type,data:await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)})}}
+    const form={title:$('dyTitle')?.value,subject:$('dySubject')?.value,date:$('dyDate')?.value,body:$('dyBody')?.value,file,classId:$('dyClassId')?.value||'all'};
+    const response=await fetch('/api/homework',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+(localStorage.getItem('dyAdminToken')||sessionStorage.getItem('dyAdminToken')||'')},body:JSON.stringify(form)});
+    const d=await response.json();if(!response.ok)throw Error(d.error||'انتشار تکلیف ناموفق بود');
+    if(msg)msg.textContent='تکلیف برای '+(form.classId==='all'?'همهٔ کلاس‌ها':'کلاس '+form.classId)+' منتشر شد';
+    $('dyTitle').value='';$('dyBody').value='';if($('dyFile'))$('dyFile').value='';
+    await window.dyRenderAdmin();await window.dyLoadHomework?.();
+   }catch(e){if(msg)msg.textContent=e.message}
+  };
+  window.dyPublish.__dy14=true;
+ }
 }
 function boot(){
  ensurePortal();patchHomework();patchAdminForm();
