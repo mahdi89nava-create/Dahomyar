@@ -5,7 +5,7 @@ const ROOT=__dirname, DATA=process.env.DATA_DIR ? path.resolve(process.env.DATA_
 fs.mkdirSync(UP,{recursive:true});
 const DB=path.join(DATA,'homework.json'); if(!fs.existsSync(DB))fs.writeFileSync(DB,'[]');
 const NEWS=path.join(DATA,'news.json'); if(!fs.existsSync(NEWS))fs.writeFileSync(NEWS,'[]');
-const SETTINGS=path.join(DATA,'site-settings.json'); if(!fs.existsSync(SETTINGS))fs.writeFileSync(SETTINGS,JSON.stringify({version:'12.0.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()},null,2));
+const SETTINGS=path.join(DATA,'site-settings.json'); if(!fs.existsSync(SETTINGS))fs.writeFileSync(SETTINGS,JSON.stringify({version:'20.0.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()},null,2));
 const STATS=path.join(DATA,'stats.json'); if(!fs.existsSync(STATS))fs.writeFileSync(STATS,JSON.stringify({total:0,today:0,lastDay:new Date().toISOString().slice(0,10)},null,2));
 const RELEASE=path.join(DATA,'dehomyar-latest.zip');
 const RELEASES=path.join(DATA,'releases'); const CURRENT=path.join(DATA,'current'); fs.mkdirSync(RELEASES,{recursive:true}); fs.mkdirSync(CURRENT,{recursive:true});
@@ -30,7 +30,7 @@ function bumpStats(){const x=readJson(STATS,{total:0,today:0,lastDay:''});const 
 function settings(){return readJson(SETTINGS,{version:'12.0.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()})}
 function news(){return readJson(NEWS,[])} function writeNews(x){writeJson(NEWS,x)}
 // Safe metadata-only migration from the previous built-in version; user content is untouched.
-const initialSettings=settings();if(initialSettings.version==='10.0.0'){initialSettings.version='12.0.0';initialSettings.updatedAt=Date.now();writeJson(SETTINGS,initialSettings)}
+const initialSettings=settings();if(!String(initialSettings.version||'').startsWith('20.')){initialSettings.version='20.0.0';initialSettings.updatedAt=Date.now();writeJson(SETTINGS,initialSettings)}
 function safeReleaseEntries(zip){const allowed=/^(index\.html|manifest\.json|service-worker\.js|offline\.html|icons\/(icon-192\.png|icon-512\.png))$/;return zip.getEntries().filter(e=>!e.isDirectory()).map(e=>e.entryName.replace(/\\/g,'/')).filter(n=>allowed.test(n))}
 function installRelease(zipBuf,version){
  const zip=new AdmZip(zipBuf); const entries=zip.getEntries().filter(e=>!e.isDirectory());if(entries.some(e=>Number(e.header&&e.header.size||0)>10*1024*1024)||entries.reduce((n,e)=>n+Number(e.header&&e.header.size||0),0)>25*1024*1024)throw new Error('حجم فایل‌های داخل بسته بیش از حد مجاز است');const names=safeReleaseEntries(zip);
