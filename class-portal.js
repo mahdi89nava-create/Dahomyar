@@ -28,9 +28,9 @@ function bind(){
 function act(a){if(a==='tab-login'||a==='tab-register'||a==='tab-rep'){tab=a.slice(4);render()}else if(a==='logout')logout();else if(a==='admin-list')adminList()}
 async function submitAuth(e){e.preventDefault();const f=new FormData(e.currentTarget),d=Object.fromEntries(f.entries());try{
  let out;if(tab==='register')out=await api('/api/account/register',{method:'POST',body:JSON.stringify(d)});else if(tab==='rep')out=await api('/api/class/representative/login',{method:'POST',body:JSON.stringify(d)});else out=await api('/api/account/login',{method:'POST',body:JSON.stringify(d)});
- token=out.token;localStorage.setItem(TOKEN_KEY,token);user=out.user;role=out.role||'student';render();
+ token=out.token;localStorage.setItem(TOKEN_KEY,token);user=out.user;role=out.role||'student';render();window.dyLoadHomework?.();
  }catch(err){notice(err.message,true)}}
-async function loadMe(){try{const d=await api('/api/account/me');user=d.user;role=d.role;render()}catch{token='';localStorage.removeItem(TOKEN_KEY);user=null;role='student';render()}}
+async function loadMe(){try{const d=await api('/api/account/me');user=d.user;role=d.role;render();window.dyLoadHomework?.()}catch{token='';localStorage.removeItem(TOKEN_KEY);user=null;role='student';render()}}
 async function logout(){try{await api('/api/account/logout',{method:'POST',body:'{}'})}catch{}token='';user=null;role='student';localStorage.removeItem(TOKEN_KEY);render()}
 function cards(items,news=false){if(!items.length)return '<p class="dycp-muted">هنوز موردی برای این کلاس ثبت نشده است.</p>';return items.map(x=>'<article class="dycp-item"><div class="dycp-badge">'+(news?'📣 اطلاعیه':'📘 '+esc(x.subject||'عمومی'))+'</div><h3>'+esc(x.title)+'</h3><p>'+esc(x.body)+'</p>'+(!news&&x.file?'<p><a class="btn s" href="'+esc(x.file)+'" target="_blank" rel="noopener">📎 دریافت پیوست</a></p>':'')+'<small>'+esc(x.date||new Date(x.createdAt||Date.now()).toLocaleDateString('fa-IR'))+'</small></article>').join('')}
 async function loadContent(){if(!user||!token)return;try{const [h,n]=await Promise.all([api('/api/class/homework'),api('/api/class/announcements')]);const hw=$('#dycpHomework'),nw=$('#dycpNews');if(hw)hw.innerHTML=cards(h.items||[]);if(nw)nw.innerHTML=cards(n.items||[],true)}catch(e){notice(e.message,true)}}
