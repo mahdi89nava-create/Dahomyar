@@ -1,0 +1,12 @@
+/* Class Portal UI */
+.dycp-card{background:var(--p,#141c30);color:var(--text,#eef2ff);border:1px solid var(--line,#2a3651);border-radius:18px;padding:18px;margin:14px 0;min-width:0}
+.dycp-tabs,.dycp-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.dycp-tabs .btn{flex:1;min-width:120px}
+.dycp-form{display:grid;gap:5px;max-width:760px}.dycp-form label,.dycp-card label{font-weight:700;color:var(--text,#eef2ff);margin-top:5px}
+.dycp-message{padding:10px;border-radius:10px;margin:10px 0;color:#86efac;overflow-wrap:anywhere}.dycp-message.bad{color:#fca5a5;background:#7f1d1d22}
+.dycp-muted{color:var(--muted,#a6b2cc);font-size:13px}.dycp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px}
+.dycp-welcome{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}.dycp-badge{display:inline-block;border:1px solid var(--line,#2a3651);background:var(--hv,#202d48);border-radius:99px;padding:4px 10px;font-size:12px}
+.dycp-item{border:1px solid var(--line,#2a3651);border-radius:12px;padding:12px;margin:10px 0;overflow-wrap:anywhere}.dycp-item h3{margin:8px 0}.dycp-item p{white-space:pre-wrap}.dycp-item small{color:var(--muted,#a6b2cc)}
+.dycp-code-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:12px}.dycp-code{border:1px solid var(--line,#2a3651);border-radius:12px;padding:12px}
+html[data-theme="dark"] .dycp-card,body.dy-theme-dark .dycp-card{background:#141c30!important;color:#eef2ff!important;border-color:#2a3651!important}
+html[data-theme="dark"] .dycp-card input,html[data-theme="dark"] .dycp-card select,html[data-theme="dark"] .dycp-card textarea,body.dy-theme-dark .dycp-card input,body.dy-theme-dark .dycp-card select,body.dy-theme-dark .dycp-card textarea{background:#0f172a!important;color:#eef2ff!important;border-color:#34415e!important}
+@media(max-width:650px){.dycp-card{padding:13px}.dycp-welcome{align-items:flex-start}.dycp-tabs .btn{min-width:100px;padding:8px}}
