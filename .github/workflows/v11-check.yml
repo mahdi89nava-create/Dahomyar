@@ -1,11 +1,11 @@
-name: DehomYar v11 checks
+name: DehomYar v12 checks
 on:
   push:
-    branches: ["feat/dahomyar-refresh-v11"]
+    branches: ["feat/dahomyar-v12-learning-security"]
   pull_request:
     branches: ["main"]
 jobs:
-  syntax:
+  syntax-and-smoke:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,7 +14,9 @@ jobs:
           node-version: 20
           cache: npm
       - run: node --check server.js
-      - run: node --check enhancements.js
       - run: node --check ai-route.js
       - run: node --check ai-ui.js
+      - run: node --check enhancements.js
+      - run: node --check learning-hub.js
+      - run: node ai-route.test.js
       - run: npm ci
