@@ -1,4 +1,4 @@
-const CACHE_NAME='dehomyar-static-v12-1.0.0';
+const CACHE_NAME='dehomyar-static-v12-1.1.0';
 const CORE=['./','./index.html','./manifest.json','./service-worker.js','./offline.html','./icons/icon-192.png','./icons/icon-512.png','./ai-ui.css','./ai-ui.js','./redesign.css','./enhancements.js','./learning-hub.css','./learning-hub.js'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_NAME&&k.startsWith('dehomyar-static-')).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
