@@ -92,17 +92,17 @@ details p{margin:6px 0}summary{cursor:pointer}
 <body>
 <aside class="side" id="side"><div class="logo">دهم‌یار<small>دستیار هوشمند دانش‌آموز دهم</small></div><div class="nav" id="nav"></div></aside>
 <main class="main">
-<div class="bar"><div><button class="btn s mb" aria-label="باز کردن منو" onclick="toggleMobileNav()">☰ منو</button> 📅 <b>فردا (<span id="tmd"></span>):</b> <span id="tm"></span></div><div class="wg" id="wg"><span id="clk"></span><span id="dt"></span></div><div><button class="btn s" onclick="go('schedule')">📅 برنامه</button> <button class="btn s" onclick="go('ai')">🤖 مهدی AI</button> <button class="btn s" onclick="bell()" aria-label="اعلان‌ها">🔔<span id="bdg">۳</span></button></div></div>
+<div class="bar"><div><button class="btn s mb" aria-label="باز کردن منو" onclick="toggleMobileNav()">☰ منو</button> 📅 <b>فردا (<span id="tmd"></span>):</b> <span id="tm"></span></div><div class="wg" id="wg"><span id="clk"></span><span id="dt"></span></div><div><button class="btn s" onclick="go('schedule')">📅 برنامه</button> <button class="btn s" onclick="go('ai')">🤖 Dahomyar AI</button> <button class="btn s" onclick="bell()" aria-label="اعلان‌ها">🔔<span id="bdg">۳</span></button></div></div>
 
 <section id="home" class="page active">
 <h1>داشبورد دهم‌یار 🚀</h1><div class="sub">سلام <span id="nm">دوست من</span> 👋 امروز چه چیزی می‌خوای یاد بگیری؟</div>
 <div class="card" id="cont"></div><br><div class="grid" id="hs"></div><br>
 <div class="card"><input id="gs" placeholder="🔎 جست‌وجوی ابزار، فرمول یا درس…" oninput="gsearch()"><div id="gsr"></div></div><br>
-<div class="grid2"><div class="card"><h2>⚡ دسترسی سریع</h2><button class="btn" onclick="go('math')">🧮 ریاضی</button> <button class="btn" onclick="go('physics')">⚡ فیزیک</button> <button class="btn" onclick="go('chem')">🧪 شیمی</button> <button class="btn" onclick="go('quiz')">🎯 آزمون</button> <button class="btn" onclick="go('ai')">🤖 مهدی AI</button></div>
+<div class="grid2"><div class="card"><h2>⚡ دسترسی سریع</h2><button class="btn" onclick="go('math')">🧮 ریاضی</button> <button class="btn" onclick="go('physics')">⚡ فیزیک</button> <button class="btn" onclick="go('chem')">🧪 شیمی</button> <button class="btn" onclick="go('quiz')">🎯 آزمون</button> <button class="btn" onclick="go('ai')">🤖 Dahomyar AI</button></div>
 <div class="card"><h2>💡 نکته امروز</h2><p id="tip"></p><button class="btn s" onclick="tip()">نکته بعدی</button></div></div>
 </section>
 
-<section id="lessons" class="page"><h1>📚 درس‌ها</h1><div class="sub">روی هر مبحث بزن تا مهدی AI برایت توضیح بدهد</div><div class="grid2" id="lsn"></div></section>
+<section id="lessons" class="page"><h1>📚 درس‌ها</h1><div class="sub">روی هر مبحث بزن تا Dahomyar AI برایت توضیح بدهد</div><div class="grid2" id="lsn"></div></section>
 <section id="math" class="page"><h1>➗ ابزار ریاضی</h1><div class="sub">همراه با مراحل حل</div><div class="grid2" id="g-math"></div></section>
 <section id="geometry" class="page"><h1>📐 هندسه</h1><div class="grid2" id="g-geo"></div></section>
 <section id="physics" class="page"><h1>⚡ ابزار فیزیک</h1><div class="grid2" id="g-phy"></div></section>
@@ -123,12 +123,12 @@ details p{margin:6px 0}summary{cursor:pointer}
 
 <section id="progress" class="page"><h1>🏆 پیشرفت و دستاوردها</h1><div class="grid2"><div class="card" id="pf"></div><div class="card" id="pa"></div></div><br><div class="card"><h2>🎓 عملکرد آزمون‌ها</h2><div id="pp"></div></div></section>
 
-<section id="ai" class="page"><h1>🤖 مهدی AI</h1><div class="card"><select id="mode"><option value="teacher">👨‍🏫 حالت معلم (توضیح کامل)</option><option value="solver">🧩 حالت حل مسئله (مرحله‌به‌مرحله)</option><option value="short">⚡ پاسخ کوتاه و خلاصه</option><option value="check">✅ بررسی پاسخ من</option><option value="practice">🎯 تولید تمرین</option><option value="summary">📄 خلاصه درس</option></select>
+<section id="ai" class="page"><h1>🤖 Dahomyar AI</h1><div class="card"><select id="mode"><option value="teacher">👨‍🏫 حالت معلم (توضیح کامل)</option><option value="solver">🧩 حالت حل مسئله (مرحله‌به‌مرحله)</option><option value="short">⚡ پاسخ کوتاه و خلاصه</option><option value="check">✅ بررسی پاسخ من</option><option value="practice">🎯 تولید تمرین</option><option value="summary">📄 خلاصه درس</option></select>
 <div class="ch" id="chat"></div><div style="display:flex;gap:6px"><input id="ain" placeholder="سؤالت رو بنویس…" onkeydown="if(event.key==='Enter')ask()"><button class="btn" onclick="ask()">ارسال</button></div>
 <span class="tag" onclick="ask('معادله درجه دوم را با مثال توضیح بده')">معادله درجه ۲</span><span class="tag" onclick="ask('مفهوم مول را ساده توضیح بده')">مول</span><span class="tag" onclick="ask('فرق دما و گرما چیست؟')">دما و گرما</span><span class="tag" onclick="ask('تشابه مثلث‌ها را توضیح بده')">تشابه</span></div></section>
 
 <section id="schedule" class="page"><h1>📅 برنامه هفتگی</h1><div class="sub">هر درس یک زنگ — ۴ زنگ در روز</div><div class="card" style="overflow:auto"><table id="stb"></table></div><br><button class="btn" onclick="edSch()">✏️ ویرایش برنامه</button></section>
-<section id="solver" class="page"><h1>🧠 حل‌گر هوشمند</h1><div class="sub">معادله خطی یا درجه دوم را بنویس؛ مراحل حل را ببین</div><div class="card"><input id="soi" value="2x+7=19" onkeydown="if(event.key==='Enter')slv()"><button class="btn" onclick="slv()">حل کن</button> <button class="btn s" onclick="ask('این معادله را مرحله‌به‌مرحله توضیح بده: '+$('soi').value)">🤖 توضیح مهدی AI</button><div><span class="tag" onclick="$('soi').value='3x-5=x+9';slv()">3x−5=x+9</span><span class="tag" onclick="$('soi').value='x^2-5x+6=0';slv()">x²−5x+6=0</span><span class="tag" onclick="$('soi').value='2x^2+3x+5=0';slv()">Δ&lt;0</span></div><div class="result" id="sor" onclick="copy(this.textContent)">—</div></div></section>
+<section id="solver" class="page"><h1>🧠 حل‌گر هوشمند</h1><div class="sub">معادله خطی یا درجه دوم را بنویس؛ مراحل حل را ببین</div><div class="card"><input id="soi" value="2x+7=19" onkeydown="if(event.key==='Enter')slv()"><button class="btn" onclick="slv()">حل کن</button> <button class="btn s" onclick="ask('این معادله را مرحله‌به‌مرحله توضیح بده: '+$('soi').value)">🤖 توضیح Dahomyar AI</button><div><span class="tag" onclick="$('soi').value='3x-5=x+9';slv()">3x−5=x+9</span><span class="tag" onclick="$('soi').value='x^2-5x+6=0';slv()">x²−5x+6=0</span><span class="tag" onclick="$('soi').value='2x^2+3x+5=0';slv()">Δ&lt;0</span></div><div class="result" id="sor" onclick="copy(this.textContent)">—</div></div></section>
 <section id="bank" class="page"><h1>📝 بانک سؤال</h1><div class="grid2"><select id="bs" onchange="bank()"></select><input id="bq" placeholder="جستجو در سؤال‌ها…" oninput="bank()"></div><br><div class="card" id="bl"></div><br><button class="btn" onclick="go('quiz')">🎯 برو به آزمون</button></section>
 <section id="favorites" class="page"><h1>⭐ علاقه‌مندی‌ها</h1><div class="grid2" id="g-fav"></div></section>
 
@@ -174,7 +174,7 @@ const lvl=()=>1+Math.floor(S.xp/100);
 function copy(t){try{navigator.clipboard.writeText(t).then(()=>toast('کپی شد ✅'))}catch(e){toast('کپی نشد')}}
 function modal(h){$('mbx').innerHTML=h;$('md').classList.add('show')}
 /* nav */
-const PG=[['home','🏠 داشبورد'],['lessons','📚 درس‌ها'],['math','➗ ریاضی'],['geometry','📐 هندسه'],['physics','⚡ فیزیک'],['chem','🧪 شیمی'],['graph','📈 نمودار'],['lab','🔬 آزمایشگاه'],['periodic','⚛️ جدول تناوبی'],['formulas','📖 فرمول‌نامه'],['quiz','🎯 آزمون'],['progress','🏆 پیشرفت'],['ai','🤖 مهدی AI'],['favorites','⭐ علاقه‌مندی‌ها'],['settings','⚙️ تنظیمات']];
+const PG=[['home','🏠 داشبورد'],['lessons','📚 درس‌ها'],['math','➗ ریاضی'],['geometry','📐 هندسه'],['physics','⚡ فیزیک'],['chem','🧪 شیمی'],['graph','📈 نمودار'],['lab','🔬 آزمایشگاه'],['periodic','⚛️ جدول تناوبی'],['formulas','📖 فرمول‌نامه'],['quiz','🎯 آزمون'],['progress','🏆 پیشرفت'],['ai','🤖 Dahomyar AI'],['favorites','⭐ علاقه‌مندی‌ها'],['settings','⚙️ تنظیمات']];
 PG.splice(1,0,['schedule','📅 برنامه هفتگی']);PG.splice(3,0,['solver','🧠 حل‌گر هوشمند']);PG.splice(PG.findIndex(p=>p[0]=='quiz')+1,0,['bank','📝 بانک سؤال']);
 $('nav').innerHTML=PG.map(p=>`<button data-p="${p[0]}" onclick="go('${p[0]}')">${p[1]}</button>`).join('');
 function toggleMobileNav(){const s=$('side');s.classList.toggle('open');document.body.classList.toggle('dy-nav-open',s.classList.contains('open'));}
@@ -327,13 +327,27 @@ function setui(){const t=S.st;$('setbox').innerHTML=`<label>نام تو</label><
 const H=[];function bub(c,t){const d=document.createElement('div');d.className='m '+c;d.textContent=t;$('chat').appendChild(d);$('chat').scrollTop=1e9;return d}
 bub('a','سلام! من مهدی هستم 👋 دستیار درسی ریاضی، فیزیک و شیمی دهم. بپرس!');
 const MD={teacher:'مثل معلم صبور توضیح بده: مفهوم، فرمول، مثال عددی، و یک تمرین کوچک.',solver:'مسئله را دقیقاً مرحله‌به‌مرحله حل کن، هر مرحله را شماره‌گذاری کن و پاسخ نهایی را مشخص کن.',short:'کوتاه، دقیق و حداکثر ۵ خط جواب بده.',check:'دانش‌آموز پاسخ خودش را می‌فرستد؛ درستی را بررسی کن، اشتباه را دقیق توضیح بده و اصلاح کن.',practice:'۳ تمرین با سطح آسان، متوسط و سخت از مبحث بساز و پاسخ را آخر جدا بنویس.',summary:'خلاصه منظم درس با نکته‌ها و فرمول‌های مهم بنویس.'};
-async function ask(t){t=(t||$('ain').value).trim();if(!t)return;$('ain').value='';go('ai');bub('u',t);const b=bub('a','در حال فکر کردن…');
-try{const s=await claude.use('sample');if(!s){b.textContent='هوش مصنوعی در این نمایش فعال نیست.';return}
-H.push({role:'user',content:t});const tr=H.slice(-9).map(x=>({...x}));
-tr[0].content=`تو «مهدی»، معلم مهربان و حرفه‌ای دانش‌آموزان پایه دهم ریاضی‌فیزیک ایران هستی (ریاضی ۱، هندسه ۱، فیزیک ۱، شیمی ۱). فقط فارسی و ساده پاسخ بده، فرمول‌ها را بنویس، از درس خارج نشو. ${MD[$('mode').value]}\nاگر یکی از این ابزارهای سایت به سؤال کمک می‌کند در آخرین خط دقیقاً بنویس «ابزار پیشنهادی: نام ابزار»: ${T.map(x=>x[1]).join(' | ')}\n\nسؤال دانش‌آموز:\n`+tr[0].content;
-const r=await s(tr,{cache:false,onText:x=>{b.textContent=x.text;$('chat').scrollTop=1e9}});H.push({role:'assistant',content:r.text});
-const m=r.text.match(/ابزار پیشنهادی:\s*(.+)$/m);if(m){const i=T.findIndex(x=>m[1].includes(x[1]));b.textContent=r.text.replace(m[0],'').trim();if(i>=0){const bt=document.createElement('button');bt.className='btn s';bt.textContent='🧮 باز کردن: '+T[i][1];bt.onclick=()=>{go({math:'math',geo:'geometry',phy:'physics',chem:'chem'}[T[i][0]]);setTimeout(()=>{const e=$('t'+i);e&&e.scrollIntoView({block:'center'})},100)};b.appendChild(document.createElement('br'));b.appendChild(bt)}}
-xp(3)}catch(e){H.pop();b.textContent='خطا: '+((e&&e.code)||'دوباره تلاش کن')}}
+async function ask(t){
+ t=(t||$('ain').value).trim();if(!t)return;
+ $('ain').value='';go('ai');bub('u',t);
+ const b=bub('a','🤖 دارم سؤال رو بررسی می‌کنم…');
+ const modeMap={teacher:'teacher',solver:'solve',short:'short',check:'check',practice:'practice',summary:'summary'};
+ try{
+  H.push({role:'user',content:t});
+  const response=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:t,subject:'عمومی',mode:modeMap[$('mode').value]||'teacher',history:H.slice(-8)}),signal:AbortSignal.timeout(25000)});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(data.error||'خطای سرویس');
+  const answer=String(data.answer||'').trim();
+  if(!answer)throw new Error('پاسخی دریافت نشد');
+  H.push({role:'assistant',content:answer});
+  b.textContent=(data.local?'📚 پاسخ آفلاین • ':'✨ پاسخ هوشمند • ')+answer;
+  $('chat').scrollTop=1e9;
+  xp(3);
+ }catch(e){
+  H.pop();
+  b.textContent='⚠️ فعلاً اتصال پاسخ‌گو در دسترس نیست. اتصال اینترنت را بررسی کن و دوباره بزن. جزئیات: '+String(e.message||'خطای شبکه').slice(0,180);
+ }
+}
 const sg=v=>(v<0?'− ':'+ ')+F(Math.abs(v));
 function solveEq(s){const p=fa(s).split('=');if(p.length!=2)return'معادله باید یک علامت = داشته باشد. مثال: 2x+7=19';let L,R;try{L=comp(p[0],0);R=comp(p[1],0)}catch(e){return'عبارت نامعتبر. از x و + − * / ^ و پرانتز استفاده کن'}
 const f=x=>L(x)-R(x),c=f(0),u=f(1),w=f(-1),a=(u+w)/2-c,b=(u-w)/2;
@@ -427,7 +441,7 @@ v6Render();v6Periodic();
 
 <div id="v6cmd" class="v6-command" onclick="if(event.target===this)this.classList.remove('show')"><div class="v6-commandbox"><input id="v6cmdin" placeholder="جستجوی سریع…  (Ctrl+K)" oninput="v6CmdSearch()"><div id="v6cmdlist"></div></div></div>
 <script>
-const V6CMDS=[['داشبورد','v6dashboard'],['حساب و پروفایل','v6account'],['یادداشت‌ها','v6notes'],['فلش‌کارت','v6flash'],['برنامه‌ریز','v6planner'],['بانک سؤال','v6bank'],['دستاوردها','v6achievements'],['ابزارهای دانش‌آموزی','v6tools'],['ریاضی','math'],['هندسه','geometry'],['فیزیک','physics'],['شیمی','chem'],['آزمون','quiz'],['مهدی AI','ai'],['فرمول‌نامه','formulas'],['تکالیف روزانه','dyHomework'],['پنل مدیریت','dyAdmin']];
+const V6CMDS=[['داشبورد','v6dashboard'],['حساب و پروفایل','v6account'],['یادداشت‌ها','v6notes'],['فلش‌کارت','v6flash'],['برنامه‌ریز','v6planner'],['بانک سؤال','v6bank'],['دستاوردها','v6achievements'],['ابزارهای دانش‌آموزی','v6tools'],['ریاضی','math'],['هندسه','geometry'],['فیزیک','physics'],['شیمی','chem'],['آزمون','quiz'],['Dahomyar AI','ai'],['فرمول‌نامه','formulas'],['تکالیف روزانه','dyHomework'],['پنل مدیریت','dyAdmin']];
 function v6CmdSearch(){const q=($('v6cmdin').value||'').trim();$('v6cmdlist').innerHTML=V6CMDS.filter(x=>!q||x[0].includes(q)).map(x=>`<div class="v6-cmditem" onclick="$('v6cmd').classList.remove('show');go('${x[1]}')">🔎 ${x[0]}</div>`).join('')}
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('v6cmd').classList.add('show');$('v6cmdin').focus();v6CmdSearch()}if(e.key==='Escape')$('v6cmd')?.classList.remove('show')});
 </script>
@@ -448,7 +462,7 @@ document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLower
     <div class="dy7-feature"><span>📚 فرمول‌ها و جدول تناوبی</span><span class="dy7-pill dy7-on">آفلاین</span></div>
     <div class="dy7-feature"><span>📝 آزمون و بانک سؤال داخلی</span><span class="dy7-pill dy7-on">آفلاین</span></div>
     <div class="dy7-feature"><span>📒 یادداشت و برنامه‌ریزی</span><span class="dy7-pill dy7-on">آفلاین</span></div>
-    <div class="dy7-feature"><span>🤖 مهدی AI</span><span class="dy7-pill dy7-off">نیازمند نت</span></div>
+    <div class="dy7-feature"><span>🤖 Dahomyar AI</span><span class="dy7-pill dy7-off">نیازمند نت</span></div>
     <div class="dy7-feature"><span>☁️ همگام‌سازی ابری</span><span class="dy7-pill dy7-off">نیازمند نت</span></div>
     <div class="dy7-feature"><span>📊 آمار آنلاین</span><span class="dy7-pill dy7-off">نیازمند نت</span></div>
   </div>
@@ -566,7 +580,7 @@ window.dyLoadHomework();window.dyLoadNews();
    <button data-v12tab="weak">📊 نقاط ضعف</button><button data-v12tab="mistakes">❌ دفتر اشتباهات</button>
    <button data-v12tab="flash">🧠 فلش‌کارت</button><button data-v12tab="plan">📅 برنامه</button>
    <button data-v12tab="notes">📄 جزوه‌ساز</button>
-   <button data-v12tab="ai">🤖 مهدی AI</button><button data-v12tab="search">🔎 جستجوی هوشمند</button><button data-v12tab="cyber">🛡️ مسیر امنیت سایبری</button>
+   <button data-v12tab="ai">🤖 Dahomyar AI</button><button data-v12tab="search">🔎 جستجوی هوشمند</button><button data-v12tab="cyber">🛡️ مسیر امنیت سایبری</button>
   </div>
   <div class="dh10body">
    <section id="dh10-home" class="dh10page active"></section>
@@ -713,14 +727,14 @@ window.dh10DoSearch=function(){
  bank.forEach(function(x){if((x.q+' '+x.s+' '+x.c).toLowerCase().includes(q))results.push({t:'📝 سؤال',x:x.q,d:x.s+' · '+x.c})});
  state.mistakes.forEach(function(x){if((x.q+' '+x.subject+' '+x.chapter).toLowerCase().includes(q))results.push({t:'❌ دفتر اشتباهات',x:x.q,d:x.subject+' · '+x.chapter})});
  if('امنیت سایبری'.includes(q)||'cyber'.includes(q))results.push({t:'🛡️ مسیر',x:'امنیت سایبری',d:'Linux → Networking → Web → Security → CTF'});
- out.innerHTML=(results.slice(0,30).map(function(r){return '<div class="dh10card"><span class="dh10badge">'+esc(r.t)+'</span><h3>'+esc(r.x)+'</h3><div class="dh10muted">'+esc(r.d)+'</div></div>'}).join(''))||'<div class="dh10card">نتیجه‌ای پیدا نشد؛ می‌توانی همین موضوع را از مهدی AI بپرسی.</div>';
+ out.innerHTML=(results.slice(0,30).map(function(r){return '<div class="dh10card"><span class="dh10badge">'+esc(r.t)+'</span><h3>'+esc(r.x)+'</h3><div class="dh10muted">'+esc(r.d)+'</div></div>'}).join(''))||'<div class="dh10card">نتیجه‌ای پیدا نشد؛ می‌توانی همین موضوع را از Dahomyar AI بپرسی.</div>';
 };
 function renderCyber(){
  $('dh10-cyber').innerHTML='<div class="dh10card"><h3>🛡️ مسیر یادگیری امنیت سایبری</h3><p class="dh10muted">نقشه راه آموزشی مرحله‌ای برای هدف بلندمدت امنیت شبکه و سایبری.</p><div class="dh10grid">'+
  [['۱','مبانی','سیستم‌عامل، فایل و سخت‌افزار'],['۲','Linux','ترمینال، فایل‌ها و دسترسی‌ها'],['۳','Networking','IP، DNS، HTTP و مدل OSI'],['۴','Python','متغیر، شرط، حلقه، تابع و فایل'],['۵','Web','HTML، CSS، JavaScript و HTTP'],['۶','Cybersecurity','احراز هویت، رمزنگاری، تهدیدها و دفاع'],['۷','تمرین دفاعی','آزمایشگاه‌های آموزشی و سناریوهای امن'],['۸','CTF آموزشی','چالش‌های قانونی در محیط‌های آزمایشی']].map(function(x){return '<div class="dh10card"><span class="dh10badge">'+x[0]+'</span><h3>'+esc(x[1])+'</h3><p class="dh10muted">'+esc(x[2])+'</p></div>'}).join('')+'</div></div>';
 }
 function renderAI(){
- $('dh10-ai').innerHTML='<div class="dh10card"><h3>🤖 مهدی AI v12</h3><p class="dh10muted">معلم، حل‌گر، بررسی پاسخ، تمرین‌ساز و خلاصه‌ساز.</p><select id="dh10AIsub" class="dh10select"><option>عمومی</option>'+ (tracks[state.track]||[]).map(function(x){return '<option>'+esc(x)+'</option>'}).join('')+'</select><select id="dh10AImode" class="dh10select"><option value="teacher">معلم خصوصی</option><option value="solve">حل مرحله‌ای</option><option value="check">بررسی پاسخ</option><option value="practice">تمرین‌ساز</option><option value="summary">خلاصه‌ساز</option></select><textarea id="dh10AIQ" class="dh10textarea" rows="7" placeholder="سؤال، متن درس یا پاسخ خودت را وارد کن..."></textarea>'+btn('پرسش از مهدی AI','primary','onclick="dh10AskAI()"')+'<div id="dh10AIOut" class="dh10card" style="margin-top:12px;white-space:pre-wrap"></div></div><div class="dh10card" style="margin-top:12px"><h3>📸 حل سؤال از عکس</h3><p class="dh10muted">عکس را انتخاب کن؛ فعلاً برای OCR واقعی نیاز به اتصال OCR/AI تصویری داریم. زیرساخت رابط آماده است.</p><input id="dh10Image" type="file" accept="image/*" class="dh10input"><div id="dh10ImageMsg" class="dh10muted"></div></div>';
+ $('dh10-ai').innerHTML='<div class="dh10card"><h3>🤖 Dahomyar AI v12</h3><p class="dh10muted">معلم، حل‌گر، بررسی پاسخ، تمرین‌ساز و خلاصه‌ساز.</p><select id="dh10AIsub" class="dh10select"><option>عمومی</option>'+ (tracks[state.track]||[]).map(function(x){return '<option>'+esc(x)+'</option>'}).join('')+'</select><select id="dh10AImode" class="dh10select"><option value="teacher">معلم خصوصی</option><option value="solve">حل مرحله‌ای</option><option value="check">بررسی پاسخ</option><option value="practice">تمرین‌ساز</option><option value="summary">خلاصه‌ساز</option></select><textarea id="dh10AIQ" class="dh10textarea" rows="7" placeholder="سؤال، متن درس یا پاسخ خودت را وارد کن..."></textarea>'+btn('پرسش از Dahomyar AI','primary','onclick="dh10AskAI()"')+'<div id="dh10AIOut" class="dh10card" style="margin-top:12px;white-space:pre-wrap"></div></div><div class="dh10card" style="margin-top:12px"><h3>📸 حل سؤال از عکس</h3><p class="dh10muted">عکس را انتخاب کن؛ فعلاً برای OCR واقعی نیاز به اتصال OCR/AI تصویری داریم. زیرساخت رابط آماده است.</p><input id="dh10Image" type="file" accept="image/*" class="dh10input"><div id="dh10ImageMsg" class="dh10muted"></div></div>';
 }
 window.dh10AskAI=async function(){let out=$('dh10AIOut');out.textContent='در حال فکر کردن...';try{let r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:$('dh10AIQ').value,subject:$('dh10AIsub').value,mode:$('dh10AImode').value})});let d=await r.json();if(!r.ok)throw new Error(d.error||'خطا');out.textContent=d.answer||'پاسخی دریافت نشد.'}catch(e){out.textContent='⚠️ '+e.message}};
 function renderAll(){renderHome();renderTrack();renderLessons();renderQuiz();renderWeak();renderMistakes();renderFlash();renderPlan();renderNotes();renderAI();renderSearch();renderCyber()}
