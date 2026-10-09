@@ -1,7 +1,7 @@
-const CACHE_NAME='dehomyar-static-v9-0.1.0';
-const CORE=['./','./index.html','./manifest.json','./service-worker.js','./offline.html','./icons/icon-192.png','./icons/icon-512.png','./ai-ui.css','./ai-ui.js'];
+const CACHE_NAME='dehomyar-static-v11-1.0.0';
+const CORE=['./','./index.html','./manifest.json','./service-worker.js','./offline.html','./icons/icon-192.png','./icons/icon-512.png','./ai-ui.css','./ai-ui.js','./redesign.css','./enhancements.js'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()))});
-self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_NAME&&k.startsWith('dehomyar-static-v9-')).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
+self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_NAME&&k.startsWith('dehomyar-static-')).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',event=>{
  const req=event.request,url=new URL(req.url);
  if(req.method!=='GET'||url.origin!==self.location.origin)return;
