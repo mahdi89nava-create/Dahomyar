@@ -205,3 +205,55 @@ body.dy-nav-open:after{display:none!important;content:none!important;backdrop-fi
 html,body{filter:none!important;-webkit-filter:none!important}
 #dy7Splash{display:none!important;visibility:hidden!important;pointer-events:none!important}
 #dhV10Overlay{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+
+
+/* V18: complete dark-theme coverage for legacy, public-portal and learning-hub surfaces.
+   Theme is driven by html[data-theme="dark"] and body.dy-theme-dark. */
+html[data-theme="dark"],html[data-theme="dark"] body,body.dy-theme-dark{
+ --dy-bg:#0b1020;--dy-surface:#141c30;--dy-surface2:#19243b;--dy-ink:#eef2ff;--dy-muted:#a6b2cc;--dy-line:#2a3651;
+ --bg:#0b1020;--p:#141c30;--line:#2a3651;--text:#eef2ff;--muted:#a6b2cc;--inp:#0f172a;--res:#101a2d;--hv:#202d48;--c1:#172238;--c2:#111b2e;
+ color-scheme:dark;background:#0b1020!important;color:#eef2ff!important;
+}
+html[data-theme="dark"] body,body.dy-theme-dark{background:#0b1020!important;color:#eef2ff!important}
+html[data-theme="dark"] .main,body.dy-theme-dark .main{background:transparent!important;color:#eef2ff!important}
+html[data-theme="dark"] .side,body.dy-theme-dark .side{background:#10182a!important;color:#eef2ff!important;border-color:#27324a!important}
+html[data-theme="dark"] .bar,body.dy-theme-dark .bar{background:#141c30!important;color:#eef2ff!important;border-color:#2a3651!important}
+html[data-theme="dark"] .card,html[data-theme="dark"] .mbx,html[data-theme="dark"] .stat,html[data-theme="dark"] .fs div,
+html[data-theme="dark"] .ch,html[data-theme="dark"] .result,html[data-theme="dark"] .dy12-hero,html[data-theme="dark"] .dy12-panel,
+html[data-theme="dark"] .dy12-stat,html[data-theme="dark"] .dy12-topic,html[data-theme="dark"] .dy12-subject,
+html[data-theme="dark"] #dyPublicFilters,html[data-theme="dark"] #dyPublicSettings,html[data-theme="dark"] .dy-homework-card,
+html[data-theme="dark"] #dyStudyHub .dy12-hero,html[data-theme="dark"] #dyStudyHub .dy12-subject,html[data-theme="dark"] #dyStudyHub .dy12-card,
+body.dy-theme-dark .card,body.dy-theme-dark .mbx,body.dy-theme-dark .stat,body.dy-theme-dark .fs div,
+body.dy-theme-dark .ch,body.dy-theme-dark .result,body.dy-theme-dark .dy12-hero,body.dy-theme-dark .dy12-panel,
+body.dy-theme-dark .dy12-stat,body.dy-theme-dark .dy12-topic,body.dy-theme-dark .dy12-subject,
+body.dy-theme-dark #dyPublicFilters,body.dy-theme-dark #dyPublicSettings,body.dy-theme-dark .dy-homework-card,
+body.dy-theme-dark #dyStudyHub .dy12-hero,body.dy-theme-dark #dyStudyHub .dy12-subject,body.dy-theme-dark #dyStudyHub .dy12-card{
+ background:#141c30!important;color:#eef2ff!important;border-color:#2a3651!important;box-shadow:0 12px 35px rgba(0,0,0,.22)!important
+}
+html[data-theme="dark"] .dy12-subject,body.dy-theme-dark .dy12-subject{background:#101a2d!important}
+html[data-theme="dark"] .dy12-subject.selected,body.dy-theme-dark .dy12-subject.selected{background:#202d48!important;border-color:#36b7ff!important}
+html[data-theme="dark"] .dy-public-note,html[data-theme="dark"] .dy-chip,html[data-theme="dark"] .dy-subject-chip,
+html[data-theme="dark"] .dy-homework-meta span,body.dy-theme-dark .dy-public-note,body.dy-theme-dark .dy-chip,
+body.dy-theme-dark .dy-subject-chip,body.dy-theme-dark .dy-homework-meta span{background:#0f172a!important;color:#dbe6ff!important;border-color:#2a3651!important}
+html[data-theme="dark"] .dy-select,html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea,
+body.dy-theme-dark .dy-select,body.dy-theme-dark input,body.dy-theme-dark select,body.dy-theme-dark textarea{
+ background:#0f172a!important;color:#eef2ff!important;border-color:#34415e!important
+}
+html[data-theme="dark"] input::placeholder,html[data-theme="dark"] textarea::placeholder,body.dy-theme-dark input::placeholder,body.dy-theme-dark textarea::placeholder{color:#94a3bd!important;opacity:1}
+html[data-theme="dark"] h1,html[data-theme="dark"] h2,html[data-theme="dark"] h3,html[data-theme="dark"] h4,
+html[data-theme="dark"] p,html[data-theme="dark"] label,html[data-theme="dark"] summary,html[data-theme="dark"] li,
+html[data-theme="dark"] td,html[data-theme="dark"] th,html[data-theme="dark"] .sub,html[data-theme="dark"] .dy12-muted,
+body.dy-theme-dark h1,body.dy-theme-dark h2,body.dy-theme-dark h3,body.dy-theme-dark h4,body.dy-theme-dark p,
+body.dy-theme-dark label,body.dy-theme-dark summary,body.dy-theme-dark li,body.dy-theme-dark td,body.dy-theme-dark th,
+body.dy-theme-dark .sub,body.dy-theme-dark .dy12-muted{color:inherit}
+html[data-theme="dark"] .nav button,body.dy-theme-dark .nav button{color:#cbd5e8!important}
+html[data-theme="dark"] .nav button.active,body.dy-theme-dark .nav button.active{background:#202d50!important;color:#dbe5ff!important}
+html[data-theme="dark"] .opt,html[data-theme="dark"] .tag,html[data-theme="dark"] .v6-row,html[data-theme="dark"] .v6-el,
+body.dy-theme-dark .opt,body.dy-theme-dark .tag,body.dy-theme-dark .v6-row,body.dy-theme-dark .v6-el{background:#101a2d!important;color:#eef2ff!important;border-color:#2a3651!important}
+html[data-theme="dark"] .dy12-options button,body.dy-theme-dark .dy12-options button{color:#eef2ff}
+html[data-theme="dark"] .dy12-options button.dy12-correct,body.dy-theme-dark .dy12-options button.dy12-correct{background:#166534!important;color:#fff!important}
+html[data-theme="dark"] .dy12-options button.dy12-wrong,body.dy-theme-dark .dy12-options button.dy12-wrong{background:#991b1b!important;color:#fff!important}
+html[data-theme="dark"] .btn.s,body.dy-theme-dark .btn.s{background:#202d48!important;color:#eef2ff!important}
+html[data-theme="dark"] footer,body.dy-theme-dark footer{border-color:#2a3651!important;color:#a6b2cc!important}
+html[data-theme="dark"] #dyStudyHub .dy12-hero,body.dy-theme-dark #dyStudyHub .dy12-hero{background:linear-gradient(130deg,#141c30,#17213a)!important}
+html[data-theme="dark"] #dyStudyHub .dy12-subject,body.dy-theme-dark #dyStudyHub .dy12-subject{color:#eef2ff!important}
