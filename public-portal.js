@@ -1,4 +1,4 @@
-/* DahomYar Public Portal v14: class workspaces, track selector, language menu and theme fixes */
+/* DahomYar Public Portal v19: class workspaces, track selector, language menu and theme fixes */
 (function(){
 'use strict';
 const $=id=>document.getElementById(id), safe=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
@@ -64,7 +64,7 @@ function renderHomework(items){
 function patchHomework(){
  if(typeof window.dyLoadHomework!=='function'||window.dyLoadHomework.__dy14)return;
  const original=window.dyLoadHomework;
- const wrapped=async function(){const box=$('dyHwList');if(!box)return;try{const r=await fetch('/api/homework',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();renderHomework(d.items||[])}catch(e){box.innerHTML='<div class="dy-empty"><h3>تکالیف موقتاً در دسترس نیستند</h3><p>اتصال را بررسی و دوباره امتحان کن.</p></div>'}};
+ const wrapped=async function(){const box=$('dyHwList');if(!box)return;try{const classId=$('dyClassSelect')?.value||'103',token=localStorage.getItem('dy-class-session-v1')||'',url=token?('/api/homework?classId='+encodeURIComponent(classId)):'/api/homework';const r=await fetch(url,{cache:'no-store',headers:token?{Authorization:'Bearer '+token}:{}});if(!r.ok){if(r.status===401){box.innerHTML='<div class="dy-empty"><h3>🔐 برای دیدن تکالیف کلاس وارد شو</h3><p>از منوی «کلاس من» ثبت‌نام یا ورود کن تا تکالیف کلاس خودت را ببینی.</p></div>';return}throw Error('HTTP '+r.status)}const d=await r.json();renderHomework(d.items||[])}catch(e){box.innerHTML='<div class="dy-empty"><h3>تکالیف موقتاً در دسترس نیستند</h3><p>اتصال را بررسی و دوباره امتحان کن.</p></div>'}};
  wrapped.__dy14=true;wrapped.original=original;window.dyLoadHomework=wrapped;
 }
 function patchAdminForm(){
