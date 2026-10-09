@@ -65,3 +65,44 @@ td,th{border-bottom:1px solid var(--line,#243149)}
 @media(max-width:850px){.side{width:min(290px,86vw);box-shadow:0 0 60px #0006}.main{margin:0;padding:12px}.bar{top:4px;margin-bottom:18px}.dy11-focus-layout{grid-template-columns:1fr}.grid2{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}}
 @media(max-width:520px){.main{padding:10px}.bar{border-radius:15px;padding:9px}.card{padding:13px}h1{font-size:25px}.dy11-focus-title{font-size:18px}.dy11-add-row{align-items:stretch}.dy11-add-row input{flex:1}.dy11-command-overlay{padding-top:7vh}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* DehomYar v12.1 — calmer, mobile-first interaction refresh */
+html{scroll-behavior:smooth;scroll-padding-top:18px}
+.bar{position:relative!important;top:auto!important;z-index:1!important;backdrop-filter:none!important;box-shadow:none!important;align-items:center;gap:12px;margin-bottom:18px!important}
+.bar>div{min-width:0}
+.bar .wg{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.bar button{min-height:42px}
+.main{min-width:0}
+.page.active{animation:dyPageEnter .22s ease-out both}
+.card,.v6-card,.dy12-hero{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.card:hover,.v6-card:hover{transform:translateY(-2px);box-shadow:0 12px 28px #00000012}
+button,.btn,.nav button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:background-color .16s ease,border-color .16s ease,transform .16s ease,opacity .16s ease}
+button:active,.btn:active{transform:scale(.98)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid color-mix(in srgb,var(--a,#36b7ff) 75%,white);outline-offset:2px}
+input,select,textarea{max-width:100%;min-width:0}
+.grid,.grid2{min-width:0}
+@keyframes dyPageEnter{from{opacity:.5;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:850px){
+ .main{padding:12px!important}
+ .bar{display:grid!important;grid-template-columns:minmax(0,1fr);gap:10px;padding:12px!important;border-radius:17px!important}
+ .bar>div{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+ .bar .wg{width:100%;justify-content:space-between;padding:8px 10px;border:1px solid var(--line,#243149);border-radius:12px;background:var(--inp,#0a111d)}
+ .bar .btn{margin:0;min-height:42px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .grid2{grid-template-columns:minmax(0,1fr);gap:10px}
+ h1{font-size:clamp(22px,6vw,28px)}
+ .card{padding:14px;border-radius:16px}
+ .side{max-width:min(86vw,320px);box-shadow:-18px 0 45px #0003}
+}
+@media(max-width:420px){
+ .main{padding:9px!important}
+ .bar{padding:10px!important}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .grid .card{padding:11px}
+ .bar>div:first-child{line-height:1.55}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
