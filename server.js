@@ -5,7 +5,7 @@ const ROOT=__dirname, DATA=process.env.DATA_DIR ? path.resolve(process.env.DATA_
 fs.mkdirSync(UP,{recursive:true});
 const DB=path.join(DATA,'homework.json'); if(!fs.existsSync(DB))fs.writeFileSync(DB,'[]');
 const NEWS=path.join(DATA,'news.json'); if(!fs.existsSync(NEWS))fs.writeFileSync(NEWS,'[]');
-const SETTINGS=path.join(DATA,'site-settings.json'); if(!fs.existsSync(SETTINGS))fs.writeFileSync(SETTINGS,JSON.stringify({version:'10.0.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()},null,2));
+const SETTINGS=path.join(DATA,'site-settings.json'); if(!fs.existsSync(SETTINGS))fs.writeFileSync(SETTINGS,JSON.stringify({version:'12.0.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()},null,2));
 const STATS=path.join(DATA,'stats.json'); if(!fs.existsSync(STATS))fs.writeFileSync(STATS,JSON.stringify({total:0,today:0,lastDay:new Date().toISOString().slice(0,10)},null,2));
 const RELEASE=path.join(DATA,'dehomyar-latest.zip');
 const RELEASES=path.join(DATA,'releases'); const CURRENT=path.join(DATA,'current'); fs.mkdirSync(RELEASES,{recursive:true}); fs.mkdirSync(CURRENT,{recursive:true});
@@ -22,8 +22,10 @@ function write(x){if(!Array.isArray(x))throw new Error('Homework data must be an
 function readJson(file,fallback){try{return JSON.parse(fs.readFileSync(file,'utf8'))}catch(e){if(!(e&&e.code==='ENOENT'))console.error('[storage] Failed reading '+path.basename(file)+': '+(e.message||e));try{const backup=file+'.bak';if(fs.existsSync(backup)){const value=JSON.parse(fs.readFileSync(backup,'utf8'));console.warn('[storage] Recovered '+path.basename(file)+' from backup');return value}}catch(b){console.error('[storage] Backup recovery failed for '+path.basename(file)+': '+(b.message||b))}return fallback}}
 function writeJson(file,x){const tmp=file+'.tmp-'+process.pid+'-'+Date.now();try{fs.writeFileSync(tmp,JSON.stringify(x,null,2));if(fs.existsSync(file)){try{JSON.parse(fs.readFileSync(file,'utf8'));fs.copyFileSync(file,file+'.bak')}catch(e){console.error('[storage] Existing '+path.basename(file)+' is invalid; keeping previous backup')}}fs.renameSync(tmp,file)}catch(e){try{fs.rmSync(tmp,{force:true})}catch(_){}throw e}}
 function bumpStats(){const x=readJson(STATS,{total:0,today:0,lastDay:''});const d=new Date().toISOString().slice(0,10);if(x.lastDay!==d){x.today=0;x.lastDay=d}x.total++;x.today++;writeJson(STATS,x);return x}
-function settings(){return readJson(SETTINGS,{version:'10.0.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()})}
+function settings(){return readJson(SETTINGS,{version:'12.0.0',announcement:'',siteTitle:'دهم‌یار',siteSubtitle:'همراه هوشمند پایه دهم',maintenance:false,updatedAt:Date.now()})}
 function news(){return readJson(NEWS,[])} function writeNews(x){writeJson(NEWS,x)}
+// Safe metadata-only migration from the previous built-in version; user content is untouched.
+const initialSettings=settings();if(initialSettings.version==='10.0.0'){initialSettings.version='12.0.0';initialSettings.updatedAt=Date.now();writeJson(SETTINGS,initialSettings)}
 function safeReleaseEntries(zip){const allowed=/^(index\.html|manifest\.json|service-worker\.js|offline\.html|icons\/(icon-192\.png|icon-512\.png))$/;return zip.getEntries().filter(e=>!e.isDirectory()).map(e=>e.entryName.replace(/\\/g,'/')).filter(n=>allowed.test(n))}
 function installRelease(zipBuf,version){
  const zip=new AdmZip(zipBuf); const entries=zip.getEntries().filter(e=>!e.isDirectory());if(entries.some(e=>Number(e.header&&e.header.size||0)>10*1024*1024)||entries.reduce((n,e)=>n+Number(e.header&&e.header.size||0),0)>25*1024*1024)throw new Error('حجم فایل‌های داخل بسته بیش از حد مجاز است');const names=safeReleaseEntries(zip);
