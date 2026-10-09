@@ -92,7 +92,7 @@ details p{margin:6px 0}summary{cursor:pointer}
 <body>
 <aside class="side" id="side"><div class="logo">دهم‌یار<small>دستیار هوشمند دانش‌آموز دهم</small></div><div class="nav" id="nav"></div></aside>
 <main class="main">
-<div class="bar"><div><button class="btn s mb" onclick="$('side').classList.toggle('open')">☰</button> 📅 <b>فردا (<span id="tmd"></span>):</b> <span id="tm"></span></div><div class="wg" id="wg"><span id="clk"></span><span id="dt"></span></div><div><button class="btn s" onclick="go('schedule')">📅 برنامه</button> <button class="btn s" onclick="bell()">🔔<span id="bdg">۳</span></button></div></div>
+<div class="bar"><div><button class="btn s mb" aria-label="باز کردن منو" onclick="toggleMobileNav()">☰ منو</button> 📅 <b>فردا (<span id="tmd"></span>):</b> <span id="tm"></span></div><div class="wg" id="wg"><span id="clk"></span><span id="dt"></span></div><div><button class="btn s" onclick="go('schedule')">📅 برنامه</button> <button class="btn s" onclick="go('ai')">🤖 مهدی AI</button> <button class="btn s" onclick="bell()" aria-label="اعلان‌ها">🔔<span id="bdg">۳</span></button></div></div>
 
 <section id="home" class="page active">
 <h1>داشبورد دهم‌یار 🚀</h1><div class="sub">سلام <span id="nm">دوست من</span> 👋 امروز چه چیزی می‌خوای یاد بگیری؟</div>
@@ -177,7 +177,8 @@ function modal(h){$('mbx').innerHTML=h;$('md').classList.add('show')}
 const PG=[['home','🏠 داشبورد'],['lessons','📚 درس‌ها'],['math','➗ ریاضی'],['geometry','📐 هندسه'],['physics','⚡ فیزیک'],['chem','🧪 شیمی'],['graph','📈 نمودار'],['lab','🔬 آزمایشگاه'],['periodic','⚛️ جدول تناوبی'],['formulas','📖 فرمول‌نامه'],['quiz','🎯 آزمون'],['progress','🏆 پیشرفت'],['ai','🤖 مهدی AI'],['favorites','⭐ علاقه‌مندی‌ها'],['settings','⚙️ تنظیمات']];
 PG.splice(1,0,['schedule','📅 برنامه هفتگی']);PG.splice(3,0,['solver','🧠 حل‌گر هوشمند']);PG.splice(PG.findIndex(p=>p[0]=='quiz')+1,0,['bank','📝 بانک سؤال']);
 $('nav').innerHTML=PG.map(p=>`<button data-p="${p[0]}" onclick="go('${p[0]}')">${p[1]}</button>`).join('');
-function go(p){Qa('.page').forEach(x=>x.classList.toggle('active',x.id==p));Qa('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.p==p));$('side').classList.remove('open');scrollTo(0,0);
+function toggleMobileNav(){const s=$('side');s.classList.toggle('open');document.body.classList.toggle('dy-nav-open',s.classList.contains('open'));}
+function go(p){document.body.classList.remove('dy-nav-open');Qa('.page').forEach(x=>x.classList.toggle('active',x.id==p));Qa('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.p==p));$('side').classList.remove('open');scrollTo(0,0);
 if(p!='home'){S.lp=p;save()}if(p=='home')ref();if(p=='schedule')stab();if(p=='bank')bank();if(p=='progress')prog();if(p=='favorites')favs();if(p=='graph')setTimeout(draw,50);if(p=='lab'){lab1();lab2();lab3();lab4()}if(p=='quiz'&&!Z.run)qmenu();if(p=='settings')setui()}
 /* elements */
 const E=`H|هیدروژن|1.008;He|هلیم|4.003;Li|لیتیم|6.94;Be|بریلیم|9.012;B|بور|10.81;C|کربن|12.011;N|نیتروژن|14.007;O|اکسیژن|15.999;F|فلوئور|18.998;Ne|نئون|20.180;Na|سدیم|22.990;Mg|منیزیم|24.305;Al|آلومینیم|26.982;Si|سیلیسیم|28.085;P|فسفر|30.974;S|گوگرد|32.06;Cl|کلر|35.45;Ar|آرگون|39.948;K|پتاسیم|39.098;Ca|کلسیم|40.078;Sc|اسکاندیم|44.956;Ti|تیتانیم|47.867;V|وانادیم|50.942;Cr|کروم|51.996;Mn|منگنز|54.938;Fe|آهن|55.845;Co|کبالت|58.933;Ni|نیکل|58.693;Cu|مس|63.546;Zn|روی|65.38;Ga|گالیم|69.723;Ge|ژرمانیم|72.630;As|آرسنیک|74.922;Se|سلنیوم|78.971;Br|برم|79.904;Kr|کریپتون|83.798;Rb|روبیدیم|85.468;Sr|استرانسیم|87.62;Y|ایتریم|88.906;Zr|زیرکونیم|91.224;Nb|نیوبیم|92.906;Mo|مولیبدن|95.95;Tc|تکنسیم|98;Ru|روتنیم|101.07;Rh|رودیم|102.906;Pd|پالادیم|106.42;Ag|نقره|107.868;Cd|کادمیم|112.414;In|ایندیوم|114.818;Sn|قلع|118.710;Sb|آنتیموان|121.760;Te|تلوریم|127.60;I|ید|126.904;Xe|زنون|131.293;Cs|سزیم|132.905;Ba|باریم|137.327;La|لانتان|138.905;Ce|سریم|140.116;Pr|پرازئودیمیم|140.908;Nd|نئودیمیم|144.242;Pm|پرومتیم|145;Sm|ساماریم|150.36;Eu|یوروپیم|151.964;Gd|گادولینیم|157.25;Tb|تربیم|158.925;Dy|دیسپروزیم|162.500;Ho|هولمیم|164.930;Er|اربیم|167.259;Tm|تولیم|168.934;Yb|ایتربیم|173.045;Lu|لوتتیم|174.967;Hf|هافنیم|178.49;Ta|تانتال|180.948;W|تنگستن|183.84;Re|رنیوم|186.207;Os|اسمیم|190.23;Ir|ایریدیم|192.217;Pt|پلاتین|195.084;Au|طلا|196.967;Hg|جیوه|200.592;Tl|تالیم|204.38;Pb|سرب|207.2;Bi|بیسموت|208.980;Po|پولونیم|209;At|آستاتین|210;Rn|رادون|222;Fr|فرانسیم|223;Ra|رادیم|226;Ac|اکتینیم|227;Th|توریوم|232.038;Pa|پروتاکتینیم|231.036;U|اورانیم|238.029;Np|نپتونیم|237;Pu|پلوتونیم|244;Am|آمریسیم|243;Cm|کوریوم|247;Bk|برکلیم|247;Cf|کالیفرنیم|251;Es|اینشتینیم|252;Fm|فرمیم|257;Md|مندلیفیم|258;No|نوبلیم|259;Lr|لارنسیم|266;Rf|رادرفوردیم|267;Db|دوبنیم|268;Sg|سیبورگیم|269;Bh|بوهریم|270;Hs|هاسیم|277;Mt|مایتنریم|278;Ds|دارمشتاتیم|281;Rg|رونتگنیم|282;Cn|کوپرنیسیم|285;Nh|نیهونیوم|286;Fl|فلروویوم|289;Mc|مسکوویم|290;Lv|لیورموریم|293;Ts|تنسین|294;Og|اوگانسون|294`.split(';').map(s=>s.split('|'));
@@ -555,7 +556,7 @@ window.dyLoadHomework();window.dyLoadNews();
 @media(max-width:650px){#dhV10Overlay{padding:5px}.dh10head{padding:12px}.dh10body{padding:10px}}
 </style>
 
-<button id="dhV10Fab">🚀 دهم‌یار v12</button>
+<button id="dhV10Fab" aria-label="باز کردن مرکز یادگیری">🚀 مرکز یادگیری</button>
 <div id="dhV10Overlay">
  <div id="dhV10Panel">
   <div class="dh10head"><div><h2>🚀 دهم‌یار v12</h2><div class="dh10muted">مرکز یادگیری، آزمون، مرور و برنامه‌ریزی</div></div><button class="dh10btn" id="dhV10Close">✕</button></div>
