@@ -91,12 +91,22 @@ function patchAdminForm(){
   window.dyPublish.__dy14=true;
  }
 }
+function repairStuckOverlays(){
+ const splash=$('dy7Splash');
+ if(splash){splash.classList.add('hide');splash.style.display='none';}
+ const learning=$('dhV10Overlay');
+ if(learning){learning.style.display='none';learning.setAttribute('aria-hidden','true');}
+ const control=$('dy7Panel');
+ if(control){control.style.display='none';}
+ document.documentElement.classList.remove('dy-global-blur');
+ document.body.style.filter='none';
+}
 function boot(){
- ensurePortal();patchHomework();patchAdminForm();
+ repairStuckOverlays();ensurePortal();patchHomework();patchAdminForm();
  const settings=$('settings');if(settings&&window.MutationObserver){new MutationObserver(()=>{if($('setbox')&&!$('dyPublicSettings'))ensurePortal()}).observe(settings,{childList:true,subtree:true})}
  if($('dyHomework')&&$('dyHwList'))window.dyLoadHomework?.();
  document.addEventListener('click',e=>{const b=e.target.closest('#nav button');if(b&&b.dataset.p==='dyHomework')setTimeout(()=>window.dyLoadHomework?.(),50)});
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();\nwindow.addEventListener('load',()=>{const s=document.getElementById('dy7Splash');if(s){s.classList.add('hide');s.style.display='none'}}, {once:true});\nsetTimeout(()=>{const s=document.getElementById('dy7Splash');if(s){s.classList.add('hide');s.style.display='none'}},1800);
 window.addEventListener('storage',e=>{if(e.key===key){try{prefs=JSON.parse(e.newValue||'{}')}catch{}applyTheme(prefs.theme||'dark')}});
 })();
