@@ -20,7 +20,7 @@ function ensurePortal(){
   box.innerHTML='<div class="dy-public-head"><div><span class="dy-eyebrow">فضای اختصاصی کلاس</span><h2>📚 تکالیف کلاس من</h2><p>کلاس را انتخاب کن تا تکالیف همان کلاس را ببینی.</p></div><div class="dy-chip">پایه دهم · ۱۴۰۵</div></div><label for="dyClassSelect">🏫 کلاس</label><select id="dyClassSelect" class="dy-select"><option value="103">۱۰۳ · ریاضی‌فیزیک</option><option value="101">۱۰۱ · رشته مشخص نشده</option><option value="102">۱۰۲ · رشته مشخص نشده</option><option value="104">۱۰۴ · رشته مشخص نشده</option></select><label for="dyTrackSelect">🧭 رشته</label><select id="dyTrackSelect" class="dy-select"><option value="math">ریاضی‌فیزیک</option><option value="science">علوم تجربی</option><option value="humanities">علوم انسانی</option><option value="unknown">مشخص نشده</option></select><div id="dyTrackSubjects" class="dy-subject-chips"></div><div class="dy-public-note">🔒 انتخاب کلاس فقط برای فیلترکردن تکالیف است؛ تکالیف همهٔ کلاس‌ها با انتخاب کلاس دیگر قابل مشاهده‌اند.</div></div>';
   if(intro)intro.insertAdjacentElement('afterend',box);else hw.prepend(box);
   const cl=$('dyClassSelect'),tr=$('dyTrackSelect');cl.value=classes.includes(prefs.classId)?prefs.classId:'103';tr.value=prefs.track||'math';
-  cl.addEventListener('change',()=>{prefs.classId=cl.value;save();window.dyLoadHomework?.()});
+  cl.addEventListener('change',()=>{prefs.classId=cl.value;if(cl.value!=='103'&&(!prefs.track||prefs.track==='math')){tr.value='unknown';prefs.track='unknown'}else if(cl.value==='103'&&!prefs.track){tr.value='math';prefs.track='math'}save();renderSubjects();window.dyLoadHomework?.()});
   tr.addEventListener('change',()=>{prefs.track=tr.value;save();renderSubjects()});
   renderSubjects();
  }
@@ -81,7 +81,7 @@ function patchAdminForm(){
     const f=$('dyFile')?.files?.[0];let file=null;
     if(f){if(f.size>8*1024*1024)throw Error('حجم فایل بیشتر از ۸ مگابایت است');file={name:f.name,type:f.type,data:await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f)})}}
     const form={title:$('dyTitle')?.value,subject:$('dySubject')?.value,date:$('dyDate')?.value,body:$('dyBody')?.value,file,classId:$('dyClassId')?.value||'all'};
-    const response=await fetch('/api/homework',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+(localStorage.getItem('dyAdminToken')||sessionStorage.getItem('dyAdminToken')||'')},body:JSON.stringify(form)});
+    const response=await fetch('/api/homework',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+(sessionStorage.getItem('dy_admin_token')||'')},body:JSON.stringify(form)});
     const d=await response.json();if(!response.ok)throw Error(d.error||'انتشار تکلیف ناموفق بود');
     if(msg)msg.textContent='تکلیف برای '+(form.classId==='all'?'همهٔ کلاس‌ها':'کلاس '+form.classId)+' منتشر شد';
     $('dyTitle').value='';$('dyBody').value='';if($('dyFile'))$('dyFile').value='';
