@@ -57,15 +57,49 @@ function applyLang(lang){
 function renderHomework(items){
  const box=$('dyHwList');if(!box)return;
  const cl=$('dyClassSelect')?.value||prefs.classId||'103';
- const relevant=(items||[]).filter(x=>!x.classId||x.classId==='all'||x.classId===cl);
- if(!relevant.length){box.innerHTML='<div class="dy-empty"><div>🎉</div><h3>فعلاً تکلیفی برای این کلاس ثبت نشده</h3><p>وقتی دبیر تکلیفی منتشر کند، همین‌جا نمایش داده می‌شود.</p></div>';return}
- box.innerHTML=relevant.map(x=>'<article class="dy-homework-card"><div class="dy-homework-meta"><span>🏫 '+(x.classId==='all'?'همهٔ کلاس‌ها':safe('کلاس '+x.classId))+'</span><span>📘 '+safe(x.subject||'عمومی')+'</span><span>🗓️ '+safe(x.date||'')+'</span></div><h3>'+safe(x.title)+'</h3><p>'+safe(x.body||'')+'</p>'+(x.file?'<a class="dy-primary" href="'+safe(x.file)+'" target="_blank" rel="noopener">📎 مشاهده فایل</a>':'')+'</article>').join('');
+ const all=(items||[]).filter(x=>!x.classId||x.classId==='all'||String(x.classId)===String(cl)).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+ window.__dyHomeworkItems=all;
+ const toolbar='<div class="dy-hw-toolbar"><div class="dy-hw-count" id="dyHwCount">📚 '+all.length+' تکلیف</div><input id="dyHwSearch" type="search" aria-label="جست‌وجو در تکالیف" placeholder="🔎 جست‌وجو در عنوان، درس و توضیحات…"><select id="dyHwSubject" aria-label="فیلتر درس"><option value="">همهٔ درس‌ها</option>'+[...new Set(all.map(x=>String(x.subject||'عمومی')))].sort().map(x=>'<option value="'+safe(x)+'">'+safe(x)+'</option>').join('')+'</select><button type="button" class="dy-primary" id="dyHwRefresh">🔄 تازه‌سازی</button></div><div id="dyHwResults" aria-live="polite"></div>';
+ box.innerHTML=toolbar;
+ const draw=()=>{
+  const q=($('dyHwSearch')?.value||'').trim().toLocaleLowerCase('fa'),subject=$('dyHwSubject')?.value||'';
+  const rows=all.filter(x=>(!subject||String(x.subject||'عمومی')===subject)&&(!q||[x.title,x.subject,x.body,x.date].some(v=>String(v||'').toLocaleLowerCase('fa').includes(q))));
+  const count=$('dyHwCount');if(count)count.textContent='📚 '+rows.length+' از '+all.length+' تکلیف';
+  const out=$('dyHwResults');if(!out)return;
+  if(!rows.length){out.innerHTML='<div class="dy-empty"><div>🔎</div><h3>'+(all.length?'موردی با این جست‌وجو پیدا نشد':'هنوز تکلیفی برای کلاس ۱۰۳ ثبت نشده')+'</h3><p>'+(all.length?'عبارت جست‌وجو یا فیلتر درس را تغییر بده.':'وقتی نمایندهٔ کلاس یا مدیر تکلیف را منتشر کند، اینجا می‌بینی. برای اطمینان از ورود، از «کلاس من» وضعیت حسابت را بررسی کن.')+'</p></div>';return}
+  out.innerHTML=rows.map(x=>{
+   const date=x.date||((x.createdAt)?new Date(x.createdAt).toLocaleDateString('fa-IR'):'');
+   const file=x.file?'<a class="dy-primary" href="'+safe(x.file)+'" target="_blank" rel="noopener">📎 مشاهده / دریافت پیوست</a>':'';
+   return '<article class="dy-homework-card"><div class="dy-homework-meta"><span>📘 '+safe(x.subject||'عمومی')+'</span>'+(date?'<span>🗓️ '+safe(date)+'</span>':'')+'<span>🏫 '+(x.classId==='all'||!x.classId?'همهٔ کلاس‌ها':'کلاس '+safe(x.classId))+'</span></div><h3>'+safe(x.title||'تکلیف بدون عنوان')+'</h3><p>'+safe(x.body||'توضیحی ثبت نشده است.')+'</p>'+file+'</article>'
+  }).join('');
+ };
+ $('dyHwSearch')?.addEventListener('input',draw);$('dyHwSubject')?.addEventListener('change',draw);
+ $('dyHwRefresh')?.addEventListener('click',()=>window.dyLoadHomework?.());
+ draw();
 }
 function patchHomework(){
- if(typeof window.dyLoadHomework!=='function'||window.dyLoadHomework.__dy14)return;
+ if(typeof window.dyLoadHomework!=='function'||window.dyLoadHomework.__dy23)return;
  const original=window.dyLoadHomework;
- const wrapped=async function(){const box=$('dyHwList');if(!box)return;try{const token=localStorage.getItem('dy-class-session-v1')||'';if(!token){box.innerHTML='<div class="dy-empty"><h3>🔐 برای دیدن تکالیف کلاس وارد شو</h3><p>از منوی «کلاس من» وارد حساب دانش‌آموزی شو. تکالیف کلاس بعد از ورود، بر اساس کلاس حساب نمایش داده می‌شوند.</p></div>';return}const r=await fetch('/api/class/homework',{cache:'no-store',headers:{Authorization:'Bearer '+token}});if(!r.ok){if(r.status===401){box.innerHTML='<div class="dy-empty"><h3>🔐 نشست ورود منقضی شده</h3><p>از بخش «کلاس من» دوباره وارد حساب شو.</p></div>';return}if(r.status===403)throw Error('حساب به این کلاس دسترسی ندارد');throw Error('HTTP '+r.status)}const d=await r.json();renderHomework(d.items||[])}catch(e){box.innerHTML='<div class="dy-empty"><h3>تکالیف موقتاً در دسترس نیستند</h3><p>اتصال را بررسی و دوباره امتحان کن.</p></div>'}};
- wrapped.__dy14=true;wrapped.original=original;window.dyLoadHomework=wrapped;
+ const wrapped=async function(){
+  const box=$('dyHwList');if(!box)return;
+  box.innerHTML='<div class="dy-empty"><div>⏳</div><h3>در حال دریافت تکالیف کلاس ۱۰۳…</h3><p>داریم حساب و اطلاعات را از سرور بررسی می‌کنیم.</p></div>';
+  try{
+   const token=localStorage.getItem('dy-class-session-v1')||'';
+   if(!token){box.innerHTML='<div class="dy-empty"><div>🔐</div><h3>برای دیدن تکالیف وارد حساب کلاس شو</h3><p>تکالیف اختصاصی فقط بعد از ورود دانش‌آموز یا نمایندهٔ همان کلاس نمایش داده می‌شوند.</p><button type="button" class="dy-primary" id="dyHwLogin">ورود به «کلاس من»</button></div>';$('dyHwLogin')?.addEventListener('click',()=>window.go?window.go('dyClassPortal'):document.querySelector('[data-p="dyClassPortal"]')?.click());return}
+   const me=await fetch('/api/account/me',{cache:'no-store',headers:{Authorization:'Bearer '+token}});
+   if(!me.ok){if(me.status===401){localStorage.removeItem('dy-class-session-v1');box.innerHTML='<div class="dy-empty"><div>🔐</div><h3>نشست ورود منقضی شده</h3><p>دوباره وارد «کلاس من» شو.</p><button type="button" class="dy-primary" id="dyHwLogin">ورود دوباره</button></div>';$('dyHwLogin')?.addEventListener('click',()=>window.go?window.go('dyClassPortal'):document.querySelector('[data-p="dyClassPortal"]')?.click());return}throw Error('بررسی حساب ناموفق بود ('+me.status+')')}
+   const md=await me.json(),classId=String(md.user?.classId||'');
+   if(!['101','102','103','104'].includes(classId))throw Error('کلاس حساب از سرور معتبر دریافت نشد.');
+   const select=$('dyClassSelect');if(select){select.value=classId;prefs.classId=classId;save()}
+   const r=await fetch('/api/class/homework',{cache:'no-store',headers:{Authorization:'Bearer '+token}});
+   if(!r.ok){const detail=await r.json().catch(()=>({}));if(r.status===403)throw Error('این حساب به فضای کلاس خودش دسترسی ندارد. از «کلاس من» خارج شو و دوباره وارد شو.');throw Error((detail.error||'دریافت تکالیف ناموفق بود')+' ('+r.status+')')}
+   const d=await r.json();renderHomework(Array.isArray(d.items)?d.items:[]);
+  }catch(e){
+   box.innerHTML='<div class="dy-empty"><div>⚠️</div><h3>تکالیف از سرور دریافت نشدند</h3><p>'+safe(e.message||'خطای ناشناخته')+'</p><button type="button" class="dy-primary" id="dyHwRetry">تلاش دوباره</button></div>';
+   $('dyHwRetry')?.addEventListener('click',()=>wrapped());
+  }
+ };
+ wrapped.__dy23=true;wrapped.original=original;window.dyLoadHomework=wrapped;
 }
 function patchAdminForm(){
  const fn=window.dyRenderAdmin;if(typeof fn!=='function'||fn.__dy14)return;
