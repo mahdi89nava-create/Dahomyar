@@ -35,3 +35,19 @@ body,body *{text-rendering:optimizeLegibility}
 #dhV10Overlay{background:rgba(5,9,18,.94)!important}
 #md,.modal{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 #dy7Splash.hide{display:none!important;visibility:hidden!important;pointer-events:none!important}
+
+
+/* v23: homework list usability, clear status, responsive filters */
+.dy-hw-toolbar{display:grid;grid-template-columns:auto minmax(180px,1fr) minmax(140px,.55fr) auto;gap:9px;align-items:center;margin:12px 0 16px}
+.dy-hw-count{font-weight:800;color:var(--dy-ink,#182440);white-space:nowrap;padding:9px 4px}
+.dy-hw-toolbar input,.dy-hw-toolbar select{margin:0;min-width:0;padding:11px;border-radius:12px;background:var(--dy-surface,#fff);color:var(--dy-ink,#182440);border:1px solid var(--dy-line,#e1e7f2)}
+.dy-hw-toolbar .dy-primary{margin:0;white-space:nowrap}
+.dy-homework-card{position:relative;overflow:hidden}
+.dy-homework-card:before{content:"";position:absolute;inset:0 0 0 auto;width:4px;background:linear-gradient(180deg,#4d63ed,#22c3ee);border-radius:0 19px 19px 0}
+.dy-homework-card h3{font-size:clamp(17px,2.2vw,21px);line-height:1.5;overflow-wrap:anywhere}
+.dy-homework-card p{line-height:1.9;margin:8px 0 12px}
+.dy-homework-card .dy-primary{margin-inline-end:6px}
+#dyHwResults{min-width:0}
+#dyHwSearch:focus,#dyHwSubject:focus{outline:2px solid #7185ff;outline-offset:1px}
+@media(max-width:760px){.dy-hw-toolbar{grid-template-columns:1fr 1fr}.dy-hw-count{grid-column:1/-1}.dy-hw-toolbar input{grid-column:1/-1}.dy-hw-toolbar .dy-primary{width:100%}}
+@media(max-width:420px){.dy-hw-toolbar{grid-template-columns:1fr}.dy-hw-count,.dy-hw-toolbar input{grid-column:auto}.dy-hw-toolbar select,.dy-hw-toolbar .dy-primary{width:100%}}
