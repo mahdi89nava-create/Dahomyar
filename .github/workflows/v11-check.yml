@@ -20,3 +20,4 @@ jobs:
       - run: node --check learning-hub.js
       - run: node ai-route.test.js
       - run: npm ci
+      - run: node server.integration.test.js
